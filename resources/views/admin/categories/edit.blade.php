@@ -23,7 +23,7 @@
                                     <div class="mb-3">
                                         <label for="category-title" class="form-label">Category Title</label>
                                         <input type="text" id="category-title" class="form-control" placeholder="Heater"
-                                            name="title">
+                                            name="title" value="{{ $category->title }}">
                                     </div>
                                 </div>
 

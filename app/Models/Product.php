@@ -5,19 +5,19 @@ namespace App\Models;
 use App\Models\Review;
 use App\Models\Category;
 use App\Traits\HasMedia;
+use App\Core\Model\Model;
 use App\Models\ProductVariant;
 use App\Models\Scopes\ActiveProductScope;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 #[ScopedBy([ActiveProductScope::class])]
 class Product extends Model
 {
-    use HasFactory, SoftDeletes, HasMedia;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'category_id',

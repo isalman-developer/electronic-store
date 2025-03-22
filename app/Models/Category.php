@@ -4,8 +4,7 @@ namespace App\Models;
 
 use App\Models\Product;
 use App\Traits\HasMedia;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
+use App\Core\Model\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -13,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
-    use HasFactory, SoftDeletes, HasMedia;
+    use HasFactory;
 
     protected $fillable = [
         'title',

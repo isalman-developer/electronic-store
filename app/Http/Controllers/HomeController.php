@@ -18,9 +18,9 @@ class HomeController extends Controller
 
     public function index()
     {
-        $sliders = $this->sliderService->getSliders();
-        $newArrivals = $this->productService->getNewArrivals();
-        $categories = $this->categoryService->getAll();
+        $sliders = $this->sliderService->getSlidersForHomePage();
+        $newArrivals = $this->productService->getNewArrivalsForHomePage();
+        $categories = $this->categoryService->getCategoriesForHomePage();
         $colors = $this->colorService->getAll();
         return view('home', compact('sliders', 'newArrivals'));
     }

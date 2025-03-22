@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Traits\ModelScopes;
 use App\Traits\HasMedia;
+use App\Core\Model\Model;
+use App\Traits\ModelScopes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class Slider extends Model
 {
-    use HasFactory, HasMedia, ModelScopes;
+    use HasFactory;
 
     protected $fillable = ['title', 'description', 'redirect_link', 'status'];
 

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Core\Model\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Size extends Model

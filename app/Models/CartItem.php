@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Core\Model\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {

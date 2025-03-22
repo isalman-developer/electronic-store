@@ -19,7 +19,7 @@ if (!function_exists('getImageUrl')) {
 if (!function_exists('getSingleImageUrl')) {
     function getSingleImageUrl($object)
     {
-        return count($object->media) > 0 ? asset('storage/' . $object->media->first()->file_path) : asset('no-image.png');
+        return $object->media->count() > 0 ? asset('storage/' . $object->media->first()->file_path) : asset('no-image.png');
     }
 }
 
