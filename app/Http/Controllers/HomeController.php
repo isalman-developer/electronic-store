@@ -21,7 +21,8 @@ class HomeController extends Controller
         $sliders = $this->sliderService->getSlidersForHomePage();
         $newArrivals = $this->productService->getNewArrivalsForHomePage();
         $categories = $this->categoryService->getCategoriesForHomePage();
-        $colors = $this->colorService->getAll();
-        return view('home', compact('sliders', 'newArrivals'));
+        $colors = $this->colorService->geColorsForHomePage();
+
+        return view('home', compact('sliders', 'newArrivals', 'categories', 'colors'));
     }
 }

@@ -50,7 +50,7 @@
                                                 <div class="d-flex align-items-center gap-2">
                                                     <div
                                                         class="rounded bg-light avatar-lg d-flex align-items-center justify-content-center">
-                                                        <img src="{{ getSingleImageUrl($category) }}"
+                                                        <img src="{{ getImageUrl($category->media) }}"
                                                             alt="{{ $category->title }} - Category Image" class="rounded avatar-lg">
                                                     </div>
                                                     <p class="text-dark fw-medium fs-15 mb-0">
@@ -81,7 +81,6 @@
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
                         </div>

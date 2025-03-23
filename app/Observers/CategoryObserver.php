@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use App\Core\Services\CategoryService;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryObserver
 {
@@ -16,7 +17,6 @@ class CategoryObserver
     public function creating(Category $category): void
     {
         $category->slug = Str::slug($category->title);
-        $this->clearAndRebuildCache();
     }
 
     /**
@@ -27,6 +27,10 @@ class CategoryObserver
         if ($category->isDirty('title')) {
             $category->slug = Str::slug($category->title);
         }
+    }
+
+    public function saved()
+    {
         $this->clearAndRebuildCache();
     }
 
@@ -37,9 +41,15 @@ class CategoryObserver
 
     public function clearAndRebuildCache()
     {
-        cache()->forget('home_categories');
-        cache()->rememberForever('home_categories', function () {
+        Cache::forget('home_categories');
+        Cache::forget('active_categories_for_footer');
+
+        Cache::rememberForever('home_categories', function () {
             return $this->categoryService->getAll(relations: ['media'], scopes: ['active']);
+        });
+
+        Cache::rememberForever('active_categories_for_footer', function () {
+            return $this->categoryService->getAll(scopes: ['active'], perPage: 5);
         });
     }
 }

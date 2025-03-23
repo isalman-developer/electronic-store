@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Review;
 use App\Models\Category;
-use App\Traits\HasMedia;
 use App\Core\Model\Model;
 use App\Models\ProductVariant;
 use App\Models\Scopes\ActiveProductScope;
@@ -18,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $with = ['media'];
 
     protected $fillable = [
         'category_id',

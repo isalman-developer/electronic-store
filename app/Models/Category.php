@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Category extends Model
 {
     use HasFactory;
+    protected $with = ['media'];
 
     protected $fillable = [
         'title',

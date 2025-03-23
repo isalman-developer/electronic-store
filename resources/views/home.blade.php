@@ -9,8 +9,6 @@
     @include('partials.home.sliders')
     <!--Hero slider end-->
 
-    {{-- @livewire('product-listing') --}}
-
     <!--New arrival start-->
     @include('partials.home.new-arrival')
     <!--New arrival end-->

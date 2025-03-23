@@ -61,12 +61,12 @@ trait HasMedia
     public function clearMedia()
     {
         if ($this->media()->exists()) {
-            if ($this->media->count() > 1) {
+            if ($this->media()->count() > 1) {
                 foreach ($this->media as $media) {
                     $this->removeMedia($media);
                 }
             } else {
-                $this->removeMedia($this->media);
+                $this->removeMedia($this->media()->first());
             }
         }
     }
