@@ -6,7 +6,7 @@
                     <i class="bi bi-list"></i>
                 </button>
                 <a class="navbar-brand mx-auto mx-xxl-0 ms-4" href="index.html">
-                    <img src="assets/images/logo/logo.svg" alt="" />
+                    <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="" />
                 </a>
             </div>
             <div class="">
@@ -145,7 +145,7 @@
                                         <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                                             <div
                                                 class="h-100 position-relative d-flex flex-column bg-light justify-content-center align-items-center">
-                                                <img src="assets/images/jpg/menu-benner.jpg"
+                                                <img src="{{ asset('assets/images/jpg/menu-benner.jpg') }}"
                                                     alt="eCommerce HTML Template" class="img-fluid" />
                                                 <div class="position-absolute top-0 text-center pt-5">
                                                     <h3 class="fw-bold">Modern Furniture</h3>
@@ -161,7 +161,7 @@
                                         <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                                             <div
                                                 class="h-100 position-relative d-flex flex-column bg-light justify-content-center align-items-center">
-                                                <img src="assets/images/jpg/menu-benner.jpg"
+                                                <img src="{{ asset('assets/images/jpg/menu-benner.jpg') }}"
                                                     alt="eCommerce HTML Template" class="img-fluid" />
                                                 <div class="position-absolute top-0 text-center pt-5">
                                                     <h3 class="fw-bold">Modern Furniture</h3>
@@ -177,7 +177,7 @@
                                         <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                                             <div
                                                 class="h-100 position-relative d-flex flex-column bg-light justify-content-center align-items-center">
-                                                <img src="assets/images/jpg/menu-benner.jpg"
+                                                <img src="{{ asset('assets/images/jpg/menu-benner.jpg') }}"
                                                     alt="eCommerce HTML Template" class="img-fluid" />
                                                 <div class="position-absolute top-0 text-center pt-5">
                                                     <h3 class="fw-bold">Modern Furniture</h3>
@@ -193,7 +193,7 @@
                                         <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                                             <div
                                                 class="h-100 position-relative d-flex flex-column bg-light justify-content-center align-items-center">
-                                                <img src="assets/images/jpg/menu-benner.jpg"
+                                                <img src="{{ asset('assets/images/jpg/menu-benner.jpg') }}"
                                                     alt="eCommerce HTML Template" class="img-fluid" />
                                                 <div class="position-absolute top-0 text-center pt-5">
                                                     <h3 class="fw-bold">Modern Furniture</h3>

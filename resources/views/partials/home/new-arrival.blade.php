@@ -38,7 +38,7 @@
                 <div class="swiper-slide mb-5">
                     <div class="product-card">
                         <div class=" text-center product-card-img mb-4">
-                            <a href="#!">
+                            <a href="{{ route('product.show', $newArrival->id) }}">
                                 <img src="{{ getSingleImageUrl($newArrival) }}"
                                     alt="{{ $newArrival->title }} product image" class="img-fluid">
 
@@ -76,7 +76,7 @@
                         </div>
                         <div class="mb-3">
                             <h3 class="fs-6 mb-0 product-heading d-inline-block text-truncate">
-                                <a href="#!">
+                                <a href="{{ route('product.show', $newArrival->id) }}">
                                     {{ $newArrival->title }}
                                 </a>
                             </h3>

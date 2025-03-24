@@ -30,17 +30,51 @@ trait HasMedia
     }
 
     /**
-     * Handle removing old file and uploading new file and attach to the model.
+     * Handle media update with safe replacement
+     *
+     * @param array|UploadedFile $files New files to upload
+     * @param string $directory Storage directory
+     * @return array Uploaded media records
      */
-    public function updateMedia(UploadedFile $file, string $directory = 'uploads')
+    public function updateMedia($files, string $directory = 'uploads')
     {
-        $this->clearMedia();
-        $filePath = $file->store($directory, 'public');
+        // Normalize input to array
+        $files = is_array($files) ? $files : [$files];
 
-        return $this->media()->create([
-            'file_name' => $file->getClientOriginalName(),
-            'file_path' => $filePath,
-        ]);
+        // Store new media
+        $newMediaRecords = [];
+        foreach ($files as $file) {
+            if ($file instanceof UploadedFile) {
+                $filePath = $file->store($directory, 'public');
+                $newMediaRecords[] = $this->media()->create([
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_path' => $filePath,
+                ]);
+            }
+        }
+
+        // Return newly uploaded media records
+        return $newMediaRecords;
+    }
+
+    /**
+     * Safely remove old media, keeping newly uploaded media
+     *
+     * @param array $newMediaRecords Newly uploaded media records to preserve
+     */
+    public function removeOldMedia(array $newMediaRecords = [])
+    {
+        // Get existing media, excluding newly uploaded media
+        $mediaToRemove = $this->media()
+            ->when(!empty($newMediaRecords), function ($query) use ($newMediaRecords) {
+                $query->whereNotIn('id', array_column($newMediaRecords, 'id'));
+            })
+            ->get();
+
+        // Remove old media files
+        foreach ($mediaToRemove as $media) {
+            $this->removeMedia($media);
+        }
     }
 
     /**

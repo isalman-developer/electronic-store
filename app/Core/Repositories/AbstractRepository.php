@@ -96,18 +96,19 @@ abstract class AbstractRepository implements RepositoryInterface
             $record = $this->getById($id);
             $record->update($data);
 
-            // Handle media upload, using hasMedia trait
+            $newMediaRecords = [];
             if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
-                $record->updateMedia($data['image'], $this->model->getTable());
+                $newMediaRecords = $record->updateMedia($data['image'], $this->model->getTable());
             }
 
-            // Handle multiple medias upload, using hasMedia trait
+            // Handle multiple media uploads
             if (isset($data['images']) && is_array($data['images'])) {
-                foreach ($data['images'] as $image) {
-                    if ($image instanceof UploadedFile) {
-                        $record->updateMedia($image, $this->model->getTable());
-                    }
-                }
+                $newMediaRecords = $record->updateMedia($data['images'], $this->model->getTable());
+            }
+
+            // Remove old media after uploading new ones
+            if (!empty($newMediaRecords)) {
+                $record->removeOldMedia($newMediaRecords);
             }
 
             return $record;

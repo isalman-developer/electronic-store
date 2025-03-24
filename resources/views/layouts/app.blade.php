@@ -2,34 +2,28 @@
 <html lang="en">
 
 <head>
-  @include('partials.head')
-  @livewireStyles
+    @include('partials.head')
+    @livewireStyles
 </head>
 
-
 <body>
-  @include('partials.promotional-top-stripe')
+    @include('partials.promotional-top-stripe')
 
-  @yield('content')
+    @include('partials.navbar')
 
-  <!--Footer start-->
-  @include('partials.footer')
-  <!--Footer end-->
+    @yield('content')
 
-  <!-- Scroll top -->
-  @include('partials.scroll-top')
-  <!-- Scroll top -->
+    @include('partials.footer')
 
-  <!-- search modal -->
-  @include('partials.search-modal')
+    @include('partials.scroll-top')
 
-  <!-- Offcanvas for Cart Summary -->
-  @include('partials.cart')
+    @include('partials.search-modal')
 
-  <!-- Libs JS -->
-  @include('partials.scripts')
-  {{ $slot ?? '' }}
-  @livewireScripts
+    @include('partials.cart')
+
+    @include('partials.scripts')
+    {{ $slot ?? '' }}
+    @livewireScripts
 </body>
 
 </html>

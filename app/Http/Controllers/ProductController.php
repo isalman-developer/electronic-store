@@ -18,7 +18,6 @@ class ProductController extends Controller
         $products = $this->productService->getAll(
             columns: ['id', 'title', 'price', 'category_id'],
             relations: ['category', 'media'],
-            paginate: true,
             perPage: 12
         );
 
@@ -41,7 +40,6 @@ class ProductController extends Controller
         $products = $this->productService->getAll(
             conditions: ['category_id' => $categoryId],
             relations: ['category', 'media'],
-            paginate: true,
             perPage: 12
         );
 

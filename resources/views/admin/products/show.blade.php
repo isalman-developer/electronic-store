@@ -48,7 +48,7 @@
                     @if(count($product->media) * 100 > 480)
                     <!-- Assuming each image takes approximately 100px height -->
                     <div class="more-images-div">
-                      <span class="badge bg-secondary">More images</span>
+                      <span class="badge text-dark bg-white">More images <span style="font-size: 1rem">&#8659;</span> </span>
                     </div>
                     @endif
                   </div>
