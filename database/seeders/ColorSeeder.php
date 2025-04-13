@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Color;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ColorSeeder extends Seeder
 {
@@ -12,6 +13,9 @@ class ColorSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('colors')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $colors = [
             'Black' => 'dark',
             'Yellow' => 'warning',

@@ -21,7 +21,7 @@ class Product extends Model
     protected $fillable = [
         'category_id',
         'title',
-        'brand',
+        'brand_id',
         'description',
         'price',
         'stock',
@@ -65,6 +65,11 @@ class Product extends Model
     public function sizes()
     {
         return $this->belongsToMany(Size::class, 'product_size', 'product_id', 'size_id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 
     //special functions

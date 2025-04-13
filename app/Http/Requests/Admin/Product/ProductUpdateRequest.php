@@ -24,7 +24,7 @@ class ProductUpdateRequest extends FormRequest
         return [
             'category_id' => 'sometimes|required|exists:categories,id',
             'title' => 'sometimes|required|string|max:255',
-            'brand' => 'sometimes|required|string|max:255',
+            'brand_id' => 'sometimes|required|exists:brands,id',
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric|min:0',
             'stock' => 'nullable|integer|min:0',

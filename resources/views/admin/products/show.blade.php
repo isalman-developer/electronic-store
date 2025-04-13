@@ -104,7 +104,7 @@
                   <div class="col-md-6">
                     <p class="mb-2 text-muted">
                       <i class="bi bi-caret-right font-size-16 align-middle text-primary">&#xf0da;</i>
-                      <b>Brand :</b> {{ $product->brand }}
+                      <b>Brand :</b> {{ $product->brand->title }}
                     </p>
                     <p class="mb-2 text-muted">
                       <i class="bi bi-caret-right font-size-16 align-middle text-primary">&#xf0da;</i>

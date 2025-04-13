@@ -13,7 +13,10 @@ class SizeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('sizes')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('sizes')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         $sizes = ['S', 'M', 'L', 'XL'];
         foreach ($sizes as $size) {
             Size::create(['title' => $size]);

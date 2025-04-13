@@ -16,7 +16,7 @@ if (!function_exists('showValidationMessage')) {
 if (!function_exists('getImageUrl')) {
     function getImageUrl($media)
     {
-        return asset('storage/' . $media->file_path) ?? asset('no-image.png');
+        return $media ? asset('storage/' . $media->file_path) : asset('no-image.png');
     }
 }
 

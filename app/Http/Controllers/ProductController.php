@@ -17,7 +17,7 @@ class ProductController extends Controller
     {
         $products = $this->productService->getAll(
             columns: ['id', 'title', 'price', 'category_id'],
-            relations: ['category', 'media'],
+            relations: ['category', 'media','brand'],
             perPage: 12
         );
 

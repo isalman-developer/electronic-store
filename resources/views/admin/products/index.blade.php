@@ -25,6 +25,7 @@
                   <th>Tag #</th>
                   <th>Price</th>
                   <th>Stock</th>
+                  <th>Brand</th>
                   <th>Category</th>
                   <th>Action</th>
                 </tr>
@@ -54,6 +55,7 @@
                     </p>
                     <p class="mb-0 text-muted">{{ $product->stock }} Sold</p>
                   </td>
+                  <td>{{ $product->brand->title }}</td>
                   <td>{{ $product->category->title }}</td>
                   <td>
                     <div class="d-flex gap-2">

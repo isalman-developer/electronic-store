@@ -24,29 +24,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // Create 5 categories
-        // Category::factory(5)->create();
-
-        // // Create 20 products
-        // Product::factory(20)->create();
-
-        // // Create 50 product variants
-        // ProductVariant::factory(50)->create();
-
         // Color Seeder
         $this->call(ColorSeeder::class);
 
         // Size Seeder
         $this->call(SizeSeeder::class);
 
+        // Brand Seeder
+        $this->call(BrandSeeder::class);
 
-        // Create 30 orders
-        // Order::factory(30)->create();
-
-        // Create 60 order items
-        // OrderItem::factory(60)->create();
-
-        // Create 40 reviews
-        // Review::factory(40)->create();
     }
 }

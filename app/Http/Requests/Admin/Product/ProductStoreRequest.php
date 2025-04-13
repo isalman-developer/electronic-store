@@ -25,7 +25,7 @@ class ProductStoreRequest extends FormRequest
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'status' => 'required|boolean',
-            'brand' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
             'tag_number' => 'required|string|max:255|unique:products,tag_number',
             'price' => 'required|numeric|min:0',
             'weight' => 'nullable|numeric|min:0',

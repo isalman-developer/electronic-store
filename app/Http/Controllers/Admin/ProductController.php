@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Core\Services\Admin\BrandService;
 use App\Models\Product;
 use App\Core\Services\SizeService;
 use App\Core\Services\ColorService;
@@ -17,12 +18,13 @@ class ProductController extends Controller
         protected ProductService $service,
         protected CategoryService $categoryService,
         protected ColorService $colorService,
-        protected SizeService $sizeService
+        protected SizeService $sizeService,
+        protected BrandService $brandService
     ) {}
 
     public function index()
     {
-        $products = $this->service->getAll(relations:['media','category','sizes']);
+        $products = $this->service->getAll(relations:['media','category','sizes','brand','colors']);
         return view('admin.products.index', compact('products'));
     }
 
@@ -31,12 +33,13 @@ class ProductController extends Controller
         $categories = $this->categoryService->getAll();
         $colors = $this->colorService->getAll();
         $sizes = $this->sizeService->getAll();
-        return view('admin.products.create', compact('categories', 'colors', 'sizes'));
+        $brands = $this->brandService->getAll();
+        return view('admin.products.create', compact('categories', 'colors', 'sizes','brands'));
     }
 
     public function show(Product $product)
     {
-        $product->load(['sizes', 'colors', 'category', 'media']);
+        $product->load(['sizes', 'colors', 'category', 'media','brand']);
         return view('admin.products.show', compact('product'));
     }
 
@@ -53,7 +56,8 @@ class ProductController extends Controller
         $categories = $this->categoryService->getAll();
         $colors = $this->colorService->getAll();
         $sizes = $this->sizeService->getAll();
-        return view('admin.products.edit', compact('product', 'categories', 'colors', 'sizes'));
+        $brands = $this->brandService->getAll();
+        return view('admin.products.edit', compact('product', 'categories', 'colors', 'sizes','brands'));
     }
 
     public function update(ProductUpdateRequest $request, Product $product)
