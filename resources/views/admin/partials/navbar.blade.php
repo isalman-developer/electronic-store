@@ -65,6 +65,25 @@
       </li>
 
       <li class="nav-item">
+        <a class="nav-link menu-arrow {{ request()->is('admin/brands/*/edit') || request()->is('admin/brands/*') ? 'active' : '' }}" href="#sidebarBrand" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarBrand">
+          <span class="nav-icon">
+            <iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon>
+          </span>
+          <span class="nav-text"> Brand </span>
+        </a>
+        <div class="collapse {{ request()->is('admin/brands/*/edit') || request()->is('admin/brands/*') ? 'show' : '' }}" id="sidebarBrand">
+          <ul class="nav sub-navbar-nav">
+            <li class="sub-nav-item">
+              <a class="sub-nav-link" href="{{ route('admin.brands.index') }}">List</a>
+            </li>
+            <li class="sub-nav-item">
+              <a class="sub-nav-link" href="{{ route('admin.brands.create') }}">Create</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link menu-arrow {{ request()->is('admin/sliders/*/edit') || request()->is('admin/sliders/*') ? 'active' : '' }}" href="#sidebarSlider" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSlider">
           <span class="nav-icon">
             <iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon>

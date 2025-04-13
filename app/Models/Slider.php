@@ -10,7 +10,6 @@ class Slider extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'description', 'redirect_link', 'status'];
-    protected $with = ['media'];
     public function media()
     {
         return $this->morphMany(Media::class, 'mediable');

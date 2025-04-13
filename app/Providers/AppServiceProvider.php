@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\Category;
+use App\Models\Brand;
 use App\Models\Slider;
-use App\Observers\CategoryObserver;
+use App\Models\Category;
+use App\Observers\BrandObserver;
 use App\Observers\SliderObserver;
+use App\Observers\CategoryObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Brand::observe(BrandObserver::class);
         Category::observe(CategoryObserver::class);
         Slider::observe(SliderObserver::class);
     }

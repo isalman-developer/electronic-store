@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $with = ['media'];
 
     protected $fillable = [
         'category_id',

@@ -8,16 +8,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Category extends Model
+class Brand extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'title',
         'slug',
-        'tag_number',
-        'description',
         'status',
+        'description',
         'meta_title',
         'meta_keywords',
         'meta_description',

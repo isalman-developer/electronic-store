@@ -5,7 +5,7 @@
                 <button class="navbar-toggler offcanvas-nav-btn" type="button">
                     <i class="bi bi-list"></i>
                 </button>
-                <a class="navbar-brand mx-auto mx-xxl-0 ms-4" href="index.html">
+                <a class="navbar-brand mx-auto mx-xxl-0 ms-4" href="/">
                     <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="" />
                 </a>
             </div>
@@ -30,8 +30,8 @@
                                             <ul class="list-unstyled d-inline-flex flex-column nav lh-lg">
                                                 @foreach (getCategories() as $category)
                                                     <li class="nav-item">
-                                                        <a class="nav-link text-link d-inline px-0"
-                                                            href="product-grid.html">
+                                                        <a href="{{ route('products') }}"
+                                                            class="nav-link text-link d-inline px-0">
                                                             {{ $category->title }}
                                                         </a>
                                                     </li>
@@ -62,46 +62,15 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">Find Products</a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="blog.html">By price under 1000</a>
+                                        <a class="dropdown-item" href="blog.html">Featured Products</a>
+                                        <a class="dropdown-item" href="blog.html">New Arrivals</a>
+                                        <a class="dropdown-item" href="blog.html">Top Rated Products</a>
+                                        <a class="dropdown-item" href="blog.html">Shop by Price</a>
                                         <a class="dropdown-item" href="blog.html">By mostly the filters</a>
                                     </li>
                                 </ul>
                             </li>
 
-                            <li class="nav-item dropdown w-100 w-lg-auto border-bottom border-bottom-xl-0">
-                                <a class="nav-link dropdown-toggle" href="#!" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">More</a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="blog.html">Blog</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="blog-single.html">Blog Single</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="blog-category.html">Blog Category</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="about.html">About us</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="faq.html">FAQ</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="product-reviews.html">Review</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="404error.html">404 Error</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="contact.html">Contact</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="terms-condition.html">Terms
-                                            Conditions</a>
-                                    </li>
-                                </ul>
-                            </li>
                             <li class="nav-item dropdown border-bottom border-bottom-xl-0">
                                 <a class="nav-link dropdown-toggle" href="#!" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">Account</a>
@@ -138,7 +107,7 @@
                             <li
                                 class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth border-bottom border-bottom-xl-0">
                                 <a class="nav-link dropdown-toggle" href="#!" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">Mega menu</a>
+                                    data-bs-toggle="dropdown" aria-expanded="false">Featured Products</a>
                                 <div class="dropdown-menu pb-0">
                                     <div class="row p-2 p-xl-4">
 
@@ -208,6 +177,41 @@
                                         </div>
                                     </div>
                                 </div>
+                            </li>
+
+                            <li class="nav-item dropdown w-100 w-lg-auto border-bottom border-bottom-xl-0">
+                                <a class="nav-link dropdown-toggle" href="#!" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">More</a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="blog.html">Blog</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="blog-single.html">Blog Single</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="blog-category.html">Blog Category</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="about.html">About us</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="faq.html">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="product-reviews.html">Review</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="404error.html">404 Error</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="contact.html">Contact</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="terms-condition.html">Terms
+                                            Conditions</a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                         <div class="d-xl-none d-grid position-absolute bottom-0 w-100 start-0 end-0 p-4">

@@ -41,37 +41,39 @@
             <div class="row gy-4 gy-lg-0">
                 <!--Product image-->
                 <div class="col-lg-6">
+                    <!--Swiper-->
                     <div class="row">
-						<div class="swiper-container swiper" data-thumbs="true" id="swiper-1" data-pagination-type=""
-							data-speed="400" data-space-between="120" data-pagination="false" data-navigation="true"
-							data-autoplay="true" data-effect="fade" data-autoplay-delay="3000"
-							data-breakpoints='{"480": {"slidesPerView": 1}, "768": {"slidesPerView": 1}, "1024": {"slidesPerView": 1}}'>
-							@foreach ($product->media as $media)
+                        <div class="swiper-container swiper" data-thumbs="true" id="swiper-1" data-pagination-type=""
+                            data-speed="4000" data-space-between="120" data-pagination="true" data-navigation="true"
+                            data-autoplay="true" data-effect="fade" data-autoplay-delay="3000"
+                            data-breakpoints='{"480": {"slidesPerView": 1}, "768": {"slidesPerView": 1}, "1024": {"slidesPerView": 1}}'>
                             <div class="swiper-wrapper">
-								<div class="swiper-slide">
-									<img src="{{getImageUrl($media)}}"/>
-								</div>
-							</div>
-                            @endforeach
-						</div>
-
-						<!-- Thumbs Swiper Container -->
-						<div class="swiper-container swiper-thumbs mt-4 overflow-hidden">
-							<div class="swiper-wrapper">
-								@foreach ($product->media as $media)
-
-                                <div class="swiper-slide">
-                                    <div class="ratio ratio-1x1 border">
-                                        <img src="{{ getImageUrl($media) }}" alt="product image"
-                                        class="" />
-									</div>
-								</div>
+                                @foreach ($product->media as $media)
+                                    <div class="swiper-slide">
+                                        <img src="{{ getImageUrl($media) }}" width="538px"/>
+                                    </div>
                                 @endforeach
-								<!-- Add more thumbnails as needed -->
-							</div>
-						</div>
-					</div>
+                                <!-- Add more slides as needed -->
+                            </div>
+                        </div>
+
+                        <!-- Thumbs Swiper Container -->
+                        <div class="swiper-container swiper-thumbs mt-4 overflow-hidden">
+                            <div class="swiper-wrapper">
+                                @foreach ($product->media as $media)
+                                    <div class="swiper-slide">
+                                        <div class="ratio ratio-1x1 border">
+                                            <img src="{{ getImageUrl($media) }}" alt="product image"
+                                                class="" />
+                                        </div>
+                                    </div>
+                                @endforeach
+                                <!-- Add more thumbnails as needed -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <!--Product details-->
                 <div class="col-lg-6">
                     <div class="ps-lg-6">
@@ -407,7 +409,8 @@
                         <div class="tab-pane fade" id="details-tab-pane" role="tabpanel" aria-labelledby="details-tab"
                             tabindex="0">
                             <div class="my-6">
-                                <img src="{{ asset('assets/images/png/graphics.png') }}" alt="graphics" class="img-fluid" />
+                                <img src="{{ asset('assets/images/png/graphics.png') }}" alt="graphics"
+                                    class="img-fluid" />
                             </div>
                         </div>
                         <!-- tab pane -->
@@ -1267,10 +1270,10 @@
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-card">
                         <div class=" text-center product-card-img mb-4">
-                            <a href="#!"><img src="{{ asset('assets/images/product/product-img-1.jpg') }}" alt="product image"
-                                    class="img-fluid">
-                                <img src="{{ asset('assets/images/product/product-img-hover-1.jpg') }}" alt="product image"
-                                    class="img-fluid product-img-hover"></a>
+                            <a href="#!"><img src="{{ asset('assets/images/product/product-img-1.jpg') }}"
+                                    alt="product image" class="img-fluid">
+                                <img src="{{ asset('assets/images/product/product-img-hover-1.jpg') }}"
+                                    alt="product image" class="img-fluid product-img-hover"></a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
                                     data-bs-toggle="modal" data-bs-target="#quickViewModal">
@@ -1345,8 +1348,8 @@
                             <a href="#!">
                                 <img src="{{ asset('assets/images/product/product-img-2.jpg') }}" alt="product image"
                                     class="img-fluid" />
-                                <img src="{{ asset('assets/images/product/product-img-hover-2.jpg') }}" alt="product image"
-                                    class="img-fluid product-img-hover" />
+                                <img src="{{ asset('assets/images/product/product-img-hover-2.jpg') }}"
+                                    alt="product image" class="img-fluid product-img-hover" />
                             </a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
@@ -1414,8 +1417,8 @@
                             <a href="#!">
                                 <img src="{{ asset('assets/images/product/product-img-3.jpg') }}" alt="product image"
                                     class="img-fluid" />
-                                <img src="{{ asset('assets/images/product/product-img-hover-3.jpg') }}" alt="product image"
-                                    class="img-fluid product-img-hover" />
+                                <img src="{{ asset('assets/images/product/product-img-hover-3.jpg') }}"
+                                    alt="product image" class="img-fluid product-img-hover" />
                             </a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
@@ -1481,10 +1484,10 @@
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-card">
                         <div class="text-center mb-4 product-card-img">
-                            <a href="#!"><img src="{{ asset('assets/images/product/product-img-4.jpg') }}" alt="product image"
-                                    class="img-fluid" />
-                                <img src="{{ asset('assets/images/product/product-img-hover-4.jpg') }}" alt="product image"
-                                    class="img-fluid product-img-hover" /></a>
+                            <a href="#!"><img src="{{ asset('assets/images/product/product-img-4.jpg') }}"
+                                    alt="product image" class="img-fluid" />
+                                <img src="{{ asset('assets/images/product/product-img-hover-4.jpg') }}"
+                                    alt="product image" class="img-fluid product-img-hover" /></a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
                                     data-bs-toggle="modal" data-bs-target="#quickViewModal">
