@@ -4,8 +4,8 @@ namespace App\Observers;
 
 use App\Models\Category;
 use Illuminate\Support\Str;
-use App\Core\Services\CategoryService;
 use Illuminate\Support\Facades\Cache;
+use App\Core\Services\Admin\CategoryService;
 
 class CategoryObserver
 {

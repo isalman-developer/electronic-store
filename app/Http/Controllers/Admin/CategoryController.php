@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
-use App\Core\Services\CategoryService;
+use App\Core\Services\Admin\CategoryService;
 use App\Http\Requests\Admin\Category\CategoryStoreRequest;
 use App\Http\Requests\Admin\Category\CategoryUpdateRequest;
 

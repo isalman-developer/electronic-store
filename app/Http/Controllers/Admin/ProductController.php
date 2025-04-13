@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Core\Services\Admin\BrandService;
 use App\Models\Product;
-use App\Core\Services\SizeService;
-use App\Core\Services\ColorService;
+use App\Core\Services\Admin\SizeService;
 use App\Http\Controllers\Controller;
-use App\Core\Services\ProductService;
-use App\Core\Services\CategoryService;
+use App\Core\Services\Admin\BrandService;
+use App\Core\Services\Admin\ColorService;
+use App\Core\Services\Admin\ProductService;
+use App\Core\Services\Admin\CategoryService;
 use App\Http\Requests\Admin\Product\ProductStoreRequest;
 use App\Http\Requests\Admin\Product\ProductUpdateRequest;
 

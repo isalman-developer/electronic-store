@@ -1,7 +1,6 @@
 <?php
 
-use App\Core\Services\CategoryService;
-use App\Models\Category;
+use App\Core\Services\Admin\CategoryService;
 use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('showValidationMessage')) {

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Core\Services;
+namespace App\Core\Services\Admin;
 
-use App\Core\Repositories\ColorRepository;
 use Illuminate\Support\Facades\Cache;
+use App\Core\Services\AbstractService;
+use App\Core\Repositories\ColorRepository;
 
 class ColorService extends AbstractService
 {

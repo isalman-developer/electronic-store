@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Core\Services;
+namespace App\Core\Services\Admin;
 
-use App\Core\Repositories\ProductRepository;
 use Illuminate\Support\Facades\DB;
+use App\Core\Services\AbstractService;
+use App\Core\Repositories\ProductRepository;
 
 class ProductService extends AbstractService
 {

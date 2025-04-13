@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Core\Services\ProductService;
 use App\Models\Product;
 use Illuminate\Support\Facades\Cache;
+use App\Core\Services\Admin\ProductService;
 
 class ProductObserver
 {

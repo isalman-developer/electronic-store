@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
-use App\Core\Services\ProductService;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Core\Services\Admin\ProductService;
 
 class ProductListing extends Component
 {

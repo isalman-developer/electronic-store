@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Core\Services\SliderService;
 use App\Models\Slider;
 use Illuminate\Support\Facades\Cache;
+use App\Core\Services\Admin\SliderService;
 
 class SliderObserver
 {

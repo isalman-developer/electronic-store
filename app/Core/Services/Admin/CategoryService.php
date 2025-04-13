@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Core\Services;
+namespace App\Core\Services\Admin;
 
 use App\Core\Repositories\CategoryRepository;
+use App\Core\Services\AbstractService;
 
 class CategoryService extends AbstractService
 {

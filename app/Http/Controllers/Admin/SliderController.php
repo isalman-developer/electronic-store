@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Slider;
 use App\Http\Controllers\Controller;
-use App\Core\Services\SliderService;
+use App\Core\Services\Admin\SliderService;
 use App\Http\Requests\Admin\Slider\SliderStoreRequest;
 use App\Http\Requests\Admin\Slider\SliderUpdateRequest;
 
