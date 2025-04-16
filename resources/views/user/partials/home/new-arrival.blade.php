@@ -49,14 +49,14 @@
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
                                     data-bs-toggle="modal" data-bs-target="#quickViewModal">
-                                    @include('svgs.quick-view-svg')
+                                    @include('user.svgs.quick-view-svg')
                                 </button>
                                 <button type="button" class="btn btn-primary  btn-sm quick-add-btn"
                                     data-product-name="{{ $newArrival->title }}"
                                     data-product-price="{{ $newArrival->price }}"
                                     data-product-img="{{ getSingleImageUrl($newArrival) }}"
                                     data-product-id="{{ $newArrival->id }}">
-                                    @include('svgs.quick-add-svg')
+                                    @include('user.svgs.quick-add-svg')
                                     Quick add
                                 </button>
                             </div>
@@ -66,10 +66,10 @@
                             <div class="d-flex gap-3 align-items-center">
                                 <span class="">
                                     4.3
-                                    @include('partials.home.star-svg')
+                                    @include('user.partials.home.star-svg')
                                 </span>
                                 <button type="button" class="btn btn-light bg-transparent border-0 p-0 animate-pulse">
-                                    @include('partials.home.heart-svg')
+                                    @include('user.partials.home.heart-svg')
                                 </button>
                             </div>
                         </div>
@@ -112,4 +112,4 @@
 </section>
 
 
-@include('partials.home.quick-view-modal')
+@include('user.partials.home.quick-view-modal')

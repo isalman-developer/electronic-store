@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Core\Services\User\ColorService;
 use App\Core\Services\User\SliderService;
 use App\Core\Services\User\ProductService;

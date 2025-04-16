@@ -1,26 +1,29 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\User\BrandController;
+use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\CategoryController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\ProductController;
+use Illuminate\Support\Facades\Route;
+
 
 // Home Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Categories
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
-Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
+
+// Brands
+Route::get('/brands', [BrandController::class, 'index'])->name('brands');
 
 // Products
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
-// Product Searching
+// Product Searching by brand
 Route::prefix('brand')->group(function () {
     Route::get('{brand_slug}', [ProductController::class, 'brandProducts'])->name('brand.products');
     Route::get('{brand_slug}/category/{category_slug}', [ProductController::class, 'brandCategoryProducts'])->name('brand.category.products');
@@ -29,6 +32,7 @@ Route::prefix('brand')->group(function () {
     Route::get('{brand_slug}/sort/{sort_option}', [ProductController::class, 'brandSortedProducts'])->name('brand.sort.products');
 });
 
+// Product Searching by category
 Route::prefix('category')->group(function () {
     Route::get('{category_slug}', [ProductController::class, 'categoryProducts'])->name('category.products');
     Route::get('{category_slug}/brand/{brand_slug}', [ProductController::class, 'categoryBrandProducts'])->name('category.brand.products');

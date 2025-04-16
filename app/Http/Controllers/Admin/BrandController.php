@@ -13,7 +13,7 @@ class BrandController extends Controller
     public function __construct(protected BrandService $service) {}
     public function index()
     {
-        $brands = $this->service->getAll(relations:['media']);
+        $brands = $this->service->getAll(relations: ['media']);
         return view('admin.brands.index', compact('brands'));
     }
 
@@ -24,7 +24,7 @@ class BrandController extends Controller
 
     public function show(Brand $brand)
     {
-        $brands = $this->service->getAll(relations:['media']);
+        $brands = $this->service->getAll(relations: ['media']);
         return view('admin.brands.index', compact('brands'));
     }
 

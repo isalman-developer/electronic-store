@@ -1,16 +1,16 @@
-@extends('layouts.app')
+@extends('user.layouts.app')
 
 @section('title', 'Seco Official PK')
 
 @section('content')
-    @include('partials.home.sliders')
+    @include('user.partials.home.sliders')
 
-    @include('partials.home.new-arrival')
+    @include('user.partials.home.new-arrival')
 
-    @include('partials.home.explore-collection')
+    @include('user.partials.home.explore-collection')
 
-    @include('partials.home.blog')
+    @include('user.partials.home.blog')
 
-    @include('partials.home.features-bottom-bar')
+    @include('user.partials.home.features-bottom-bar')
 
 @endsection

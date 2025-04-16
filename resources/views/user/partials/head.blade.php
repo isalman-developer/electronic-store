@@ -8,6 +8,6 @@
     <link rel="manifest" href="{{ asset('assets/images/favicon/site.html') }}" />
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" />
 
-    @include('partials.styles')
+    @include('user.partials.styles')
 
     <title>@yield('title', 'Seco Official PK')</title>

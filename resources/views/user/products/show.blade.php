@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('user.layouts.app')
 
 @push('page-style')
     <style>
@@ -93,7 +93,7 @@
                                     <span>( {{ $product->brand->title }} )</span>
                                 </div>
                                 <div class="text-success d-flex align-items-center gap-2 mt-2">
-                                    @include('svgs.tick-mark-svg')
+                                    @include('user.svgs.tick-mark-svg')
                                     In Stock
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                                 </div>
                                 <span class="">
                                     4.5
-                                    @include('svgs.rating-star-svg')
+                                    @include('user.svgs.rating-star-svg')
                                 </span>
                             </div>
                             <hr class="my-3" />
@@ -142,7 +142,7 @@
                             <div class="d-flex flex-md-row flex-column gap-2">
                                 <a href="#!" class="btn btn-dark">Add to Cart</a>
                                 <a href="#!" class="btn btn-outline-dark">
-                                    @include('svgs.heart-svg')
+                                    @include('user.svgs.heart-svg')
                                     Add to Wishlist
                                 </a>
                             </div>
@@ -154,7 +154,7 @@
                                         aria-controls="flush-collapseOne">
                                         Shipping & Returns
                                         <span class="icon-shape icon-xs bg-light text-dark rounded-circle">
-                                            @include('svgs.chevron-down-svg')
+                                            @include('user.svgs.chevron-down-svg')
                                         </span>
                                     </a>
                                     <div id="flush-collapseOne" class="accordion-collapse collapse show"
@@ -178,7 +178,7 @@
                                         aria-controls="flush-collapseTwo">
                                         Warranty
                                         <span class="icon-shape icon-xs bg-light text-dark rounded-circle">
-                                            @include('svgs.chevron-down-svg')
+                                            @include('user.svgs.chevron-down-svg')
                                         </span>
                                     </a>
                                     <div id="flush-collapseTwo" class="accordion-collapse collapse"
@@ -210,7 +210,7 @@
                                         aria-controls="flush-collapseThree">
                                         More Payment option
                                         <span class="icon-shape icon-xs bg-light text-dark rounded-circle">
-                                            @include('svgs.chevron-down-svg')
+                                            @include('user.svgs.chevron-down-svg')
                                         </span>
                                     </a>
                                     <div id="flush-collapseThree" class="accordion-collapse collapse"
@@ -218,19 +218,19 @@
                                         <div class="accordion-body px-0">
                                             <ul class="list-unstyled lh-lg">
                                                 <li class="d-flex align-items-center gap-2">
-                                                    @include('svgs.earth-svg')
+                                                    @include('user.svgs.earth-svg')
                                                     Free Shipping on Products Over PKR 10,000
                                                 </li>
                                                 <li class="d-flex align-items-center gap-2">
-                                                    @include('svgs.truck-svg')
+                                                    @include('user.svgs.truck-svg')
                                                     Easy Returns
                                                 </li>
                                                 <li class="d-flex align-items-center gap-2">
-                                                    @include('svgs.dollar-svg')
+                                                    @include('user.svgs.dollar-svg')
                                                     Price Match Guarantee
                                                 </li>
                                                 <li class="d-flex align-items-center gap-2">
-                                                    @include('svgs.secure-payment-svg')
+                                                    @include('user.svgs.secure-payment-svg')
                                                     Secure Payments
                                                 </li>
                                             </ul>
