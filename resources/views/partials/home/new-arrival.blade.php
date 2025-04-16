@@ -49,21 +49,20 @@
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
                                     data-bs-toggle="modal" data-bs-target="#quickViewModal">
-
-                                    @include('partials.home.quick-view-svg')
+                                    @include('svgs.quick-view-svg')
                                 </button>
                                 <button type="button" class="btn btn-primary  btn-sm quick-add-btn"
                                     data-product-name="{{ $newArrival->title }}"
                                     data-product-price="{{ $newArrival->price }}"
                                     data-product-img="{{ getSingleImageUrl($newArrival) }}"
                                     data-product-id="{{ $newArrival->id }}">
-                                    @include('partials.home.quick-add-svg')
+                                    @include('svgs.quick-add-svg')
                                     Quick add
                                 </button>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="small fw-medium text-uppercase">{{ $newArrival->brand }}</span>
+                            <span class="small fw-medium text-uppercase">{{ $newArrival->brand->title }}</span>
                             <div class="d-flex gap-3 align-items-center">
                                 <span class="">
                                     4.3

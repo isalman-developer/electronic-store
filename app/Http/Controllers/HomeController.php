@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Core\Services\Admin\ColorService;
-use App\Core\Services\Admin\SliderService;
-use App\Core\Services\Admin\ProductService;
-use App\Core\Services\Admin\CategoryService;
+use App\Core\Services\User\ColorService;
+use App\Core\Services\User\SliderService;
+use App\Core\Services\User\ProductService;
+use App\Core\Services\User\CategoryService;
 
 class HomeController extends Controller
 {
