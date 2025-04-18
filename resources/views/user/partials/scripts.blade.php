@@ -1,3 +1,4 @@
+@stack('page-script-top')
 <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 <!-- Swiper JS -->
 <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
@@ -13,4 +14,4 @@
 <script src="{{ asset('assets/js/vendors/qty-input.js') }}"></script>
 <script src="{{ asset('assets/js/vendors/btn-scrolltop.js') }}"></script>
 
-@stack('page-script')
+@stack('page-script-bottom')

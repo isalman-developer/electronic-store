@@ -58,7 +58,7 @@ class ProductListing extends Component
             orderBy:$orderBy // Sorting
         );
 
-        return view('livewire.product-listing', compact('products'));
+        return view('user.livewire.product-listing', compact('products'));
     }
 
     public function updated($propertyName)

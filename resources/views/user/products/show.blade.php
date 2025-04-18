@@ -1,6 +1,6 @@
 @extends('user.layouts.app')
 
-@push('page-style')
+@push('page-style-bottom')
     <style>
         .side-images-div {
             height: 30rem;

@@ -2,7 +2,7 @@
 
 @section('title', 'Create Brand')
 @section('toogle-button', 'Create Brand')
-@push('page-style')
+@push('page-style-bo')
 @include('admin.partials.image-input-style')
 @endpush
 @section('content')
