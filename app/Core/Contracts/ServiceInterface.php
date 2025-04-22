@@ -19,6 +19,12 @@ interface ServiceInterface
         array $relations = []
     );
 
+    public function getBySlug(
+        string $slug,
+        array $columns = ['*'],
+        array $relations = []
+    );
+
     public function store(array $data);
     public function update(int $id, array $data);
     public function delete(int $id);

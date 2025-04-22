@@ -2,7 +2,7 @@
     aria-labelledby="offcanvasSearchProductLabel" style="width: 500px">
     <div class="offcanvas-header p-5">
         <div class="border-bottom d-flex align-items-center w-100 pb-2">
-            <input type="search" class="form-control border-0 ps-0 form-focus-none" placeholder="Search for..." />
+            <input type="search" name="search" class="form-control border-0 ps-0 form-focus-none" placeholder="Search for..." />
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
     </div>

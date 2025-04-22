@@ -39,10 +39,10 @@
                     <div class="product-card">
                         <div class=" text-center product-card-img mb-4">
                             <a href="{{ route('product.show', $newArrival->id) }}">
-                                <img src="{{ getSingleImageUrl($newArrival) }}"
+                                <img src="{{ getFirstImageUrl($newArrival) }}"
                                     alt="{{ $newArrival->title }} product image" class="img-fluid">
 
-                                <img src="{{ $newArrival->media->skip(1)->first() ? getImageUrl($newArrival->media->skip(1)->first()) : getSingleImageUrl($newArrival) }}"
+                                <img src="{{ $newArrival->media->skip(1)->first() ? getImageUrl($newArrival->media->skip(1)->first()) : getFirstImageUrl($newArrival) }}"
                                     alt="{{ $newArrival->title }} product hover image"
                                     class="img-fluid product-img-hover">
                             </a>
@@ -54,7 +54,7 @@
                                 <button type="button" class="btn btn-primary  btn-sm quick-add-btn"
                                     data-product-name="{{ $newArrival->title }}"
                                     data-product-price="{{ $newArrival->price }}"
-                                    data-product-img="{{ getSingleImageUrl($newArrival) }}"
+                                    data-product-img="{{ getFirstImageUrl($newArrival) }}"
                                     data-product-id="{{ $newArrival->id }}">
                                     @include('user.svgs.quick-add-svg')
                                     Quick add
@@ -83,15 +83,15 @@
                         </div>
 
                         <div role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1">
+                            <input type="radio" class="btn-check" name="btnradio[]" id="btnradio1">
                             <label class="btn-color-swatch bg-primary" for="btnradio1"></label>
 
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2">
+                            <input type="radio" class="btn-check" name="btnradio[]" id="btnradio2">
                             <label class="btn-color-swatch bg-success" for="btnradio2"></label>
 
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" checked>
+                            <input type="radio" class="btn-check" name="btnradio[]" id="btnradio3" checked>
                             <label class="btn-color-swatch bg-danger" for="btnradio3"></label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4">
+                            <input type="radio" class="btn-check" name="btnradio[]" id="btnradio4">
                             <label class="btn-color-swatch bg-info" for="btnradio4"></label>
                         </div>
                     </div>

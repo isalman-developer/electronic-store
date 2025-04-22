@@ -28,6 +28,7 @@ class Product extends Model
         'stock',
         'weight',
         'tag_number',
+        'slug',
         'status',
         'meta_title',
         'meta_keywords',

@@ -33,7 +33,7 @@
                   <td>
                     <div class="d-flex align-items-center gap-2">
                       <a href="{{ route('admin.sliders.show', $slider->id) }}" class="rounded bg-light avatar-lg d-flex align-items-center justify-content-center">
-                        <img src="{{ getSingleImageUrl($slider) }}" alt="{{ $slider->title }} - slider Image" class="rounded avatar-lg">
+                        <img src="{{ getFirstImageUrl($slider) }}" alt="{{ $slider->title }} - slider Image" class="rounded avatar-lg">
                       </a>
                       <a href="{{ route('admin.sliders.show', $slider->id) }}" class="text-dark fw-medium fs-15 mb-0">
                         {{ $slider->title }}

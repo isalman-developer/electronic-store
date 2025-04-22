@@ -35,7 +35,7 @@ class SliderService extends AbstractService
 
         return $sliders->map(function ($slider) {
             $slider->image_url = ($slider->media && $slider->media->count() > 0)
-                ? getSingleImageUrl($slider)
+                ? getFirstImageUrl($slider)
                 : asset('assets/images/slider/default-slider.png');
 
             return $slider;

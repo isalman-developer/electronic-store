@@ -19,8 +19,8 @@ if (!function_exists('getImageUrl')) {
     }
 }
 
-if (!function_exists('getSingleImageUrl')) {
-    function getSingleImageUrl($object)
+if (!function_exists('getFirstImageUrl')) {
+    function getFirstImageUrl($object)
     {
         return $object->media->count() > 0 ? asset('storage/' . $object->media->first()->file_path) : asset('no-image.png');
     }

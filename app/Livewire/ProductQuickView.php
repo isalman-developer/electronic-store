@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 
-class QuickViewModal extends Component
+class ProductQuickView extends Component
 {
     public $show = false;
     public $productId = null;
@@ -13,15 +13,25 @@ class QuickViewModal extends Component
     public $quantity = 1;
     public $selectedColorId = null;
 
-    protected $listeners = ['showQuickViewModal'];
-
-    public function showQuickViewModal($productId)
+    public function __construct()
     {
-
-        $this->productId = $productId;
-        $this->loadProduct();
-        $this->show = true;
+        info("constructor is called");
     }
+    protected $listeners = ['showQuickView'];
+
+    public function showQuickView($productId)
+{
+    info('showQuickView method triggered with ID: ' . $productId);
+
+    try {
+        $this->product = Product::with('media', 'brand')->findOrFail($productId);
+        info('Product loaded successfully: ' . $this->product->title);
+        $this->dispatchBrowserEvent('show-quickview-modal');
+        info('Browser event dispatched: show-quickview-modal');
+    } catch (\Exception $e) {
+        info('Error loading product: ' . $e->getMessage());
+    }
+}
 
     public function loadProduct()
     {
@@ -75,6 +85,6 @@ class QuickViewModal extends Component
 
     public function render()
     {
-        return view('user.livewire.quick-view-modal');
+        return view('user.livewire.product-quick-view');
     }
 }

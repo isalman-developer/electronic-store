@@ -56,7 +56,7 @@
                     <div class="tab-content">
                       <div class="tab-pane active">
                         <div>
-                          <img id="mainProductImage" src="{{ getSingleImageUrl($product) }}" alt="" class="img-fluid mx-auto d-block">
+                          <img id="mainProductImage" src="{{ getFirstImageUrl($product) }}" alt="" class="img-fluid mx-auto d-block">
                         </div>
                       </div>
                     </div>

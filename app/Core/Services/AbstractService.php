@@ -30,6 +30,11 @@ abstract class AbstractService implements ServiceInterface
         return $this->repository->getById($id, $columns, $relations);
     }
 
+    public function getBySlug(string $slug, array $columns = ['*'], array $relations = [])
+    {
+        return $this->repository->getBySlug($slug, $columns, $relations);
+    }
+
     public function store(array $data)
     {
         return DB::transaction(function () use ($data) {

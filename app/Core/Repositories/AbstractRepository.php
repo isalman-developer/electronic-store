@@ -66,6 +66,16 @@ abstract class AbstractRepository implements RepositoryInterface
             ->findOrFail($id);
     }
 
+    public function getBySlug(string $slug, array $columns = ['*'], array $relations = [])
+    {
+        return $this->model->select($columns)
+            ->when(!empty($relations) && $this->model->exists(), function ($query) use ($relations) {
+                $query->with($relations);
+            })
+            ->where('slug', $slug)
+            ->firstOrFail();
+    }
+
     public function store(array $data)
     {
         try {

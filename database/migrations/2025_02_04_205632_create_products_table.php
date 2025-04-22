@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('stock')->nullable();
             $table->decimal('weight', 8, 2)->nullable(); // e.g., 1.5 kg
             $table->string('tag_number')->unique();
+            $table->string('slug')->unique();
             $table->boolean('status')->default(1); // 1 = Active, 0 = Inactive
             $table->string('meta_title')->nullable();
             $table->text('meta_keywords')->nullable();

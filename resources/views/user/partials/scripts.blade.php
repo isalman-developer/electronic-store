@@ -15,3 +15,5 @@
 <script src="{{ asset('assets/js/vendors/btn-scrolltop.js') }}"></script>
 
 @stack('page-script-bottom')
+
+@livewireScripts

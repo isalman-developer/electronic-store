@@ -7,6 +7,7 @@ use App\Core\Services\User\ColorService;
 use App\Core\Services\User\SliderService;
 use App\Core\Services\User\ProductService;
 use App\Core\Services\User\CategoryService;
+use App\Models\Product;
 
 class HomeController extends Controller
 {

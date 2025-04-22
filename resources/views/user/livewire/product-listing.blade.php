@@ -37,7 +37,7 @@
         @forelse($products as $product)
             <div class="col-md-4 mb-3">
                 <div class="card">
-                    <img src="{{ getSingleImageUrl($product) }}" class="card-img-top" alt="{{ $product->title }}">
+                    <img src="{{ getFirstImageUrl($product) }}" class="card-img-top" alt="{{ $product->title }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $product->title }}</h5>
                         <p class="card-text">Price: ${{ $product->price }}</p>
@@ -52,6 +52,6 @@
 
     <!-- Pagination -->
     <div class="d-flex justify-content-center mt-4">
-        {{-- {{ $products->links() }} --}}
+        {{ $products->links() }}
     </div>
 </div>

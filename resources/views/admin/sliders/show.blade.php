@@ -6,13 +6,13 @@
 @section('content')
 <!-- Start Container Fluid -->
 <div class="container-xxl">
-  
+
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
           <div class="card-body">
             <div class="text-center mb-4">
-                <img src="{{ getSingleImageUrl($slider) }}" class="img-fluid rounded-3" alt="{{ $slider->title }}" style="max-height: 300px;">
+                <img src="{{ getFirstImageUrl($slider) }}" class="img-fluid rounded-3" alt="{{ $slider->title }}" style="max-height: 300px;">
             </div>
             <h2 class="text-center mb-3">{{ $slider->title }}</h2>
             <p class="text-muted text-center">{{ $slider->description }}</p>

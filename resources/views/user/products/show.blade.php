@@ -1,23 +1,4 @@
 @extends('user.layouts.app')
-
-@push('page-style-bottom')
-    <style>
-        .side-images-div {
-            height: 30rem;
-            overflow-y: auto;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            position: relative;
-        }
-
-        .more-images-div {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-        }
-    </style>
-@endpush
 @section('content')
     <!--Breadcrumb start-->
     <div class="container py-4">
@@ -47,7 +28,6 @@
     <section class="pb-lg-8">
         <div class="container">
             <div class="row gy-4 gy-lg-0">
-                <!--Product image-->
                 <div class="col-lg-6">
                     <!--Swiper-->
                     <div class="row">
@@ -76,7 +56,6 @@
                                         </div>
                                     </div>
                                 @endforeach
-                                <!-- Add more thumbnails as needed -->
                             </div>
                         </div>
                     </div>
@@ -1089,10 +1068,9 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <h3 class="fs-6 mb-0 product-heading d-inline-block text-truncate"> <a href="#!">Sofa
-                                    with
-                                    wood
-                                    legs</a></h3>
+                            <h3 class="fs-6 mb-0 product-heading d-inline-block text-truncate">
+                                <a href="#!">Sofa with wood legs</a>
+                            </h3>
                             <p class="mb-0 lh-1 text-dark fw-semibold">$34.00</p>
                         </div>
 
@@ -1327,10 +1305,4 @@
         </div>
     </section>
 @endsection
-@push('page-script')
-    <script>
-        function changeMainImage(src) {
-            document.getElementById('mainProductImage').src = src;
-        }
-    </script>
-@endpush
+

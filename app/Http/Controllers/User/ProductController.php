@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Core\Services\User\ProductService;
 use App\Core\Services\User\CategoryService;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -16,18 +17,18 @@ class ProductController extends Controller
     public function index()
     {
         $products = $this->productService->getAll(
-            columns: ['id', 'title', 'price', 'category_id'],
-            relations: ['category', 'media', 'brand'],
+            columns: ['id', 'title', 'price', 'category_id','slug'],
+            relations: ['category', 'media', 'brand', 'colors'],
             perPage: 12
         );
 
         return view('user.products.index', compact('products'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $product = $this->productService->getById(
-            id: $id,
+        $product = $this->productService->getBySlug(
+            slug: $slug,
             relations: ['category', 'sizes', 'colors', 'media']
         );
 
@@ -42,8 +43,6 @@ class ProductController extends Controller
             relations: ['category', 'media'],
             perPage: 12
         );
-
-        // return view('user.products.category', compact('category', 'products'));
     }
 
     public function categoryProducts($categorySlug)

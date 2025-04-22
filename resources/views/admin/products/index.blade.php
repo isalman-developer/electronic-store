@@ -37,7 +37,7 @@
                   <td>
                     <div class="d-flex align-items-center gap-2">
                       <div class="rounded bg-light avatar-lg d-flex align-items-center justify-content-center">
-                        <img src="{{ getSingleImageUrl($product) }}" alt="{{ $product->title }} - product Image" class="rounded avatar-lg">
+                        <img src="{{ getFirstImageUrl($product) }}" alt="{{ $product->title }} - product Image" class="rounded avatar-lg">
                       </div>
                       <div>
                         <a href="{{ route('admin.products.show', $product->id)}}" class="text-dark fw-medium fs-15">{{ $product->title }}</a>
