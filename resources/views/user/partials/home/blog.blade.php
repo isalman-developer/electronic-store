@@ -28,7 +28,7 @@
                 <article class="">
                     <a href="#!" class="position-relative d-flex">
                         <figure class="img-hover mb-0">
-                            <img src="{{ asset('assets/images/blog/blog-img-1.jpg')}}" alt="blog image" class="img-fluid" />
+                            <img src="{{ asset('user/images/blog/blog-img-1.jpg')}}" alt="blog image" class="img-fluid" />
                         </figure>
                         <div class="position-absolute bottom-0 p-3">
                             <span class="badge text-bg-info">Home Décor Inspiration</span>
@@ -76,7 +76,7 @@
                 <article class="">
                     <a href="#!" class="position-relative d-flex">
                         <figure class="img-hover mb-0">
-                            <img src="{{ asset('assets/images/blog/blog-img-2.jpg')}}" alt="blog image" class="img-fluid" />
+                            <img src="{{ asset('user/images/blog/blog-img-2.jpg')}}" alt="blog image" class="img-fluid" />
                         </figure>
                         <div class="position-absolute bottom-0 p-3">
                             <span class="badge text-bg-warning">Furniture Care Tips</span>
@@ -124,7 +124,7 @@
                 <article class="">
                     <a href="#!" class="position-relative d-flex">
                         <figure class="img-hover mb-0">
-                            <img src="{{ asset('assets/images/blog/blog-img-3.jpg')}}" alt="blog image" class="img-fluid" />
+                            <img src="{{ asset('user/images/blog/blog-img-3.jpg')}}" alt="blog image" class="img-fluid" />
                         </figure>
                         <div class="position-absolute bottom-0 p-3">
                             <span class="badge text-bg-success">Interior Design</span>

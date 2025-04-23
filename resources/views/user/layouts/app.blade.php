@@ -3,7 +3,6 @@
 
 <head>
     @include('user.partials.head')
-    @livewireStyles
 </head>
 
 <body>
@@ -24,7 +23,6 @@
     @include('user.partials.cart')
 
     @include('user.partials.scripts')
-    <livewire:product-quick-view-modal />
 
 </body>
 

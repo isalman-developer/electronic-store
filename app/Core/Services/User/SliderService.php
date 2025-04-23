@@ -25,7 +25,7 @@ class SliderService extends AbstractService
                         'title' => 'Welcome to Our Store',
                         'description' => 'Explore the best quality products at the best prices.',
                         'redirect_link' => url('/'),
-                        'image_url' => asset('assets/images/slider/default-slider.png')
+                        'image_url' => asset('user/images/slider/default-slider.png')
                     ]
                 ]);
             }
@@ -36,7 +36,7 @@ class SliderService extends AbstractService
         return $sliders->map(function ($slider) {
             $slider->image_url = (isset($slider->media) && $slider->media->count() > 0)
                 ? getFirstImageUrl($slider)
-                : asset('assets/images/slider/default-slider.png');
+                : asset('user/images/slider/default-slider.png');
 
             return $slider;
         });

@@ -1018,9 +1018,9 @@
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-card">
                         <div class=" text-center product-card-img mb-4">
-                            <a href="#!"><img src="{{ asset('assets/images/product/product-img-1.jpg') }}"
+                            <a href="#!"><img src="{{ asset('user/images/product/product-img-1.jpg') }}"
                                     alt="product image" class="img-fluid">
-                                <img src="{{ asset('assets/images/product/product-img-hover-1.jpg') }}"
+                                <img src="{{ asset('user/images/product/product-img-hover-1.jpg') }}"
                                     alt="product image" class="img-fluid product-img-hover"></a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
@@ -1036,7 +1036,7 @@
                                 </button>
                                 <button type="button" class="btn btn-primary  btn-sm quick-add-btn"
                                     data-product-name="Sofa with wood legs" data-product-price="34.00"
-                                    data-product-img="{{ asset('assets/images/product/product-img-1.jpg') }}">
+                                    data-product-img="{{ asset('user/images/product/product-img-1.jpg') }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path
@@ -1093,9 +1093,9 @@
                     <div class="product-card">
                         <div class="text-center mb-4 product-card-img">
                             <a href="#!">
-                                <img src="{{ asset('assets/images/product/product-img-2.jpg') }}" alt="product image"
+                                <img src="{{ asset('user/images/product/product-img-2.jpg') }}" alt="product image"
                                     class="img-fluid" />
-                                <img src="{{ asset('assets/images/product/product-img-hover-2.jpg') }}"
+                                <img src="{{ asset('user/images/product/product-img-hover-2.jpg') }}"
                                     alt="product image" class="img-fluid product-img-hover" />
                             </a>
                             <div class="product-card-btn">
@@ -1112,7 +1112,7 @@
                                 </button>
                                 <button type="button" class="btn btn-primary btn-sm quick-add-btn"
                                     data-product-name="Floor Lamp" data-product-price="95.00"
-                                    data-product-img="{{ asset('assets/images/product/product-img-2.jpg') }}">
+                                    data-product-img="{{ asset('user/images/product/product-img-2.jpg') }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path
@@ -1162,9 +1162,9 @@
                     <div class="product-card">
                         <div class="text-center mb-4 product-card-img">
                             <a href="#!">
-                                <img src="{{ asset('assets/images/product/product-img-3.jpg') }}" alt="product image"
+                                <img src="{{ asset('user/images/product/product-img-3.jpg') }}" alt="product image"
                                     class="img-fluid" />
-                                <img src="{{ asset('assets/images/product/product-img-hover-3.jpg') }}"
+                                <img src="{{ asset('user/images/product/product-img-hover-3.jpg') }}"
                                     alt="product image" class="img-fluid product-img-hover" />
                             </a>
                             <div class="product-card-btn">
@@ -1181,7 +1181,7 @@
                                 </button>
                                 <button type="button" class="btn btn-primary  btn-sm quick-add-btn"
                                     data-product-name="Comfort Seat Chair" data-product-price="78.00"
-                                    data-product-img="{{ asset('assets/images/product/product-img-3.jpg') }}">
+                                    data-product-img="{{ asset('user/images/product/product-img-3.jpg') }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path
@@ -1231,9 +1231,9 @@
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-card">
                         <div class="text-center mb-4 product-card-img">
-                            <a href="#!"><img src="{{ asset('assets/images/product/product-img-4.jpg') }}"
+                            <a href="#!"><img src="{{ asset('user/images/product/product-img-4.jpg') }}"
                                     alt="product image" class="img-fluid" />
-                                <img src="{{ asset('assets/images/product/product-img-hover-4.jpg') }}"
+                                <img src="{{ asset('user/images/product/product-img-hover-4.jpg') }}"
                                     alt="product image" class="img-fluid product-img-hover" /></a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
@@ -1249,7 +1249,7 @@
                                 </button>
                                 <button type="button" class="btn btn-primary  btn-sm quick-add-btn"
                                     data-product-name="Armchair" data-product-price="75.00"
-                                    data-product-img="{{ asset('assets/images/product/product-img-4.jpg') }}">
+                                    data-product-img="{{ asset('user/images/product/product-img-4.jpg') }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path

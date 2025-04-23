@@ -86,8 +86,8 @@
                                 data-breakpoints='{"480": {"slidesPerView": 1}, "768": {"slidesPerView": 1}, "1024": {"slidesPerView": 1}}'>
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
-                                        <img src="{{ asset('assets/images/product/product-single-img1.jpg') }}"
-                                            data-zoom="{{ asset('assets/images/product/product-single-img1.jpg') }}" alt="Preview"
+                                        <img src="{{ asset('user/images/product/product-single-img1.jpg') }}"
+                                            data-zoom="{{ asset('user/images/product/product-single-img1.jpg') }}" alt="Preview"
                                             class="drift w-100"
                                             data-zoom-options='{
                                             "paneSelector": "#zoomPane",
@@ -97,8 +97,8 @@
                                     }' />
                                     </div>
                                     <div class="swiper-slide">
-                                        <img src="{{ asset('assets/images/product/product-single-img2.jpg') }}"
-                                            data-zoom="{{ asset('assets/images/product/product-single-img2.jpg') }}" alt="Preview"
+                                        <img src="{{ asset('user/images/product/product-single-img2.jpg') }}"
+                                            data-zoom="{{ asset('user/images/product/product-single-img2.jpg') }}" alt="Preview"
                                             class="drift w-100"
                                             data-zoom-options='{
                                             "paneSelector": "#zoomPane",
@@ -108,8 +108,8 @@
                                     }' />
                                     </div>
                                     <div class="swiper-slide">
-                                        <img src="{{ asset('assets/images/product/product-single-img3.jpg') }}"
-                                            data-zoom="{{ asset('assets/images/product/product-single-img3.jpg') }}" alt="Preview"
+                                        <img src="{{ asset('user/images/product/product-single-img3.jpg') }}"
+                                            data-zoom="{{ asset('user/images/product/product-single-img3.jpg') }}" alt="Preview"
                                             class="drift w-100"
                                             data-zoom-options='{ "paneSelector": "#zoomPane",
                                         "hoverDelay": 500,
@@ -117,8 +117,8 @@
                                 }' />
                                     </div>
                                     <div class="swiper-slide">
-                                        <img src="{{ asset('assets/images/product/product-single-img4.jpg') }}"
-                                            data-zoom="{{ asset('assets/images/product/product-single-img4.jpg') }}" alt="Preview"
+                                        <img src="{{ asset('user/images/product/product-single-img4.jpg') }}"
+                                            data-zoom="{{ asset('user/images/product/product-single-img4.jpg') }}" alt="Preview"
                                             class="drift w-100"
                                             data-zoom-options='{
                                             "paneSelector": "#zoomPane",
@@ -137,25 +137,25 @@
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
                                         <div class="ratio ratio-1x1 border">
-                                            <img src="{{ asset('assets/images/product/product-single-img1.jpg') }}"
+                                            <img src="{{ asset('user/images/product/product-single-img1.jpg') }}"
                                                 alt="product image" class="" />
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="ratio ratio-1x1 border">
-                                            <img src="{{ asset('assets/images/product/product-single-img2.jpg') }}"
+                                            <img src="{{ asset('user/images/product/product-single-img2.jpg') }}"
                                                 alt="product image" class="" />
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="ratio ratio-1x1 border">
-                                            <img src="{{ asset('assets/images/product/product-single-img3.jpg') }}"
+                                            <img src="{{ asset('user/images/product/product-single-img3.jpg') }}"
                                                 alt="product image" class="" />
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="ratio ratio-1x1 border">
-                                            <img src="{{ asset('assets/images/product/product-single-img4.jpg') }}"
+                                            <img src="{{ asset('user/images/product/product-single-img4.jpg') }}"
                                                 alt="product image" class="" />
                                         </div>
                                     </div>

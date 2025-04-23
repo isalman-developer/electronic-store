@@ -1,38 +1,5 @@
 @extends('user.layouts.app')
 @push('page-style-bottom')
-    <style>
-        .thumbnail-slider {
-            overflow-x: auto;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .thumbnail-slider::-webkit-scrollbar {
-            display: none;
-        }
-
-        .thumbnail-wrapper {
-            display: flex;
-            white-space: nowrap;
-            padding: 10px 0;
-        }
-
-        .thumbnail-img {
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            opacity: 0.6;
-        }
-
-        .thumbnail-img.active {
-            opacity: 1;
-            transform: scale(1.1);
-            border: 2px solid #000;
-        }
-
-        .thumbnail-img:hover {
-            opacity: 0.9;
-            transform: scale(1.05);
-        }
-    </style>
 @endpush
 @section('content')
     <!--Breadcrumb start-->
@@ -404,8 +371,10 @@
                                             <img src="{{ getImageUrl($product->media->skip(1)->first() ?? ($product->media->skip(1)->first() ?? null)) }}"
                                                 alt="product image" class="img-fluid product-img-hover"></a>
                                         <div class="product-card-btn">
-                                            <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse"
-                                                onclick="openQuickView({{ $product->id }})">
+                                            <button type="button"
+                                                class="btn btn-primary btn-icon btn-sm animate-pulse quick-view-btn"
+                                                data-product-id="{{ $product->id }}" data-bs-toggle="modal"
+                                                data-bs-target="#quickViewModal">
                                                 @include('user.svgs.quick-view-svg')
                                             </button>
 
@@ -465,53 +434,26 @@
         </div>
     </section>
     <!--Product left filter end-->
+
+
+    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-body p-5">
+                    <!-- Close button -->
+                    <div
+                        class="position-absolute top-0 start-100 translate-middle mt-n4 ms-4 bg-white p-1 d-flex align-items-center justify-content-center">
+                        <button type="button" class="btn-close opacity-100" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <!-- Product details will be loaded here -->
+                    <div id="quickViewContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('page-script-bottom')
-    <script>
-        function openQuickView(productId) {
-            // For Livewire v3
-            if (typeof Livewire.dispatch === 'function') {
-                Livewire.dispatch('showQuickView', {
-                    productId
-                });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Only initialize if the modal is visible
-            if (document.querySelector('#quickViewModal.show')) {
-                initializeSlider();
-            }
-
-            // Listen for modal show event to initialize slider
-            document.querySelector('#quickViewModal').addEventListener('show.bs.modal', initializeSlider);
-        });
-
-        function initializeSlider() {
-            // Ensure thumbnails are clickable and main image is set
-            const thumbnails = document.querySelectorAll('.thumbnail-img');
-            const mainImage = document.querySelector('#mainImage');
-
-            if (thumbnails.length > 0 && mainImage) {
-                // Set initial main image if not already set
-                if (!mainImage.src) {
-                    mainImage.src = thumbnails[0].src;
-                    thumbnails[0].classList.add('active');
-                }
-            }
-        }
-
-        function changeMainImage(thumbnail) {
-            const mainImage = document.querySelector('#mainImage');
-            if (mainImage && thumbnail) {
-                // Update main image source
-                mainImage.src = thumbnail.src;
-
-                // Update active thumbnail
-                document.querySelectorAll('.thumbnail-img').forEach(img => img.classList.remove('active'));
-                thumbnail.classList.add('active');
-            }
-        }
-    </script>
+    <script src="{{ asset('user/js/quick-view.js') }}"></script>
 @endpush

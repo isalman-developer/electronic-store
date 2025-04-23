@@ -17,12 +17,21 @@ class ProductController extends Controller
     public function index()
     {
         $products = $this->productService->getAll(
-            columns: ['id', 'title', 'price', 'category_id','slug'],
+            columns: ['id', 'title', 'price', 'category_id', 'slug'],
             relations: ['category', 'media', 'brand', 'colors'],
             perPage: 12
         );
 
         return view('user.products.index', compact('products'));
+    }
+
+    public function quickView(Product $product)
+    {
+        $product->load(['category', 'media', 'brand', 'colors']);
+        return response()->json([
+            'success' => true,
+            'html' => view('user.products.product-quick-view-modal', compact('product'))->render()
+        ]);
     }
 
     public function show($slug)

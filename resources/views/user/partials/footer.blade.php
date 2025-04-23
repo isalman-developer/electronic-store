@@ -3,7 +3,7 @@
         <div class="row mb-8">
             <div class="col-12">
                 <div class="text-center">
-                    <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="logo" />
+                    <img src="{{ asset('user/images/logo/logo.svg') }}" alt="logo" />
                 </div>
             </div>
         </div>
