@@ -51,11 +51,11 @@ class ProductListing extends Component
         $orderBy = $orderByOptions[$this->orderBy] ?? ['id' => 'desc'];
 
         $products = $productService->getAll(
-            columns:['*'], // Columns
-            relations:['category', 'media'], // Relations
-            conditions:$conditions, // Filters
-            perPage:$this->perPage, // Items per page
-            orderBy:$orderBy // Sorting
+            columns: ['*'], // Columns
+            relations: ['category', 'media'], // Relations
+            conditions: $conditions, // Filters
+            perPage: $this->perPage, // Items per page
+            orderBy: $orderBy // Sorting
         );
 
         return view('user.livewire.product-listing', compact('products'));

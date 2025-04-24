@@ -41,11 +41,11 @@
                                         <div class="col">
                                             <div class="dropdown-header">Brands</div>
                                             <ul class="list-unstyled d-inline-flex flex-column nav lh-lg">
-                                                @foreach (getCategories() as $category)
+                                                @foreach (getBrands() as $brand)
                                                     <li class="nav-item">
                                                         <a class="nav-link text-link d-inline px-0"
                                                             href="product-grid.html">
-                                                            {{ $category->title }}
+                                                            {{ $brand->title }}
                                                         </a>
                                                     </li>
                                                 @endforeach

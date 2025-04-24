@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
-use App\Core\Services\Admin\ProductService;
+use App\Core\Services\User\ProductService;
 
 class ProductObserver
 {
@@ -44,9 +44,9 @@ class ProductObserver
 
     public function clearAndRebuildCache()
     {
-        cache()->forget('home_new_arrivals');
+        cache()->forget('new_arrivals');
 
-        Cache::rememberForever('home_new_arrivals', function () {
+        cache()->rememberForever('new_arrivals', function () {
             return $this->productService->getNewArrivals();
         });
     }

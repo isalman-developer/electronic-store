@@ -12,10 +12,4 @@ class CategoryService extends AbstractService
         parent::__construct($categoryRepository);
     }
 
-    public function getCategoriesForHomePage()
-    {
-        return cache()->rememberForever("home_categories", function(){
-            return $this->categoryRepository->getAll(relations:['media'], scopes:['active']);
-        });
-    }
 }

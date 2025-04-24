@@ -13,11 +13,4 @@ class ColorService extends AbstractService
         parent::__construct($colorRepository);
     }
 
-    public function geColorsForHomePage()
-    {
-        Cache::rememberForever('home_colors', function () {
-            return $this->colorRepository->getAll();
-        });
-    }
-
 }

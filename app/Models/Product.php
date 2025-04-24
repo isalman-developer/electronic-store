@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
-
+    // protected $table = 'products1';
     protected $fillable = [
         'category_id',
         'title',
@@ -93,28 +93,28 @@ class Product extends Model
 
         // Category filter
         if (isset($filters['category'])) {
-            $query->whereHas('category', function($q) use ($filters) {
+            $query->whereHas('category', function ($q) use ($filters) {
                 $q->where('slug', $filters['category']);
             });
         }
 
         // Brand filter
         if (isset($filters['brand'])) {
-            $query->whereHas('brand', function($q) use ($filters) {
+            $query->whereHas('brand', function ($q) use ($filters) {
                 $q->where('slug', $filters['brand']);
             });
         }
 
         // Color filter
         if (isset($filters['color'])) {
-            $query->whereHas('colors', function($q) use ($filters) {
+            $query->whereHas('colors', function ($q) use ($filters) {
                 $q->where('slug', $filters['color']);
             });
         }
 
         // Size filter
         if (isset($filters['size'])) {
-            $query->whereHas('sizes', function($q) use ($filters) {
+            $query->whereHas('sizes', function ($q) use ($filters) {
                 $q->where('slug', $filters['size']);
             });
         }
@@ -133,7 +133,7 @@ class Product extends Model
                     break;
                 case 'rating':
                     $query->withAvg('reviews', 'rating')
-                          ->orderByDesc('reviews_avg_rating');
+                        ->orderByDesc('reviews_avg_rating');
                     break;
             }
         }

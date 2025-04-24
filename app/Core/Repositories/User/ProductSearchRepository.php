@@ -5,11 +5,10 @@ namespace App\Core\Repositories\User;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
 use App\Core\Contracts\User\ProductRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class ProductRepository implements ProductRepositoryInterface
+class ProductSearchRepository implements ProductRepositoryInterface
 {
     protected $model;
 

@@ -13,32 +13,4 @@ class SliderService extends AbstractService
         parent::__construct($sliderRepository);
     }
 
-    public function getSlidersForHomePage()
-    {
-        $sliders =  Cache::rememberForever('home_sliders', function () {
-            $data = $this->sliderRepository->getAll(relations: ['media']);
-
-            // If no sliders exist, set a default banner
-            if ($data->isEmpty()) {
-                return collect([
-                    (object)[
-                        'title' => 'Welcome to Our Store',
-                        'description' => 'Explore the best quality products at the best prices.',
-                        'redirect_link' => url('/'),
-                        'image_url' => asset('user/images/slider/default-slider.png')
-                    ]
-                ]);
-            }
-
-            return $data;
-        });
-
-        return $sliders->map(function ($slider) {
-            $slider->image_url = ($slider->media && $slider->media->count() > 0)
-                ? getFirstImageUrl($slider)
-                : asset('user/images/slider/default-slider.png');
-
-            return $slider;
-        });
-    }
 }

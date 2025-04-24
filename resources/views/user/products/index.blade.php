@@ -60,109 +60,36 @@
                                 </a>
                                 <div class="collapse show" id="collapseColor">
                                     <div class="mt-3 ps-1" style="height: 180px" data-simplebar>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value="" id="filterBlack"
-                                                checked />
-                                            <label class="form-check-label" for="filterBlack">Black</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="filterBrown" />
-                                            <label class="form-check-label" for="filterBrown">Brown</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="filterGreen" />
-                                            <label class="form-check-label" for="filterGreen">Green</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="filterYellow" />
-                                            <label class="form-check-label" for="filterYellow">Yellow</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value="" id="filterRed" />
-                                            <label class="form-check-label" for="filterRed">Red</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="filterPink" />
-                                            <label class="form-check-label" for="filterPink">Pink</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="filterCyan" />
-                                            <label class="form-check-label" for="filterCyan">Cyan</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="filterBlue" />
-                                            <label class="form-check-label" for="filterBlue">Blue</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="filterGray" />
-                                            <label class="form-check-label" for="filterGray">Gray</label>
-                                        </div>
+                                        @foreach ($colors as $color)
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" value="{{ $color->id }}"
+                                                    id="filter{{ $color->title }}" />
+                                                <label class="form-check-label" for="filter{{ $color->title }}">
+                                                    {{ $color->title }}
+                                                </label>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                             <!--Brand-->
                             <div class="mb-3 border-bottom pb-3">
                                 <a class="d-flex align-items-center justify-content-between" data-bs-toggle="collapse"
-                                    href="#collapseBrand" role="button" aria-expanded="true"
-                                    aria-controls="collapseBrand">
+                                    href="#collapseBrand" role="button" aria-expanded="true" aria-controls="collapseBrand">
                                     <h5 class="mb-0 fs-6">Brand</h5>
                                     <i class="bi bi-chevron-down chevron-down"></i>
                                 </a>
                                 <div class="collapse show" id="collapseBrand">
                                     <div class="mt-3">
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Brand1" checked />
-                                            <label class="form-check-label" for="Brand1">Brand-1</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Brand2" />
-                                            <label class="form-check-label" for="Brand2">Brand-2</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Brand3" />
-                                            <label class="form-check-label" for="Brand3">Brand-3</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Brand4" />
-                                            <label class="form-check-label" for="Brand4">Brand-4</label>
-                                        </div>
+                                        @foreach ($brands as $brand)
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" value="{{ $brand->slug }}"
+                                                    id="{{ $brand->slug }}" />
+                                                <label class="form-check-label" for="{{ $brand->title }}">
+                                                    {{ $brand->title }}
+                                                </label>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -177,41 +104,15 @@
                                 </a>
                                 <div class="collapse show" id="collapseProductType">
                                     <div class="mt-3">
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Kitchen" checked />
-                                            <label class="form-check-label" for="Kitchen">Kitchen</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Decoration" />
-                                            <label class="form-check-label" for="Decoration">Decoration</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Lighting" />
-                                            <label class="form-check-label" for="Lighting">Lighting</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Office" />
-                                            <label class="form-check-label" for="Office">Office</label>
-                                        </div>
-                                        <!-- form check -->
-                                        <div class="form-check mb-2">
-                                            <!-- input -->
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="Chair" />
-                                            <label class="form-check-label" for="Chair">Chair</label>
-                                        </div>
+                                        @foreach ($categories as $category)
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox"
+                                                    value="{{ $category->slug }}" id="{{ $category->title }}" />
+                                                <label class="form-check-label" for="{{ $category->title }}">
+                                                    {{ $category->title }}
+                                                </label>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -224,12 +125,7 @@
                                     <i class="bi bi-chevron-down chevron-down"></i>
                                 </a>
                                 <div class="collapse show" id="collapsePrice">
-                                    <div class="mt-3">
-                                        <!-- range -->
-                                        <div id="priceRange" class="mb-3"></div>
-                                        <!-- <small class="text-muted">Price:</small> -->
-                                        <span id="priceRange-value" class="small d-flex justify-content-between"></span>
-                                    </div>
+                                    {{-- add functionality for price range --}}
                                 </div>
                             </div>
                             <!--Rating-->
@@ -243,71 +139,17 @@
                                 <div class="collapse show" id="collapseRating">
                                     <div class="mt-3">
                                         <div>
-                                            <!-- form check -->
-                                            <div class="form-check mb-2">
-                                                <!-- input -->
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="ratingFive" />
-                                                <label class="form-check-label" for="ratingFive">
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                </label>
-                                            </div>
-                                            <!-- form check -->
-                                            <div class="form-check mb-2">
-                                                <!-- input -->
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="ratingFour" checked />
-                                                <label class="form-check-label" for="ratingFour">
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                </label>
-                                            </div>
-                                            <!-- form check -->
-                                            <div class="form-check mb-2">
-                                                <!-- input -->
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="ratingThree" />
-                                                <label class="form-check-label" for="ratingThree">
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                </label>
-                                            </div>
-                                            <!-- form check -->
-                                            <div class="form-check mb-2">
-                                                <!-- input -->
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="ratingTwo" />
-                                                <label class="form-check-label" for="ratingTwo">
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                </label>
-                                            </div>
-                                            <!-- form check -->
-                                            <div class="form-check mb-2">
-                                                <!-- input -->
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="ratingOne" />
-                                                <label class="form-check-label" for="ratingOne">
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                    <i class="bi bi-star text-warning"></i>
-                                                </label>
-                                            </div>
+                                            @for ($i = 5; $i >= 1; $i--)
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        id="rating{{ $i }}" @checked($i == 4) />
+                                                    <label class="form-check-label" for="rating{{ $i }}">
+                                                        @for ($j = 1; $j <= 5; $j++)
+                                                            <i class="bi bi-star{{ $j <= $i ? '-fill' : '' }} text-warning"></i>
+                                                        @endfor
+                                                    </label>
+                                                </div>
+                                            @endfor
                                         </div>
                                     </div>
                                 </div>
@@ -401,7 +243,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <h3 class="fs-6 mb-0 product-heading d-inline-block text-truncate">
-                                            <a href="{{ route('product.show', $product->slug) }}">{{ $product->title }}</a>
+                                            <a
+                                                href="{{ route('product.show', $product->slug) }}">{{ $product->title }}</a>
                                         </h3>
                                         <p class="mb-0 lh-1 text-dark fw-semibold">PKR
                                             {{ number_format($product->price, 2) }}</p>

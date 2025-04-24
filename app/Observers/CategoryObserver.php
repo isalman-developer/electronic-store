@@ -41,14 +41,14 @@ class CategoryObserver
 
     public function clearAndRebuildCache()
     {
-        Cache::forget('home_categories');
+        Cache::forget('categories');
         Cache::forget('active_categories_for_footer');
 
-        Cache::rememberForever('home_categories', function () {
+        cache()->rememberForever('categories', function () {
             return $this->categoryService->getAll(relations: ['media'], scopes: ['active']);
         });
 
-        Cache::rememberForever('active_categories_for_footer', function () {
+        cache()->rememberForever('active_categories_for_footer', function () {
             return $this->categoryService->getAll(scopes: ['active'], perPage: 5);
         });
     }

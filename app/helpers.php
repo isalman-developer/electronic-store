@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\Services\Admin\CategoryService;
+use App\Core\Services\User\BrandService;
 use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('showValidationMessage')) {
@@ -36,9 +37,19 @@ if (!function_exists('getStatus')) {
 if (!function_exists('getCategories')) {
     function getCategories($perPage = null)
     {
-        return Cache::rememberForever('active_categories_for_footer', function () use ($perPage) {
+        return cache()->rememberForever('active_categories_for_footer', function () use ($perPage) {
             $categoryService = app(CategoryService::class);
             return $categoryService->getAll(scopes: ['active'], perPage: $perPage);
+        });
+    }
+}
+
+if (!function_exists('getBrands')) {
+    function getBrands($perPage = null)
+    {
+        return cache()->rememberForever('brands', function () use ($perPage) {
+            $brandService = app(BrandService::class);
+            return $brandService->getAll(scopes: ['active'], perPage: $perPage);
         });
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Core\Services\User;
 
-use Illuminate\Support\Facades\Cache;
 use App\Core\Services\AbstractService;
 use App\Core\Repositories\ColorRepository;
 
@@ -13,11 +12,10 @@ class ColorService extends AbstractService
         parent::__construct($colorRepository);
     }
 
-    public function geColorsForHomePage()
+    public function getColors()
     {
-        Cache::rememberForever('home_colors', function () {
+        return cache()->rememberForever("colors", function () {
             return $this->colorRepository->getAll();
         });
     }
-
 }

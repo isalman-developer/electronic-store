@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Models\Brand;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
-use App\Core\Services\Admin\BrandService;
+use App\Core\Services\User\BrandService;
 
 class BrandObserver
 {
@@ -40,14 +40,14 @@ class BrandObserver
 
     public function clearAndRebuildCache()
     {
-        Cache::forget('home_brands');
+        Cache::forget('brands');
         Cache::forget('active_brands_for_footer');
 
-        Cache::rememberForever('home_brands', function () {
+        cache()->rememberForever('brands', function () {
             return $this->brandService->getAll(relations: ['media'], scopes: ['active']);
         });
 
-        Cache::rememberForever('active_brands_for_footer', function () {
+        cache()->rememberForever('active_brands_for_footer', function () {
             return $this->brandService->getAll(scopes: ['active'], perPage: 5);
         });
     }

@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Core\Services\User\BrandService;
+use App\Core\Services\User\ColorService;
+use App\Core\Services\User\SliderService;
 use App\Core\Services\User\ProductService;
 use App\Core\Services\User\CategoryService;
-use App\Models\Product;
 
 class ProductController extends Controller
 {
     public function __construct(
         protected ProductService $productService,
-        protected CategoryService $categoryService
+        protected SliderService $sliderService,
+        protected ColorService $colorService,
+        protected CategoryService $categoryService,
+        protected BrandService $brandService
     ) {}
 
     public function index()
@@ -22,7 +28,12 @@ class ProductController extends Controller
             perPage: 12
         );
 
-        return view('user.products.index', compact('products'));
+        $sliders = $this->sliderService->getSliders();
+        $newArrivals = $this->productService->getNewArrivals();
+        $categories = $this->categoryService->getCategories();
+        $brands = $this->brandService->getBrands();
+        $colors = $this->colorService->getColors();
+        return view('user.products.index', compact('products', 'sliders', 'newArrivals', 'categories', 'colors', 'brands'));
     }
 
     public function quickView(Product $product)

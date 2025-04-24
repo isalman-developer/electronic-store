@@ -31,7 +31,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $query->where($column, $value);
         }
 
-        if (!empty($relations) && $this->model->exists()) {
+        if (!empty($relations)) {
             $query->with($relations);
         }
 

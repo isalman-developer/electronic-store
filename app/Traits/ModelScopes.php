@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Schema;
 
 trait ModelScopes
 {
@@ -11,7 +12,11 @@ trait ModelScopes
      */
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', 1);
+        // if (Schema::hasColumn($this->getTable(), 'status')) {
+        //     return $query->where('status', 1);
+        // }
+
+        return $query;
     }
 
     /**
@@ -19,7 +24,9 @@ trait ModelScopes
      */
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', 0);
+        // if (Schema::hasColumn($this->getTable(), 'status')) {
+        //     return $query->where('status', 0);
+        // }
+        return $query;
     }
-
 }

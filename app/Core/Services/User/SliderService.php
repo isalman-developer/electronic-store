@@ -13,9 +13,9 @@ class SliderService extends AbstractService
         parent::__construct($sliderRepository);
     }
 
-    public function getSlidersForHomePage()
+    public function getSliders()
     {
-        $sliders =  Cache::rememberForever('home_sliders', function () {
+        $sliders =  cache()->rememberForever('sliders', function () {
             $data = $this->sliderRepository->getAll(relations: ['media']);
 
             // If no sliders exist, set a default banner

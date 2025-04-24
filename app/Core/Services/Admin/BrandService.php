@@ -12,10 +12,4 @@ class BrandService extends AbstractService
         parent::__construct($brandRepository);
     }
 
-    public function getBrandsForHomePage()
-    {
-        return cache()->rememberForever("home_brands", function(){
-            return $this->brandRepository->getAll(relations:['media'], scopes:['active']);
-        });
-    }
 }
