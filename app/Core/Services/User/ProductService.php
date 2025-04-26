@@ -15,7 +15,7 @@ class ProductService extends AbstractService
     public function getNewArrivals()
     {
         return cache()->rememberForever('new_arrivals', function () {
-            return $this->productRepository->getNewArrivals(perPage: 10, relations: [], orderBy: ['created_at' => 'desc']);
+            return $this->productRepository->getNewArrivals(perPage: 10, relations: ['brand','colors','category','media'], orderBy: ['created_at' => 'desc']);
         });
     }
 
