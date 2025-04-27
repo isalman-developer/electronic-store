@@ -20,7 +20,7 @@ Route::get('/categories', [CategoryController::class, 'index'])->name('categorie
 Route::get('/brands', [BrandController::class, 'index'])->name('brands');
 
 // Products
-Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/products/{product}/quick-view', [ProductController::class, 'quickView']);
 // Product Searching by brand

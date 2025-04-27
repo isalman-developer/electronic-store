@@ -23,7 +23,6 @@
     @include('user.partials.cart')
 
     @include('user.partials.scripts')
-
 </body>
 
 </html>

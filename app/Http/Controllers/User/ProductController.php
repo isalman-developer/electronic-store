@@ -9,6 +9,8 @@ use App\Core\Services\User\ColorService;
 use App\Core\Services\User\SliderService;
 use App\Core\Services\User\ProductService;
 use App\Core\Services\User\CategoryService;
+use App\Models\Category;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -20,21 +22,44 @@ class ProductController extends Controller
         protected BrandService $brandService
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->productService->getAll(
-            columns: ['id', 'title', 'price', 'category_id', 'slug'],
-            relations: ['category', 'media', 'brand', 'colors'],
-            perPage: 12
-        );
+        $metaTitle = 'Shop Products';
+        $metaDescription = 'Browse our collection of products';
+        $category = Category::where('slug', $request->category)->first();
 
-        $sliders = $this->sliderService->getSliders();
-        $newArrivals = $this->productService->getNewArrivals();
-        $categories = $this->categoryService->getCategories();
-        $brands = $this->brandService->getBrands();
-        $colors = $this->colorService->getColors();
-        return view('user.products.index', compact('products', 'sliders', 'newArrivals', 'categories', 'colors', 'brands'));
+        // Handle category in URL for SEO
+        if ($request->has('category')) {
+            $categorySlug = $request->category;
+            $category = Category::where('slug', $categorySlug)->first();
+            if ($category) {
+                $metaTitle = $category->title . ' - Shop Products';
+                $metaDescription = 'Browse our collection of ' . $category->title . ' products';
+            }
+        }
+
+        return view('user.products.index', compact(
+            'metaTitle',
+            'metaDescription',
+            'category'
+        ));
     }
+
+    // public function index()
+    // {
+    //     $products = $this->productService->getAll(
+    //         columns: ['id', 'title', 'price', 'category_id', 'slug'],
+    //         relations: ['category', 'media', 'brand', 'colors'],
+    //         perPage: 12
+    //     );
+
+    //     $sliders = $this->sliderService->getSliders();
+    //     $newArrivals = $this->productService->getNewArrivals();
+    //     $categories = $this->categoryService->getCategories();
+    //     $brands = $this->brandService->getBrands();
+    //     $colors = $this->colorService->getColors();
+    //     return view('user.products.index', compact('products', 'sliders', 'newArrivals', 'categories', 'colors', 'brands'));
+    // }
 
     public function quickView(Product $product)
     {
