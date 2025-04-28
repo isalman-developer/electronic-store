@@ -23,6 +23,7 @@ Route::get('/brands', [BrandController::class, 'index'])->name('brands');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/products/{product}/quick-view', [ProductController::class, 'quickView']);
+Route::get('/products/colors/{colors}', [ProductController::class, 'index'])->name('products.colors');
 // Product Searching by brand
 Route::prefix('brand')->group(function () {
     Route::get('{brand_slug}', [ProductController::class, 'brandProducts'])->name('brand.products');

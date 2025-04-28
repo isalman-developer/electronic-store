@@ -9,7 +9,11 @@ class Color extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title','color_class'];
+    protected $fillable = [
+        'title',
+        'slug',
+        'color_class'
+    ];
 
     public function products()
     {
