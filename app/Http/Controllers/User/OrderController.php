@@ -18,7 +18,7 @@ class OrderController extends Controller
             return redirect()->route('cart')->with('error', 'Your cart is empty');
         }
 
-        return view('checkout', compact('cart'));
+        return view('user.checkout', compact('cart'));
     }
 
     public function placeOrder(Request $request)

@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Product;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Core\Services\User\BrandService;
 use App\Core\Services\User\ColorService;
 use App\Core\Services\User\SliderService;
 use App\Core\Services\User\ProductService;
 use App\Core\Services\User\CategoryService;
-use App\Models\Category;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -24,42 +23,21 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $metaTitle = 'Shop Products';
-        $metaDescription = 'Browse our collection of products';
-        $category = Category::where('slug', $request->category)->first();
+        $filters = $this->getFiltersFromRequest($request);
+        $products = $this->productService->getFilteredProducts($filters);
 
-        // Handle category in URL for SEO
-        if ($request->has('category')) {
-            $categorySlug = $request->category;
-            $category = Category::where('slug', $categorySlug)->first();
-            if ($category) {
-                $metaTitle = $category->title . ' - Shop Products';
-                $metaDescription = 'Browse our collection of ' . $category->title . ' products';
-            }
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('user.products.partials.product-grid', compact('products'))->render(),
+            ]);
         }
 
-        return view('user.products.index', compact(
-            'metaTitle',
-            'metaDescription',
-            'category'
-        ));
+        $categories = $this->categoryService->getCategories();
+        $brands = $this->brandService->getBrands();
+        $colors = $this->colorService->getColors();
+
+        return view('user.products.index', compact('products', 'categories', 'brands', 'colors', 'filters'));
     }
-
-    // public function index()
-    // {
-    //     $products = $this->productService->getAll(
-    //         columns: ['id', 'title', 'price', 'category_id', 'slug'],
-    //         relations: ['category', 'media', 'brand', 'colors'],
-    //         perPage: 12
-    //     );
-
-    //     $sliders = $this->sliderService->getSliders();
-    //     $newArrivals = $this->productService->getNewArrivals();
-    //     $categories = $this->categoryService->getCategories();
-    //     $brands = $this->brandService->getBrands();
-    //     $colors = $this->colorService->getColors();
-    //     return view('user.products.index', compact('products', 'sliders', 'newArrivals', 'categories', 'colors', 'brands'));
-    // }
 
     public function quickView(Product $product)
     {
@@ -80,55 +58,135 @@ class ProductController extends Controller
         return view('user.products.show', compact('product'));
     }
 
-    public function category($categoryId)
+    /**
+     * Handle category-specific product listing
+     */
+    public function categoryProducts(Request $request, $categorySlug)
     {
-        $category = $this->categoryService->getById($categoryId);
-        $products = $this->productService->getAll(
-            conditions: ['category_id' => $categoryId],
-            relations: ['category', 'media'],
-            perPage: 12
-        );
+        $filters = $this->getFiltersFromRequest($request);
+        $filters['category_slug'] = $categorySlug;
+
+        $products = $this->productService->getFilteredProducts($filters);
+        $category = $this->categoryService->getBySlug($categorySlug);
+        $categories = $this->categoryService->getCategories();
+        $brands = $this->brandService->getBrands();
+        $colors = $this->colorService->getColors();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('user.products.partials.product-grid', compact('products'))->render(),
+            ]);
+        }
+
+        return view('user.products.index', compact('products', 'category', 'categories', 'brands', 'colors', 'filters'));
     }
 
-    public function categoryProducts($categorySlug)
+    /**
+     * Handle brand-specific product listing
+     */
+    public function brandProducts(Request $request, $brandSlug)
     {
-        $products = $this->productService->getProductsByCategory($categorySlug);
-        return view('user.products.index', compact('products'));
+        $filters = $this->getFiltersFromRequest($request);
+        $filters['brand_slug'] = $brandSlug;
+
+        $products = $this->productService->getFilteredProducts($filters);
+        $brand = $this->brandService->getBySlug($brandSlug);
+        $categories = $this->categoryService->getCategories();
+        $brands = $this->brandService->getBrands();
+        $colors = $this->colorService->getColors();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('user.products.partials.product-grid', compact('products'))->render(),
+            ]);
+        }
+
+        return view('user.products.index', compact('products', 'brand', 'categories', 'brands', 'colors', 'filters'));
     }
 
-    public function brandProducts($brandSlug)
+    /**
+     * Handle category and brand combined filtering
+     */
+    public function categoryBrandProducts(Request $request, $categorySlug, $brandSlug)
     {
-        $products = $this->productService->getProductsByBrand($brandSlug);
-        return view('user.products.index', compact('products'));
-    }
+        $filters = $this->getFiltersFromRequest($request);
+        $filters['category_slug'] = $categorySlug;
+        $filters['brand_slug'] = $brandSlug;
 
-    public function categoryBrandProducts($categorySlug, $brandSlug)
-    {
-        $products = $this->productService->getProductsByCategoryAndBrand($categorySlug, $brandSlug);
-        return view('user.products.index', compact('products'));
-    }
+        $products = $this->productService->getFilteredProducts($filters);
+        $category = $this->categoryService->getBySlug($categorySlug);
+        $brand = $this->brandService->getBySlug($brandSlug);
+        $categories = $this->categoryService->getCategories();
+        $brands = $this->brandService->getBrands();
+        $colors = $this->colorService->getColors();
 
-    public function categoryPriceProducts($categorySlug, $min, $max)
-    {
-        $products = $this->productService->getProductsByPriceRange($categorySlug, $min, $max);
-        return view('user.products.index', compact('products'));
-    }
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('user.products.partials.product-grid', compact('products'))->render(),
+            ]);
+        }
 
-    public function categoryInStockProducts($categorySlug)
-    {
-        $products = $this->productService->getInStockProducts($categorySlug);
-        return view('user.products.index', compact('products'));
-    }
-
-    public function categorySortedProducts($categorySlug, $sortOption)
-    {
-        $products = $this->productService->getSortedProducts($categorySlug, $sortOption);
-        return view('user.products.index', compact('products'));
+        return view('user.products.index', compact('products', 'category', 'brand', 'categories', 'brands', 'colors', 'filters'));
     }
 
     public function filteredProducts($categorySlug, $brandSlug, $min, $max, $sortOption)
     {
         $products = $this->productService->getFilteredProducts($categorySlug, $brandSlug, $min, $max, $sortOption);
         return view('user.products.index', compact('products'));
+    }
+
+    public function getFiltersFromRequest(Request $request)
+    {
+        $filters = [];
+
+        // Handle colors filter
+        if ($request->has('colors')) {
+            if (is_array($request->input('colors'))) {
+                $filters['colors'] = $request->input('colors');
+            } else if (is_string($request->input('colors'))) {
+                $filters['colors'] = explode('-', $request->input('colors'));
+            }
+        }
+
+        // Handle price range filter
+        if ($request->has('price')) {
+            $priceRange = $request->input('price');
+            if (strpos($priceRange, '-') !== false) {
+                list($min, $max) = explode('-', $priceRange);
+                if ($min !== '') {
+                    $filters['price_min'] = $min;
+                }
+                if ($max !== '') {
+                    $filters['price_max'] = $max;
+                }
+            } else {
+                $filters['price_min'] = $request->input('price');
+            }
+        } else {
+            // Handle separate min/max price inputs
+            if ($request->has('min_price')) {
+                $filters['price_min'] = $request->input('min_price');
+            }
+            if ($request->has('max_price')) {
+                $filters['price_max'] = $request->input('max_price');
+            }
+        }
+
+        // Handle rating filter
+        if ($request->has('rating')) {
+            $filters['rating'] = $request->input('rating');
+        }
+
+        // Handle in-stock filter
+        if ($request->has('in_stock')) {
+            $filters['in_stock'] = true;
+        }
+
+        // Handle sort option
+        if ($request->has('sort')) {
+            $filters['sort'] = $request->input('sort');
+        }
+
+        return $filters;
     }
 }

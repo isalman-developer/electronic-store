@@ -30,7 +30,7 @@
                                             <ul class="list-unstyled d-inline-flex flex-column nav lh-lg">
                                                 @foreach (getCategories() as $category)
                                                     <li class="nav-item">
-                                                        <a href="{{ route('products.index') }}"
+                                                        <a href="{{ route('product.index') }}"
                                                             class="nav-link text-link d-inline px-0">
                                                             {{ $category->title }}
                                                         </a>

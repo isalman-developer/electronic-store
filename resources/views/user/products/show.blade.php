@@ -10,7 +10,7 @@
                             <a href="{{ route('home') }}">Shop</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ route('category.products', $product->category->slug) }}">
+                            <a href="{{ route('product.category', $product->category->slug) }}">
                                 {{ $product->category->title }}
                             </a>
                         </li>

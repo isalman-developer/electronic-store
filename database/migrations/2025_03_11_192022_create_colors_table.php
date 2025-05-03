@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->string('color_class')->unique();
+            $table->string('hex_code');
             $table->timestamps();
             $table->softDeletes();
         });

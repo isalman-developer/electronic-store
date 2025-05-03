@@ -12,7 +12,8 @@ class Color extends Model
     protected $fillable = [
         'title',
         'slug',
-        'color_class'
+        'color_class',
+        'hex_code'
     ];
 
     public function products()

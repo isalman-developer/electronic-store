@@ -19,29 +19,28 @@ Route::get('/categories', [CategoryController::class, 'index'])->name('categorie
 // Brands
 Route::get('/brands', [BrandController::class, 'index'])->name('brands');
 
-// Products
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
-Route::get('/products/{product}/quick-view', [ProductController::class, 'quickView']);
-Route::get('/products/colors/{colors}', [ProductController::class, 'index'])->name('products.colors');
-// Product Searching by brand
-Route::prefix('brand')->group(function () {
-    Route::get('{brand_slug}', [ProductController::class, 'brandProducts'])->name('brand.products');
-    Route::get('{brand_slug}/category/{category_slug}', [ProductController::class, 'brandCategoryProducts'])->name('brand.category.products');
-    Route::get('{brand_slug}/price/{min}-{max}', [ProductController::class, 'brandPriceProducts'])->name('brand.price.products');
-    Route::get('{brand_slug}/in-stock', [ProductController::class, 'brandInStockProducts'])->name('brand.instock.products');
-    Route::get('{brand_slug}/sort/{sort_option}', [ProductController::class, 'brandSortedProducts'])->name('brand.sort.products');
+// Product routes with SEO-friendly URLs
+Route::prefix('products')->name('product.')->group(function () {
+    // All products with filters
+    Route::get('/', [ProductController::class, 'index'])->name('index');
+
+    // Category-specific products
+    Route::get('/category/{categorySlug}', [ProductController::class, 'categoryProducts'])
+        ->name('category');
+
+    // Brand-specific products
+    Route::get('/brand/{brandSlug}', [ProductController::class, 'brandProducts'])
+        ->name('brand');
+
+    // Combined category and brand filtering
+    Route::get('/category/{categorySlug}/brand/{brandSlug}', [ProductController::class, 'categoryBrandProducts'])
+        ->name('category.brand');
+
+    // Single product detail
+    Route::get('/{slug}', [ProductController::class, 'show'])->name('show');
 });
 
-// Product Searching by category
-Route::prefix('category')->group(function () {
-    Route::get('{category_slug}', [ProductController::class, 'categoryProducts'])->name('category.products');
-    Route::get('{category_slug}/brand/{brand_slug}', [ProductController::class, 'categoryBrandProducts'])->name('category.brand.products');
-    Route::get('{category_slug}/price/{min}-{max}', [ProductController::class, 'categoryPriceProducts'])->name('category.price.products');
-    Route::get('{category_slug}/in-stock', [ProductController::class, 'categoryInStockProducts'])->name('category.instock.products');
-    Route::get('{category_slug}/sort/{sort_option}', [ProductController::class, 'categorySortedProducts'])->name('category.sort.products');
-    Route::get('{category_slug}/brand/{brand_slug}/price/{min}-{max}/sort/{sort_option}', [ProductController::class, 'filteredProducts'])->name('category.filtered.products');
-});
+Route::get('/products/{product}/quick-view', [ProductController::class, 'quickView']);
 
 // Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
