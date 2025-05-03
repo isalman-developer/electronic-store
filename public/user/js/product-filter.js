@@ -69,6 +69,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Reset sort
                     const sortSelect = document.getElementById('sortSelect');
                     if (sortSelect) sortSelect.value = '';
+                } else if (filterType === 'brand') {
+                    // For brand, navigate to products page
+                    window.location.href = '/products';
+                    return; // Stop further processing
+                } else if (filterType === 'category') {
+                    // For category, navigate to products page
+                    window.location.href = '/products';
+                    return; // Stop further processing
                 }
 
                 applyFilters();
@@ -134,6 +142,58 @@ document.addEventListener('DOMContentLoaded', function () {
         // Clear existing filter tags
         activeFiltersContainer.innerHTML = '';
 
+        // Add brand filter tag if present in URL or passed from server
+        const brandParam = new URLSearchParams(window.location.search).get('brand');
+        const brandElement = document.querySelector('[data-filter="brand"]');
+        const brandFromUrl = window.location.pathname.includes('/brand/');
+
+        if (brandElement || brandParam || brandFromUrl) {
+            // If we have brand info from the server-side
+            if (brandElement) {
+                activeFiltersContainer.appendChild(brandElement.cloneNode(true));
+            } else {
+                // Create brand tag from URL if needed
+                const brandSlug = brandParam || window.location.pathname.split('/brand/')[1]?.split('/')[0];
+                if (brandSlug) {
+                    const brandText = document.querySelector(`a[href*="/brand/${brandSlug}"]`)?.textContent.trim() || 'Brand';
+
+                    const filterTag = document.createElement('button');
+                    filterTag.type = 'button';
+                    filterTag.className = 'btn btn-sm btn-light d-flex align-items-center gap-2 filter-tag';
+                    filterTag.dataset.filter = 'brand';
+                    filterTag.innerHTML = `${brandText} <i class="bi bi-x lh-1"></i>`;
+
+                    activeFiltersContainer.appendChild(filterTag);
+                }
+            }
+        }
+
+        // Add category filter tag if present in URL or passed from server
+        const categoryParam = new URLSearchParams(window.location.search).get('category');
+        const categoryElement = document.querySelector('[data-filter="category"]');
+        const categoryFromUrl = window.location.pathname.includes('/category/');
+
+        if (categoryElement || categoryParam || categoryFromUrl) {
+            // If we have category info from the server-side
+            if (categoryElement) {
+                activeFiltersContainer.appendChild(categoryElement.cloneNode(true));
+            } else {
+                // Create category tag from URL if needed
+                const categorySlug = categoryParam || window.location.pathname.split('/category/')[1]?.split('/')[0];
+                if (categorySlug) {
+                    const categoryText = document.querySelector(`a[href*="/category/${categorySlug}"]`)?.textContent.trim() || 'Category';
+
+                    const filterTag = document.createElement('button');
+                    filterTag.type = 'button';
+                    filterTag.className = 'btn btn-sm btn-light d-flex align-items-center gap-2 filter-tag';
+                    filterTag.dataset.filter = 'category';
+                    filterTag.innerHTML = `${categoryText} <i class="bi bi-x lh-1"></i>`;
+
+                    activeFiltersContainer.appendChild(filterTag);
+                }
+            }
+        }
+
         // Add color filter tags
         const selectedColors = document.querySelectorAll('.color-filter:checked');
         selectedColors.forEach(colorCheckbox => {
@@ -159,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
             filterTag.type = 'button';
             filterTag.className = 'btn btn-sm btn-light d-flex align-items-center gap-2 filter-tag';
             filterTag.dataset.filter = 'price';
-            filterTag.innerHTML = `$${minPrice || '0'} ${maxPrice ? ' - $' + maxPrice : ''} <i class="bi bi-x lh-1"></i>`;
+            filterTag.innerHTML = `$${minPrice || '0'} - $${maxPrice || ''} <i class="bi bi-x lh-1"></i>`;
 
             activeFiltersContainer.appendChild(filterTag);
         }
@@ -195,7 +255,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Add clear all button if there are any filters
-        if (selectedColors.length > 0 || minPrice || maxPrice || selectedRating || (sortSelect && sortSelect.value)) {
+        if (selectedColors.length > 0 || minPrice || maxPrice || selectedRating ||
+            (sortSelect && sortSelect.value) ||  categoryFromUrl || brandFromUrl) {
             const clearAllBtn = document.createElement('button');
             clearAllBtn.type = 'button';
             clearAllBtn.id = 'clearFilters';
@@ -214,6 +275,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to clear all filters
     function clearAllFilters() {
+        // Check if we have brand or category filters
+        const brandTag = document.querySelector('.filter-tag[data-filter="brand"]');
+        const categoryTag = document.querySelector('.filter-tag[data-filter="category"]');
+
+        // If we have both brand and category, we need special handling
+        if (brandTag && categoryTag) {
+            // This is a complex case, we'll need to navigate to a different URL
+            window.location.href = '/products';
+            return;
+        } else if (brandTag) {
+            // If we only have brand, we'll handle it separately
+            brandTag.click();
+            return;
+        } else if (categoryTag) {
+            // If we only have category, we'll handle it separately
+            categoryTag.click();
+            return;
+        }
+
+        // For other filters, clear them normally
         // Uncheck all color checkboxes
         document.querySelectorAll('.color-filter:checked').forEach(checkbox => {
             checkbox.checked = false;
@@ -263,13 +344,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add price range if set
         const minPriceEl = document.getElementById('minPrice');
         const maxPriceEl = document.getElementById('maxPrice');
-        const minPrice = minPriceEl.value;
-        const maxPrice = maxPriceEl.value;
+        const minPrice = minPriceEl ? minPriceEl.value : '';
+        const maxPrice = maxPriceEl ? maxPriceEl.value : '';
 
         if (minPrice && maxPrice) {
             url.searchParams.append('price', `${minPrice}-${maxPrice}`);
         } else if (minPrice) {
-            url.searchParams.append('price', `${minPrice}`);
+            url.searchParams.append('price', `${minPrice}-`);
         } else if (maxPrice) {
             url.searchParams.append('price', `0-${maxPrice}`);
         }
@@ -321,3 +402,5 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 });
+
+
