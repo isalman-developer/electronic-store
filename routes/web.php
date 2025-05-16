@@ -46,10 +46,20 @@ Route::get('/products/{product}/quick-view', [ProductController::class, 'quickVi
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/cart', [App\Http\Controllers\User\CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/checkout', [App\Http\Controllers\User\CartController::class, 'checkout'])->name('cart.checkout');
 
-// Orders
-Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
-Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
+// Cart and Checkout Routes
+Route::get('/cart', [App\Http\Controllers\User\CartController::class, 'index'])->name('cart.index');
+Route::get('/checkout', [App\Http\Controllers\User\OrderController::class, 'checkout'])->name('checkout');
+Route::post('/order/place', [App\Http\Controllers\User\OrderController::class, 'placeOrder'])->name('order.place');
+Route::get('/order/success/{order_number}', [App\Http\Controllers\User\OrderController::class, 'success'])->name('order.success');
+
+// User Order History (for authenticated users)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-orders', [App\Http\Controllers\User\OrderController::class, 'userOrders'])->name('user.orders');
+    Route::get('/my-orders/{order}', [App\Http\Controllers\User\OrderController::class, 'userOrderDetail'])->name('user.order.detail');
+});
 
 // Admin Panel
 Route::group((['prefix' => 'admin', 'as' => 'admin.']), function () {

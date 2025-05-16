@@ -47,15 +47,17 @@
                                     class="img-fluid product-img-hover">
                             </a>
                             <div class="product-card-btn">
-                                <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
-                                    data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                <button type="button"
+                                    class="btn btn-primary btn-icon btn-sm animate-pulse quick-view-btn"
+                                    data-product-id="{{ $newArrival->id }}" data-bs-toggle="modal"
+                                    data-bs-target="#quickViewModal">
                                     @include('user.svgs.quick-view-svg')
                                 </button>
-                                <button type="button" class="btn btn-primary  btn-sm quick-add-btn"
+
+                                <button type="button" class="btn btn-primary btn-sm quick-add-btn"
                                     data-product-name="{{ $newArrival->title }}"
                                     data-product-price="{{ $newArrival->price }}"
-                                    data-product-img="{{ getFirstImageUrl($newArrival) }}"
-                                    data-product-id="{{ $newArrival->id }}">
+                                    data-product-img="{{ getFirstImageUrl($newArrival) }}">
                                     @include('user.svgs.quick-add-svg')
                                     Quick add
                                 </button>
@@ -82,17 +84,17 @@
                             <p class="mb-0 lh-1 text-dark fw-semibold">${{ $newArrival->price }}</p>
                         </div>
 
-                        <div role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio[]" id="btnradio1">
-                            <label class="btn-color-swatch bg-primary" for="btnradio1"></label>
+                        <div class="mb-4">
+                            @foreach ($newArrival->colors as $key => $color)
+                                <input type="radio" class="btn-check" name="colors{{ $newArrival->id }}"
+                                    id="color{{ $color->id }}" @checked($key == 0) />
 
-                            <input type="radio" class="btn-check" name="btnradio[]" id="btnradio2">
-                            <label class="btn-color-swatch bg-success" for="btnradio2"></label>
-
-                            <input type="radio" class="btn-check" name="btnradio[]" id="btnradio3" checked>
-                            <label class="btn-color-swatch bg-danger" for="btnradio3"></label>
-                            <input type="radio" class="btn-check" name="btnradio[]" id="btnradio4">
-                            <label class="btn-color-swatch bg-info" for="btnradio4"></label>
+                                <label for="color{{ $color->id }}" class="btn-color-swatch"
+                                    data-label="{{ $color->title }}">
+                                    <span class="icon-shape icon-xxs bg-{{ $color->color_class }}"></span>
+                                    <span class="visually-hidden">{{ $color->title }}</span>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -112,4 +114,24 @@
 </section>
 
 
-@include('user.partials.home.quick-view-modal')
+<div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <!-- Close button -->
+                <div
+                    class="position-absolute top-0 start-100 translate-middle mt-n4 ms-4 bg-white p-1 d-flex align-items-center justify-content-center">
+                    <button type="button" class="btn-close opacity-100" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <!-- Product details will be loaded here -->
+                <div id="quickViewContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@push('page-script-bottom')
+    <script src="{{ asset('user/js/quick-view.js') }}"></script>
+@endpush

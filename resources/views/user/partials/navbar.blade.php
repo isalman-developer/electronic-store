@@ -30,7 +30,7 @@
                                             <ul class="list-unstyled d-inline-flex flex-column nav lh-lg">
                                                 @foreach (getCategories() as $category)
                                                     <li class="nav-item">
-                                                        <a href="{{ route('product.index') }}"
+                                                        <a href="{{ route('product.category', $category->slug) }}"
                                                             class="nav-link text-link d-inline px-0">
                                                             {{ $category->title }}
                                                         </a>
@@ -44,7 +44,7 @@
                                                 @foreach (getBrands() as $brand)
                                                     <li class="nav-item">
                                                         <a class="nav-link text-link d-inline px-0"
-                                                            href="product-grid.html">
+                                                            href="{{ route('product.brand', $brand->slug) }}">
                                                             {{ $brand->title }}
                                                         </a>
                                                     </li>

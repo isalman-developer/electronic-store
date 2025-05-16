@@ -21,12 +21,7 @@ class ProductService extends AbstractService
 
     public function getFilteredProducts($filters = [], $perPage = 12)
     {
-        // Generate a cache key based on filters
-        $cacheKey = 'products_' . md5(json_encode($filters) . $perPage);
-
-        // Cache results for frequently accessed filters
-        return cache()->remember($cacheKey, now()->addMinutes(30), function () use ($filters, $perPage) {
-            return $this->productRepository->getFilteredProducts($filters, $perPage);
-        });
+        // Remove caching and directly return repository results
+        return $this->productRepository->getFilteredProducts($filters, $perPage);
     }
 }

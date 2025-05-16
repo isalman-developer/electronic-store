@@ -60,7 +60,11 @@
                         </div>
                     </div>
                     <div class="d-flex flex-md-row flex-column gap-2 gap-md-1">
-                        <a href="#!" class="btn btn-dark">Add to Cart</a>
+                        <button type="button" class="btn btn-dark quick-add-btn"
+                            data-product-name="{{ $product->title }}" data-product-price="{{ $product->price }}"
+                            data-product-img="{{ getFirstImageUrl($product) }}">
+                            Add to Cart
+                        </button>
                         <a href="#!" class="btn btn-outline-dark">
                             @include('user.svgs.heart-svg')
                             Add to Wishlist

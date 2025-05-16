@@ -13,10 +13,22 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('status')->default('pending'); // pending, shipped, delivered, cancelled
-            $table->decimal('total_price', 10, 2);
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('order_number')->unique();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email');
+            $table->string('phone');
             $table->text('shipping_address');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip');
+            $table->string('country', 2);
+            $table->text('notes')->nullable();
+            $table->string('payment_method');
+            $table->string('payment_status')->default('pending');
+            $table->decimal('total_amount', 10, 2);
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

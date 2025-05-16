@@ -119,7 +119,11 @@
                                 </div>
                             </div>
                             <div class="d-flex flex-md-row flex-column gap-2">
-                                <a href="#!" class="btn btn-dark">Add to Cart</a>
+                                <button type="button" class="btn btn-dark quick-add-btn"
+                                    data-product-name="{{ $product->title }}" data-product-price="{{ $product->price }}"
+                                    data-product-img="{{ getFirstImageUrl($product) }}">
+                                    Add to Cart
+                                </button>
                                 <a href="#!" class="btn btn-outline-dark">
                                     @include('user.svgs.heart-svg')
                                     Add to Wishlist
@@ -1020,8 +1024,8 @@
                         <div class=" text-center product-card-img mb-4">
                             <a href="#!"><img src="{{ asset('user/images/product/product-img-1.jpg') }}"
                                     alt="product image" class="img-fluid">
-                                <img src="{{ asset('user/images/product/product-img-hover-1.jpg') }}"
-                                    alt="product image" class="img-fluid product-img-hover"></a>
+                                <img src="{{ asset('user/images/product/product-img-hover-1.jpg') }}" alt="product image"
+                                    class="img-fluid product-img-hover"></a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
                                     data-bs-toggle="modal" data-bs-target="#quickViewModal">
@@ -1095,8 +1099,8 @@
                             <a href="#!">
                                 <img src="{{ asset('user/images/product/product-img-2.jpg') }}" alt="product image"
                                     class="img-fluid" />
-                                <img src="{{ asset('user/images/product/product-img-hover-2.jpg') }}"
-                                    alt="product image" class="img-fluid product-img-hover" />
+                                <img src="{{ asset('user/images/product/product-img-hover-2.jpg') }}" alt="product image"
+                                    class="img-fluid product-img-hover" />
                             </a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
@@ -1164,8 +1168,8 @@
                             <a href="#!">
                                 <img src="{{ asset('user/images/product/product-img-3.jpg') }}" alt="product image"
                                     class="img-fluid" />
-                                <img src="{{ asset('user/images/product/product-img-hover-3.jpg') }}"
-                                    alt="product image" class="img-fluid product-img-hover" />
+                                <img src="{{ asset('user/images/product/product-img-hover-3.jpg') }}" alt="product image"
+                                    class="img-fluid product-img-hover" />
                             </a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
@@ -1233,8 +1237,8 @@
                         <div class="text-center mb-4 product-card-img">
                             <a href="#!"><img src="{{ asset('user/images/product/product-img-4.jpg') }}"
                                     alt="product image" class="img-fluid" />
-                                <img src="{{ asset('user/images/product/product-img-hover-4.jpg') }}"
-                                    alt="product image" class="img-fluid product-img-hover" /></a>
+                                <img src="{{ asset('user/images/product/product-img-hover-4.jpg') }}" alt="product image"
+                                    class="img-fluid product-img-hover" /></a>
                             <div class="product-card-btn">
                                 <button type="button" class="btn btn-primary btn-icon btn-sm animate-pulse "
                                     data-bs-toggle="modal" data-bs-target="#quickViewModal">
@@ -1305,4 +1309,3 @@
         </div>
     </section>
 @endsection
-

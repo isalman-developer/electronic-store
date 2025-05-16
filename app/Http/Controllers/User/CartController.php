@@ -10,8 +10,7 @@ class CartController extends Controller
 {
     public function index()
     {
-        $cart = session()->get('cart', []);
-        return view('user.cart.index', compact('cart'));
+        return view('user.cart.index');
     }
 
     public function add(Request $request, $id)
@@ -43,5 +42,14 @@ class CartController extends Controller
         }
 
         return redirect()->route('cart')->with('success', 'Product removed from cart');
+    }
+
+    public function checkout(Request $request)
+    {
+        // Process checkout logic here
+        // This would typically validate the cart data from request
+        // and create an order in the database
+
+        return redirect()->route('checkout.success')->with('success', 'Your order has been placed successfully!');
     }
 }
