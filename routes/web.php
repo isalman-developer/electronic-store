@@ -42,10 +42,13 @@ Route::prefix('products')->name('product.')->group(function () {
 
 Route::get('/products/{product}/quick-view', [ProductController::class, 'quickView']);
 
-// Cart
-Route::get('/cart', [CartController::class, 'index'])->name('cart');
-Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+// Cart Routes - Fix duplicate routes
+// Remove these duplicate routes:
+// Route::get('/cart', [CartController::class, 'index'])->name('cart');
+// Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+// Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+// Keep only these routes for cart:
 Route::get('/cart', [App\Http\Controllers\User\CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/checkout', [App\Http\Controllers\User\CartController::class, 'checkout'])->name('cart.checkout');
 
@@ -55,10 +58,10 @@ Route::get('/checkout', [App\Http\Controllers\User\OrderController::class, 'chec
 Route::post('/order/place', [App\Http\Controllers\User\OrderController::class, 'placeOrder'])->name('order.place');
 Route::get('/order/success/{order_number}', [App\Http\Controllers\User\OrderController::class, 'success'])->name('order.success');
 
-// User Order History (for authenticated users)
+// User Order Routes (require authentication)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/my-orders', [App\Http\Controllers\User\OrderController::class, 'userOrders'])->name('user.orders');
-    Route::get('/my-orders/{order}', [App\Http\Controllers\User\OrderController::class, 'userOrderDetail'])->name('user.order.detail');
+    Route::get('/user/orders', [App\Http\Controllers\User\OrderController::class, 'userOrders'])->name('user.orders');
+    Route::get('/user/orders/{order}', [App\Http\Controllers\User\OrderController::class, 'userOrderDetail'])->name('user.order.detail');
 });
 
 // Admin Panel

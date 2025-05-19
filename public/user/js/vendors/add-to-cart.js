@@ -214,6 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Reload cart
         loadCart();
 
+        // Show toast notification
+        const toast = new bootstrap.Toast(document.getElementById('itemAddedToast'));
+        toast.show();
+
         // Show cart offcanvas
         const cartOffcanvas = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'));
         cartOffcanvas.show();

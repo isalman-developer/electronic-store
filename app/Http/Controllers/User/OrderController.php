@@ -4,16 +4,17 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+// use App\Mail\OrderConfirmation;
 
 class OrderController extends Controller
 {
     public function checkout()
     {
-        // We're using localStorage for cart, so we don't need to check session
-        // Just render the checkout view
         return view('user.checkout.index');
     }
 
@@ -29,7 +30,7 @@ class OrderController extends Controller
             'state' => 'required|string|max:255',
             'zip' => 'required|string|max:20',
             'country' => 'required|string|max:2',
-            'payment_method' => 'required|string|in:credit_card,paypal',
+            'payment_method' => 'required|string|in:cash_on_delivery,credit_card,paypal',
             'cart_data' => 'required|json',
         ]);
 
@@ -63,7 +64,7 @@ class OrderController extends Controller
             'payment_method' => $request->payment_method,
             'total_amount' => $total,
             'status' => 'pending',
-            'payment_status' => 'pending',
+            'payment_status' => $request->payment_method === 'cash_on_delivery' ? 'pending' : 'pending',
         ]);
 
         // Create order items
@@ -74,21 +75,31 @@ class OrderController extends Controller
                 'price' => $item['price'],
                 'quantity' => $item['quantity'],
             ]);
+
+            // Update product stock if needed
+            // $product = Product::where('title', $item['name'])->first();
+            // if ($product) {
+            //     $product->decrement('stock', $item['quantity']);
+            // }
         }
 
-        // Process payment (simplified for this example)
-        if ($request->payment_method === 'credit_card') {
-            // Process credit card payment
-            // This would typically integrate with a payment gateway
-            $order->update(['payment_status' => 'paid']);
+        // Process payment based on method
+        if ($request->payment_method === 'cash_on_delivery') {
+            // For cash on delivery, we just mark the order as pending
+            // No additional payment processing needed
+        } else if ($request->payment_method === 'credit_card') {
+            // Process credit card payment (not implemented in this version)
+            // $order->update(['payment_status' => 'paid']);
         } else if ($request->payment_method === 'paypal') {
-            // Redirect to PayPal
-            return redirect()->route('paypal.process', ['order_id' => $order->id]);
+            // Redirect to PayPal (not implemented in this version)
+            // return redirect()->route('paypal.process', ['order_id' => $order->id]);
         }
 
         // Send order confirmation email
+        // Uncomment when email is set up
         // Mail::to($request->email)->send(new OrderConfirmation($order));
 
+        // Redirect to success page
         return redirect()->route('order.success', ['order_number' => $order->order_number])
             ->with('success', 'Your order has been placed successfully!');
     }
@@ -96,6 +107,10 @@ class OrderController extends Controller
     public function success($orderNumber)
     {
         $order = Order::where('order_number', $orderNumber)->firstOrFail();
+        $order->load('items');
+
+        // Clear any session cart data
+        session()->forget('cart');
 
         return view('user.order.success', compact('order'));
     }
@@ -116,6 +131,7 @@ class OrderController extends Controller
             abort(403);
         }
 
+        $order->load('items');
         return view('user.order.detail', compact('order'));
     }
 }
