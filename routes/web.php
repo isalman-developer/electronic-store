@@ -13,11 +13,14 @@ use Illuminate\Support\Facades\Route;
 // Home Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Brands
+Route::get('/brands', [BrandController::class, 'index'])->name('brands');
+
 // Categories
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 
-// Brands
-Route::get('/brands', [BrandController::class, 'index'])->name('brands');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
 // Product routes with SEO-friendly URLs
 Route::prefix('products')->name('product.')->group(function () {
@@ -38,37 +41,26 @@ Route::prefix('products')->name('product.')->group(function () {
 
     // Single product detail
     Route::get('/{slug}', [ProductController::class, 'show'])->name('show');
+
+    Route::get('/{product}/quick-view', [ProductController::class, 'quickView']);
 });
 
-Route::get('/products/{product}/quick-view', [ProductController::class, 'quickView']);
 
-// Cart Routes - Fix duplicate routes
-// Remove these duplicate routes:
-// Route::get('/cart', [CartController::class, 'index'])->name('cart');
-// Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-// Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-
-// Keep only these routes for cart:
-Route::get('/cart', [App\Http\Controllers\User\CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/checkout', [App\Http\Controllers\User\CartController::class, 'checkout'])->name('cart.checkout');
-
-// Cart and Checkout Routes
-Route::get('/cart', [App\Http\Controllers\User\CartController::class, 'index'])->name('cart.index');
-Route::get('/checkout', [App\Http\Controllers\User\OrderController::class, 'checkout'])->name('checkout');
-Route::post('/order/place', [App\Http\Controllers\User\OrderController::class, 'placeOrder'])->name('order.place');
-Route::get('/order/success/{order_number}', [App\Http\Controllers\User\OrderController::class, 'success'])->name('order.success');
+Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
+Route::get('/order/success/{order_number}', [OrderController::class, 'success'])->name('order.success');
 
 // User Order Routes (require authentication)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/user/orders', [App\Http\Controllers\User\OrderController::class, 'userOrders'])->name('user.orders');
-    Route::get('/user/orders/{order}', [App\Http\Controllers\User\OrderController::class, 'userOrderDetail'])->name('user.order.detail');
+    Route::get('/user/orders', [OrderController::class, 'userOrders'])->name('user.orders');
+    Route::get('/user/orders/{order}', [OrderController::class, 'userOrderDetail'])->name('user.order.detail');
 });
 
 // Admin Panel
 Route::group((['prefix' => 'admin', 'as' => 'admin.']), function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
-    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('brands', App\Http\Controllers\Admin\BrandController::class);
+    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+    Route::resource('orders', App\Http\Controllers\Admin\OrderController::class);
+    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
     Route::resource('sliders', App\Http\Controllers\Admin\SliderController::class);
 });
