@@ -3,9 +3,6 @@
 @section('title', 'Checkout')
 @section('meta_description', 'Checkout page')
 
-@push('page-style-bottom')
-@endpush
-
 @section('content')
     <!--Breadcrumb start-->
     <div class="container">
@@ -223,6 +220,3 @@
         </div>
     </section>
 @endsection
-
-@push('page-script-bottom')
-@endpush

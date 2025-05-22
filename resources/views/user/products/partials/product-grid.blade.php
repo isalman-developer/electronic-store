@@ -16,8 +16,9 @@
                     </button>
 
                     <!-- Quick Add Button -->
-                    <button class="btn btn-dark btn-icon btn-sm quick-add-btn" data-product-name="{{ $product->title }}"
-                        data-product-price="{{ $product->price }}" data-product-img="{{ getFirstImageUrl($product) }}">
+                    <button class="btn btn-dark btn-icon btn-sm quick-add-btn" data-product-id="{{ $product->id }}"
+                        data-product-name="{{ $product->title }}" data-product-price="{{ $product->price }}"
+                        data-product-img="{{ getFirstImageUrl($product) }}">
                         <i class="bi bi-cart-plus"></i>
                     </button>
                 </div>
@@ -62,25 +63,3 @@
         <h3>No products found</h3>
     </div>
 @endforelse
-
-@push('scripts')
-    <script>
-        // Debug quick add functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Product grid loaded');
-
-            // Test localStorage access
-            try {
-                localStorage.setItem('test', 'test');
-                console.log('localStorage is working');
-                localStorage.removeItem('test');
-            } catch (e) {
-                console.error('localStorage error:', e);
-            }
-
-            // Log current cart state
-            console.log('Current cart items:', localStorage.getItem('cartItems'));
-            console.log('Current quick buy count:', localStorage.getItem('quickBuyCount'));
-        });
-    </script>
-@endpush

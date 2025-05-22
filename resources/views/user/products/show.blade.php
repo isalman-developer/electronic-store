@@ -120,7 +120,8 @@
                             </div>
                             <div class="d-flex flex-md-row flex-column gap-2">
                                 <button type="button" class="btn btn-dark quick-add-btn"
-                                    data-product-name="{{ $product->title }}" data-product-price="{{ $product->price }}"
+                                    data-product-id="{{ $product->id }}" data-product-name="{{ $product->title }}"
+                                    data-product-price="{{ $product->price }}"
                                     data-product-img="{{ getFirstImageUrl($product) }}">
                                     Add to Cart
                                 </button>

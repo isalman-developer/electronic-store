@@ -55,7 +55,7 @@
                                 </button>
 
                                 <button type="button" class="btn btn-primary btn-sm quick-add-btn"
-                                    data-product-name="{{ $newArrival->title }}"
+                                    data-product-id="{{ $newArrival->id }}" data-product-name="{{ $newArrival->title }}"
                                     data-product-price="{{ $newArrival->price }}"
                                     data-product-img="{{ getFirstImageUrl($newArrival) }}">
                                     @include('user.svgs.quick-add-svg')

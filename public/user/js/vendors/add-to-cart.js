@@ -181,15 +181,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Add item to cart
-    function addToCart(name, price, image, quantity = 1) {
-        console.log('Adding to cart:', name, price, image, quantity);
+    function addToCart(ProductId, name, price, image, quantity = 1) {
+        console.log('Adding to cart:', ProductId, name, price, image, quantity);
 
         // Get existing items or initialize empty array
         const savedItems = localStorage.getItem('cartItems');
         let items = savedItems ? JSON.parse(savedItems) : [];
 
         // Check if item already exists in cart
-        const existingItemIndex = items.findIndex(item => item.name === name);
+        const existingItemIndex = items.findIndex(item => item.ProductId === ProductId);
 
         if (existingItemIndex !== -1) {
             // Update quantity if item exists
@@ -197,6 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             // Add new item
             items.push({
+                ProductId: ProductId,
                 name: name,
                 price: price,
                 image: image,
@@ -226,11 +227,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add event listeners to quick add buttons
     document.querySelectorAll('.quick-add-btn').forEach(btn => {
         btn.addEventListener('click', function () {
+            const ProductId = this.getAttribute('data-product-id');
             const name = this.getAttribute('data-product-name');
             const price = parseFloat(this.getAttribute('data-product-price'));
             const image = this.getAttribute('data-product-img');
 
-            addToCart(name, price, image, 1);
+            addToCart(ProductId, name, price, image, 1);
         });
     });
 

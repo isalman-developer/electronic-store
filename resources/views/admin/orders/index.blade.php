@@ -5,74 +5,257 @@
 @section('content')
     <!-- Start Container Fluid -->
     <div class="container-xxl">
+
+        <div class="row">
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">Payment Refund</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['refund_count'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:chat-round-money-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">Order Cancel</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['canceled_count'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:cart-cross-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">Order Shipped</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['shipped_count'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:box-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">Order Delivering</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['delivering_count'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:tram-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">Pending Review</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['pending_review_count'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:clipboard-remove-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">Pending Payment</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['pending_payment_count'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:clock-circle-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">Delivered</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['delivered_count'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:clipboard-check-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">In Progress</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['in_progress_count'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:inbox-line-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center gap-1">
-                        <h4 class="card-title flex-grow-1">All Orders</h4>
-
-                        <a href="{{ route('admin.orders.create') }}" class="btn btn-sm btn-primary">
-                            Add Order
-                        </a>
-
-                        {{-- <div class="dropdown">
-                        <a href="#" class="dropdown-toggle btn btn-sm btn-outline-light" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            This Month
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <a href="#!" class="dropdown-item">Download</a>
-                            <!-- item-->
-                            <a href="#!" class="dropdown-item">Export</a>
-                            <!-- item-->
-                            <a href="#!" class="dropdown-item">Import</a>
+                    <div class="d-flex card-header justify-content-between align-items-center">
+                        <div>
+                            <h4 class="card-title">All Order List</h4>
                         </div>
-                    </div> --}}
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle btn btn-sm btn-outline-light rounded"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                This Month
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- item-->
+                                <a href="#!" class="dropdown-item">Download</a>
+                                <!-- item-->
+                                <a href="#!" class="dropdown-item">Export</a>
+                                <!-- item-->
+                                <a href="#!" class="dropdown-item">Import</a>
+                            </div>
+                        </div>
                     </div>
-                    <div>
+                    <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table align-middle mb-0 table-hover table-centered">
                                 <thead class="bg-light-subtle">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Order</th>
-                                        <th>Tag ID</th>
-                                        <th>Status</th>
+                                        <th>Order ID</th>
+                                        <th>Created at</th>
+                                        <th>Customer</th>
+                                        <th>Priority</th>
+                                        <th>Total</th>
+                                        <th>Payment Status</th>
+                                        <th>Items</th>
+                                        <th>Delivery Number</th>
+                                        <th>Order Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($orders as $order)
+                                    @forelse($orders as $order)
                                         <tr>
-                                            <td>{{ $order->id }}</td>
                                             <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <div
-                                                        class="rounded bg-light avatar-lg d-flex align-items-center justify-content-center">
-                                                        <img src="{{ getImageUrl($order->media) }}"
-                                                            alt="{{ $order->title }} - Order Image"
-                                                            class="rounded avatar-lg">
-                                                    </div>
-                                                    <p class="text-dark fw-medium fs-15 mb-0">
-                                                        {{ $order->title }}
-                                                    </p>
-                                                </div>
+                                                {{ $order->order_number }}
                                             </td>
-                                            <td>{{ $order->tag_number ?? '' }}</td>
-                                            <td>{{ $order->status == 1 ? 'Active' : 'In Active' }}</td>
+                                            <td>{{ $order->created_at->format('M d, Y') }}</td>
+                                            <td>
+                                                <a href="#!" class="link-primary fw-medium">{{ $order->first_name }}
+                                                    {{ $order->last_name }}</a>
+                                            </td>
+                                            <td> Normal</td>
+                                            <td> ${{ number_format($order->total_amount, 2) }}</td>
+                                            <td>
+                                                @if ($order->payment_status == 'paid')
+                                                    <span class="badge bg-success text-light px-2 py-1 fs-13">Paid</span>
+                                                @elseif($order->payment_status == 'refund')
+                                                    <span class="badge bg-light text-dark px-2 py-1 fs-13">Refund</span>
+                                                @else
+                                                    <span class="badge bg-light text-dark px-2 py-1 fs-13">Unpaid</span>
+                                                @endif
+                                            </td>
+                                            <td> {{ $order->items->count() }}</td>
+                                            <td> {{ $order->delivery_number ?? '-' }}</td>
+                                            <td>
+                                                @if ($order->status == 'completed')
+                                                    <span
+                                                        class="badge border border-success text-success px-2 py-1 fs-13">Completed</span>
+                                                @elseif($order->status == 'canceled')
+                                                    <span
+                                                        class="badge border border-danger text-danger px-2 py-1 fs-13">Canceled</span>
+                                                @elseif($order->status == 'processing' || $order->status == 'packaging')
+                                                    <span
+                                                        class="badge border border-warning text-warning px-2 py-1 fs-13">{{ ucfirst($order->status) }}</span>
+                                                @elseif($order->status == 'draft')
+                                                    <span
+                                                        class="badge border border-secondary text-secondary px-2 py-1 fs-13">Draft</span>
+                                                @else
+                                                    <span
+                                                        class="badge border border-primary text-primary px-2 py-1 fs-13">{{ ucfirst($order->status) }}</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="d-flex gap-2">
+                                                    <a href="{{ route('admin.orders.show', $order->id) }}"
+                                                        class="btn btn-light btn-sm">
+                                                        <iconify-icon icon="solar:eye-broken" class="align-middle fs-18">
+                                                        </iconify-icon>
+                                                    </a>
                                                     <a href="{{ route('admin.orders.edit', $order->id) }}"
                                                         class="btn btn-soft-primary btn-sm">
-                                                        <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18">
+                                                        <iconify-icon icon="solar:pen-2-broken"
+                                                            class="align-middle fs-18">
                                                         </iconify-icon>
                                                     </a>
                                                     <form action="{{ route('admin.orders.destroy', $order->id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-soft-danger btn-sm">
+                                                        <button type="submit" class="btn btn-soft-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to delete this order?')">
                                                             <iconify-icon icon="solar:trash-bin-minimalistic-2-broken"
                                                                 class="align-middle fs-18">
                                                             </iconify-icon>
@@ -81,25 +264,24 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="10" class="text-center">No orders found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
                         <!-- end table-responsive -->
                     </div>
                     <div class="card-footer border-top">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-end mb-0">
-                                <li class="page-item"><a class="page-link" href="javascript:void(0);">Previous</a></li>
-                                <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
-                            </ul>
-                        </nav>
+                        <div class="pagination justify-content-end mb-0">
+                            {{ $orders->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>

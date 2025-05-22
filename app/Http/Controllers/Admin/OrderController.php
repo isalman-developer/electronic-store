@@ -14,8 +14,21 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = $this->service->getAll();
-        return view('admin.orders.index', compact('orders'));
+        $orders = $this->service->getAll(relations: ['items', 'user'], perPage: 10);
+
+        // Get order statistics
+        $orderStats = [
+            'refund_count' => $this->service->getAll(conditions: ['payment_status' => 'refund'])->count(),
+            'canceled_count' => $this->service->getAll(conditions: ['status' => 'canceled'])->count(),
+            'shipped_count' => $this->service->getAll(conditions: ['status' => 'shipped'])->count(),
+            'delivering_count' => $this->service->getAll(conditions: ['status' => 'delivering'])->count(),
+            'pending_review_count' => $this->service->getAll(conditions: ['status' => 'pending_review'])->count(),
+            'pending_payment_count' => $this->service->getAll(conditions: ['payment_status' => 'pending'])->count(),
+            'delivered_count' => $this->service->getAll(conditions: ['status' => 'completed'])->count(),
+            'in_progress_count' => $this->service->getAll(conditions: ['status' => 'processing'])->count(),
+        ];
+
+        return view('admin.orders.index', compact('orders', 'orderStats'));
     }
 
     public function create()
@@ -25,8 +38,8 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $orders = $this->service->getAll();
-        return view('admin.orders.index', compact('orders'));
+        $order->load(['items', 'user', 'items.product.media']);
+        return view('admin.orders.show', compact('order'));
     }
 
     public function store(OrderStoreRequest $request)

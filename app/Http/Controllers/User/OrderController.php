@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-// use App\Mail\OrderConfirmation;
 
 class OrderController extends Controller
 {
@@ -72,6 +71,7 @@ class OrderController extends Controller
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_name' => $item['name'],
+                'product_id' => $item['ProductId'],
                 'price' => $item['price'],
                 'quantity' => $item['quantity'],
             ]);
