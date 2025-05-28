@@ -2,51 +2,53 @@
 <html lang="en">
 
 <head>
-  @include('admin.partials.head')
+    @include('admin.partials.head')
 </head>
 
 <body>
-  <!-- START Wrapper -->
-  <div class="wrapper">
+    <!-- START Wrapper -->
+    <div class="wrapper">
 
-    <!-- Topbar Start -->
-    @include('admin.partials.header')
-    <!-- Activity Timeline -->
+        <!-- Topbar Start -->
+        @include('admin.partials.header')
+        <!-- Activity Timeline -->
 
-    @include('admin.partials.activity')
+        @include('admin.partials.activity')
 
-    <!-- Topbar End -->
+        <!-- Topbar End -->
 
-    <!-- App Menu Start -->
-    @include('admin.partials.navbar')
-    <!-- App Menu End -->
+        <!-- App Menu Start -->
+        @include('admin.partials.navbar')
+        <!-- App Menu End -->
 
-    <!-- Page Content Start -->
-    <div class="page-content">
-      {{-- showing all of the errors here --}}
-      @if ($errors->any())
-      <div class="alert alert-danger">
-        <ul>
-          @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-      @endif
-      <!-- Start Container Fluid -->
-      @yield('content')
-      <!-- End Container Fluid -->
+        <!-- Page Content Start -->
+        <div class="page-content">
+            {{-- showing all of the errors here --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <!-- Start Container Fluid -->
+            @yield('content')
+            <!-- End Container Fluid -->
 
-      <!-- Footer Start -->
-      @include('admin.partials.footer')
-      <!-- Footer End -->
+            <!-- Footer Start -->
+            @include('admin.partials.footer')
+            <!-- Footer End -->
+
+        </div>
+        <!-- End Page Content -->
 
     </div>
-    <!-- End Page Content -->
-
-  </div>
-  <!-- END Wrapper -->
-  @include('admin.partials.scripts')
+    <!-- END Wrapper -->
+    @include('admin.partials.scripts')
+    <!-- Toast container for notifications -->
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
 </body>
 
 </html>

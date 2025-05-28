@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('payment_status')->default('pending');
             $table->decimal('total_amount', 10, 2);
             $table->string('status')->default('pending');
+            $table->string('invoice_path')->nullable();
             $table->timestamps();
         });
     }

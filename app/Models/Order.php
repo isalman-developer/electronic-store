@@ -26,6 +26,7 @@ class Order extends Model
         'payment_status',
         'total_amount',
         'status',
+        'invoice_path',
     ];
 
     public function items()
@@ -36,5 +37,10 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function timelines()
+    {
+        return $this->hasMany(OrderTimeline::class)->orderBy('created_at', 'desc');
     }
 }

@@ -64,3 +64,13 @@ Route::group((['prefix' => 'admin', 'as' => 'admin.']), function () {
     Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
     Route::resource('sliders', App\Http\Controllers\Admin\SliderController::class);
 });
+
+// Admin order timeline routes
+Route::post('/admin/orders/{order}/timeline', [App\Http\Controllers\Admin\OrderController::class, 'addTimelineEntry'])
+    ->name('admin.orders.timeline.add');
+Route::post('/admin/orders/{order}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])
+    ->name('admin.orders.status.update');
+Route::get('/admin/invoice/orders/{order}/download', [App\Http\Controllers\Admin\OrderController::class, 'downloadInvoice'])
+    ->name('admin.orders.invoice.download');
+Route::post('/admin/invoice/orders/{order}/resend', [App\Http\Controllers\Admin\OrderController::class, 'resendInvoice'])
+    ->name('admin.orders.invoice.resend');

@@ -129,12 +129,12 @@
                                                         <div class="d-flex align-items-center gap-2">
                                                             <div
                                                                 class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
-                                                                <img src="{{ getFirstImageUrl($item->product) }}"
-                                                                    alt="" class="avatar-md">
+                                                                {{-- <img src="{{ getFirstImageUrl($item->product) }}"
+                                                                    alt="" class="avatar-md"> --}}
                                                             </div>
                                                             <div>
                                                                 <a href="#!"
-                                                                    class="text-dark fw-medium fs-15">{{ $item->product->title }}</a>
+                                                                    class="text-dark fw-medium fs-15">{{ $item->product->title ?? '' }}</a>
                                                                 <p class="text-muted mb-0 mt-1 fs-13"><span>Size :
                                                                     </span>{{ $item->size }}</p>
                                                             </div>
@@ -161,122 +161,85 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4 class="card-title">Order Timeline</h4>
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#addTimelineModal">
+                                    <i class="bx bx-plus me-1"></i> Add Entry
+                                </button>
                             </div>
                             <div class="card-body">
                                 <div class="position-relative ms-2">
-                                    <span class="position-absolute start-0  top-0 border border-dashed h-100"></span>
-                                    <div class="position-relative ps-4">
-                                        <div class="mb-4">
-                                            <span
-                                                class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle">
-                                                <div class="spinner-border spinner-border-sm text-warning" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            </span>
-                                            <div
-                                                class="ms-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
-                                                <div>
-                                                    <h5 class="mb-1 text-dark fw-medium fs-15">The packing has been started
-                                                    </h5>
-                                                    <p class="mb-0">Confirmed by Gaston Lapierre</p>
-                                                </div>
-                                                <p class="mb-0">April 23, 2024, 09:40 am</p>
+                                    <span class="position-absolute start-0 top-0 border border-dashed h-100"></span>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="position-relative ps-4">
-                                        <div class="mb-4">
-                                            <span
-                                                class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle text-success fs-20">
-                                                <i class="bx bx-check-circle"></i>
-                                            </span>
-                                            <div
-                                                class="ms-2 d-flex flex-wrap gap-2  align-items-center justify-content-between">
-                                                <div>
-                                                    <h5 class="mb-1 text-dark fw-medium fs-15">The Invoice has been sent to
-                                                        the customer</h5>
-                                                    <p class="mb-2">Invoice email was sent to <a href="#!"
-                                                            class="link-primary">hello@dundermuffilin.com</a></p>
-                                                    <a href="#!" class="btn btn-light">Resend Invoice</a>
-                                                </div>
-                                                <p class="mb-0">April 23, 2024, 09:40 am</p>
+                                    @forelse($order->timelines as $timeline)
+                                        <div class="position-relative ps-4">
+                                            <div class="mb-4">
+                                                <span
+                                                    class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle">
+                                                    @if ($timeline->status === 'processing')
+                                                        <div class="spinner-border spinner-border-sm text-warning"
+                                                            role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                    @else
+                                                        <i
+                                                            class="{{ $timeline->icon ?? 'bx bx-check-circle' }} {{ $timeline->icon_class ?? 'text-success' }} fs-20"></i>
+                                                    @endif
+                                                </span>
+                                                <div
+                                                    class="ms-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                                    <div>
+                                                        <h5 class="mb-1 text-dark fw-medium fs-15">{{ $timeline->title }}
+                                                        </h5>
+                                                        @if ($timeline->description)
+                                                            <p class="mb-2">{!! $timeline->description !!}</p>
+                                                        @endif
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="position-relative ps-4">
-                                        <div class="mb-4">
-                                            <span
-                                                class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle text-success fs-20">
-                                                <i class="bx bx-check-circle"></i>
-                                            </span>
-                                            <div
-                                                class="ms-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
-                                                <div>
-                                                    <h5 class="mb-1 text-dark fw-medium fs-15">The Invoice has been created
-                                                    </h5>
-                                                    <p class="mb-2">Invoice created by Gaston Lapierre</p>
-                                                    <a href="#!" class="btn btn-primary">Download Invoice</a>
-                                                </div>
-                                                <p class="mb-0">April 23, 2024, 09:40 am</p>
+                                                        @if ($timeline->status === 'invoice_created')
+                                                            <a href="{{ route('admin.orders.invoice.download', $order->id) }}"
+                                                                class="btn btn-primary">Download Invoice</a>
+                                                        @elseif($timeline->status === 'invoice_sent')
+                                                            <a href="#" class="btn btn-light resend-invoice"
+                                                                data-order-id="{{ $order->id }}">Resend Invoice</a>
+                                                        @endif
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="position-relative ps-4">
-                                        <div class="mb-4">
-                                            <span
-                                                class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle text-success fs-20">
-                                                <i class="bx bx-check-circle"></i>
-                                            </span>
-                                            <div
-                                                class="ms-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
-                                                <div>
-                                                    <h5 class="mb-1 text-dark fw-medium fs-15">Order Payment</h5>
-                                                    <p class="mb-2">Using Master Card</p>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <p class="mb-1 text-dark fw-medium">Status :</p>
-                                                        <span
-                                                            class="badge bg-success-subtle text-success  px-2 py-1 fs-13">Paid</span>
+                                                        @if ($timeline->status)
+                                                            <div class="d-flex align-items-center gap-2 mt-2">
+                                                                @if (in_array($timeline->status, ['paid', 'completed']))
+                                                                    <span
+                                                                        class="badge bg-success-subtle text-success px-2 py-1 fs-13">
+                                                                        {{ ucfirst($timeline->status) }}
+                                                                    </span>
+                                                                @elseif(in_array($timeline->status, ['canceled', 'refunded']))
+                                                                    <span
+                                                                        class="badge bg-danger-subtle text-danger px-2 py-1 fs-13">
+                                                                        {{ ucfirst($timeline->status) }}
+                                                                    </span>
+                                                                @elseif(in_array($timeline->status, ['processing', 'packaging']))
+                                                                    <span
+                                                                        class="badge bg-warning-subtle text-warning px-2 py-1 fs-13">
+                                                                        {{ ucfirst($timeline->status) }}
+                                                                    </span>
+                                                                @else
+                                                                    <span
+                                                                        class="badge bg-primary-subtle text-primary px-2 py-1 fs-13">
+                                                                        {{ ucfirst($timeline->status) }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                     </div>
+                                                    <p class="mb-0">{{ $timeline->created_at->format('F d, Y, h:i a') }}
+                                                    </p>
                                                 </div>
-                                                <p class="mb-0">April 23, 2024, 09:40 am</p>
-
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="position-relative ps-4">
-                                        <div class="mb-2">
-                                            <span
-                                                class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle text-success fs-20">
-                                                <i class="bx bx-check-circle"></i>
-                                            </span>
-                                            <div
-                                                class="ms-2 d-flex flex-wrap gap-2  align-items-center justify-content-between">
-                                                <div>
-                                                    <h5 class="mb-2 text-dark fw-medium fs-15">4 Order conform by Gaston
-                                                        Lapierre</h5>
-                                                    <a href="#!"
-                                                        class="badge bg-light text-dark fw-normal  px-2 py-1 fs-13">Order
-                                                        1</a>
-                                                    <a href="#!"
-                                                        class="badge bg-light text-dark fw-normal  px-2 py-1 fs-13">Order
-                                                        2</a>
-                                                    <a href="#!"
-                                                        class="badge bg-light text-dark fw-normal  px-2 py-1 fs-13">Order
-                                                        3</a>
-                                                    <a href="#!"
-                                                        class="badge bg-light text-dark fw-normal  px-2 py-1 fs-13">Order
-                                                        4</a>
-                                                </div>
-                                                <p class="mb-0">April 23, 2024, 09:40 am</p>
-
-                                            </div>
+                                    @empty
+                                        <div class="text-center py-4">
+                                            <p class="mb-0">No timeline entries found</p>
                                         </div>
-                                    </div>
+                                    @endforelse
                                 </div>
                             </div>
                         </div>
@@ -544,4 +507,40 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Timeline Entry Modal -->
+    <div class="modal fade" id="addTimelineModal" tabindex="-1" aria-labelledby="addTimelineModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ route('admin.orders.timeline.add', $order->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addTimelineModalLabel">Add Timeline Entry</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status (Optional)</label>
+                            <input type="text" class="form-control" id="status" name="status">
+                            <small class="text-muted">E.g., processing, completed, etc.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Entry</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
