@@ -43,13 +43,18 @@
                                 </div>
 
                                 <div class="col-lg-3 mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select class="@error('status') is-invalid @enderror form-control" id="status"
-                                        name="status" required>
-                                        <option value="1" @selected($product->status == 1)>Active</option>
-                                        <option value="0" @selected($product->status == 0)>Inactive</option>
-                                    </select>
-                                    {{ showValidationMessage($errors->first('status')) }}
+                                    <label class="form-label">Product Status</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="status" name="status" value="1" {{ $product->status ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="status">Active</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" value="1" {{ $product->is_featured ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="is_featured">Featured Product</label>
+                                        </div>
+                                    </div>
+                                    <small class="form-text text-muted">Featured products will appear in the featured products section.</small>
                                 </div>
 
                                 <div class="col-lg-3 mb-3">

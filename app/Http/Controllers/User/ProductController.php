@@ -21,6 +21,9 @@ class ProductController extends Controller
         protected BrandService $brandService
     ) {}
 
+    /**
+     * Display a listing of products with filters
+     */
     public function index(Request $request)
     {
         $filters = $this->getFiltersFromRequest($request);
@@ -90,10 +93,6 @@ class ProductController extends Controller
         $filters['brand_slug'] = $brandSlug;
 
         $products = $this->productService->getFilteredProducts($filters);
-        $brand = $this->brandService->getBySlug($brandSlug);
-        $categories = $this->categoryService->getCategories();
-        $brands = $this->brandService->getBrands();
-        $colors = $this->colorService->getColors();
 
         if ($request->ajax()) {
             return response()->json([
@@ -101,6 +100,10 @@ class ProductController extends Controller
             ]);
         }
 
+        $brand = $this->brandService->getBySlug($brandSlug);
+        $categories = $this->categoryService->getCategories();
+        $brands = $this->brandService->getBrands();
+        $colors = $this->colorService->getColors();
         return view('user.products.index', compact('products', 'brand', 'categories', 'brands', 'colors', 'filters'));
     }
 
@@ -114,11 +117,6 @@ class ProductController extends Controller
         $filters['brand_slug'] = $brandSlug;
 
         $products = $this->productService->getFilteredProducts($filters);
-        $category = $this->categoryService->getBySlug($categorySlug);
-        $brand = $this->brandService->getBySlug($brandSlug);
-        $categories = $this->categoryService->getCategories();
-        $brands = $this->brandService->getBrands();
-        $colors = $this->colorService->getColors();
 
         if ($request->ajax()) {
             return response()->json([
@@ -126,16 +124,37 @@ class ProductController extends Controller
             ]);
         }
 
+        $category = $this->categoryService->getBySlug($categorySlug);
+        $brand = $this->brandService->getBySlug($brandSlug);
+        $categories = $this->categoryService->getCategories();
+        $brands = $this->brandService->getBrands();
+        $colors = $this->colorService->getColors();
+
         return view('user.products.index', compact('products', 'category', 'brand', 'categories', 'brands', 'colors', 'filters'));
     }
 
-    public function filteredProducts($categorySlug, $brandSlug, $min, $max, $sortOption)
+    public function filterProducts($filter, Request $request)
     {
-        $products = $this->productService->getFilteredProducts($categorySlug, $brandSlug, $min, $max, $sortOption);
-        return view('user.products.index', compact('products'));
+        $filters[$filter] = 'true';
+        $products = $this->productService->getFilteredProducts($filters);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'products' => view('user.products.partials.product-grid', compact('products'))->render(),
+            ]);
+        }
+
+        $brands = $this->brandService->getBrands();
+        $categories = $this->categoryService->getCategories();
+        $brands = $this->brandService->getBrands();
+        $colors = $this->colorService->getColors();
+        return view('user.products.index', compact('products', 'brands', 'categories', 'brands', 'colors', 'filters'));
     }
 
-    public function getFiltersFromRequest(Request $request)
+    /**
+     * Get filters from request
+     */
+    private function getFiltersFromRequest(Request $request)
     {
         $filters = [];
 
@@ -179,12 +198,27 @@ class ProductController extends Controller
 
         // Handle in-stock filter
         if ($request->has('in_stock')) {
-            $filters['in_stock'] = true;
+            $filters['in_stock'] = 'true';
         }
 
         // Handle sort option
         if ($request->has('sort')) {
             $filters['sort'] = $request->input('sort');
+        }
+
+        // Handle featured products filter
+        if ($request->has('featured')) {
+            $filters['featured'] = 'true';
+        }
+
+        // Handle new arrivals filter
+        if ($request->has('new-arrivals')) {
+            $filters['new-arrivals'] = 'true';
+        }
+
+        // Handle top rated filter
+        if ($request->has('top-rated')) {
+            $filters['top-rated'] = 'true';
         }
 
         return $filters;

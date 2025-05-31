@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\User\BrandController;
-use App\Http\Controllers\User\CartController;
-use App\Http\Controllers\User\CategoryController;
-use App\Http\Controllers\User\HomeController;
-use App\Http\Controllers\User\OrderController;
-use App\Http\Controllers\User\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\BrandController;
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\User\ProductController;
+use App\Http\Controllers\User\CategoryController;
 
 
 // Home Page
@@ -26,6 +26,9 @@ Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 Route::prefix('products')->name('product.')->group(function () {
     // All products with filters
     Route::get('/', [ProductController::class, 'index'])->name('index');
+
+    // Featured products, new arrivals, and top rated products
+    Route::get('/{filter}', [ProductController::class, 'filterProducts'])->name('filter');
 
     // Category-specific products
     Route::get('/category/{categorySlug}', [ProductController::class, 'categoryProducts'])

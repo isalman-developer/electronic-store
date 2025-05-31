@@ -19,20 +19,40 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
     // protected $table = 'products1';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'category_id',
         'title',
-        'brand_id',
+        'slug',
         'description',
         'price',
         'stock',
         'weight',
         'tag_number',
-        'slug',
         'status',
-        'meta_title',
-        'meta_keywords',
-        'meta_description'
+        'category_id',
+        'brand_id',
+        'is_featured',
+        'rating',
+        'sales_count'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'price' => 'decimal:2',
+        'weight' => 'decimal:2',
+        'rating' => 'decimal:1',
+        'is_featured' => 'boolean',
+        'status' => 'integer',
+        'stock' => 'integer',
+        'sales_count' => 'integer',
     ];
 
     // A product belongs to one category

@@ -3,85 +3,116 @@
 namespace App\Core\Repositories;
 
 use App\Models\Product;
-use App\Core\Repositories\AbstractRepository;
+use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends AbstractRepository
 {
-
-    public function __construct(Product $product)
+    public function __construct(Product $model)
     {
-        parent::__construct($product);
+        parent::__construct($model);
     }
 
-    public function getNewArrivals($perPage, $relations = [], $orderBy)
+    /**
+     * Get new arrivals products
+     */
+    public function getNewArrivals(int $perPage = 10, array $relations = [], array $orderBy = [])
     {
-        return $this->getAll(relations: $relations, orderBy: $orderBy, perPage: $perPage);
+        $query = $this->model->query();
+
+        if (!empty($relations)) {
+            $query->with($relations);
+        }
+
+        if (!empty($orderBy)) {
+            foreach ($orderBy as $column => $direction) {
+                $query->orderBy($column, $direction);
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        // Get products created in the last 30 days
+        $query->where('created_at', '>=', now()->subDays(30));
+
+        return $query->paginate($perPage);
     }
 
-    public function getByCategory($categorySlug)
+    /**
+     * Get filtered products
+     */
+    public function getFilteredProducts(array $filters = [], int $perPage = 12)
     {
-        return Product::whereHas('category', function ($query) use ($categorySlug) {
-            $query->where('slug', $categorySlug);
-        })->paginate(12);
-    }
+        $query = $this->model->query();
+        $query->with(['category', 'brand', 'colors', 'sizes', 'media']);
+        $query->where('status', 1);
 
-    public function getFilteredProducts($filters = [], $perPage = 12)
-    {
-        $query = $this->model->newQuery();
+        // Filter by featured products
+        if (isset($filters['featured']) && $filters['featured'] == 'true') {
+            $query->where('is_featured', 1);
+        }
 
-        // Apply eager loading for common relationships
-        $query->with(['category', 'brand', 'media', 'colors']);
+        // Filter by new arrivals
+        if (isset($filters['new-arrivals']) && $filters['new-arrivals'] == 'true') {
+            $query->where('created_at', '>=', now()->subDays(30));
+        }
 
-        // Category filter
-        if (!empty($filters['category_slug'])) {
+        // Filter by top rated products
+        if (isset($filters['top-rated']) && $filters['top-rated'] == 'true') {
+            $query->where('rating', '>=', 4);
+        }
+
+        // Filter by price range
+        if (isset($filters['price']) && !empty($filters['price'])) {
+            $priceRange = explode('-', $filters['price']);
+            if (count($priceRange) == 2) {
+                $minPrice = $priceRange[0];
+                $maxPrice = $priceRange[1];
+
+                if ($minPrice !== '') {
+                    $query->where('price', '>=', $minPrice);
+                }
+
+                if ($maxPrice !== '') {
+                    $query->where('price', '<=', $maxPrice);
+                }
+            }
+        }
+
+        // Filter by category
+        if (isset($filters['category']) && !empty($filters['category'])) {
             $query->whereHas('category', function ($q) use ($filters) {
-                $q->where('slug', $filters['category_slug']);
+                $q->where('slug', $filters['category']);
             });
         }
 
-        // Brand filter
-        if (!empty($filters['brand_slug'])) {
+        // Filter by brand
+        if (isset($filters['brand']) && !empty($filters['brand'])) {
             $query->whereHas('brand', function ($q) use ($filters) {
-                $q->where('slug', $filters['brand_slug']);
+                $q->where('slug', $filters['brand']);
             });
         }
 
-        // Price range filter
-        if (!empty($filters['price_min']) && !empty($filters['price_max'])) {
-            $query->whereBetween('price', [$filters['price_min'], $filters['price_max']]);
-        } else if (!empty($filters['price_min'])) {
-            $query->where('price', '>=', $filters['price_min']);
-        } else if (!empty($filters['price_max'])) {
-            $query->where('price', '<=', $filters['price_max']);
-        }
-
-        // In stock filter
-        if (!empty($filters['in_stock']) && $filters['in_stock']) {
-            $query->where('stock', '>', 0);
-        }
-
-        // Color filter
-        if (!empty($filters['colors']) && is_array($filters['colors'])) {
-            $query->whereHas('colors', function ($q) use ($filters) {
-                $q->whereIn('colors.slug', $filters['colors']);
+        // Filter by colors
+        if (isset($filters['colors']) && !empty($filters['colors'])) {
+            $colorIds = is_array($filters['colors']) ? $filters['colors'] : explode('-', $filters['colors']);
+            $query->whereHas('colors', function ($q) use ($colorIds) {
+                $q->whereIn('colors.id', $colorIds);
             });
         }
 
-        // Rating filter
-        if (!empty($filters['rating'])) {
-            $query->whereHas('reviews', function ($q) use ($filters) {
-                $q->selectRaw('AVG(rating) as avg_rating')
-                    ->groupBy('product_id')
-                    ->havingRaw('AVG(rating) >= ?', [$filters['rating']]);
+        // Filter by sizes
+        if (isset($filters['sizes']) && !empty($filters['sizes'])) {
+            $sizeIds = is_array($filters['sizes']) ? $filters['sizes'] : explode('-', $filters['sizes']);
+            $query->whereHas('sizes', function ($q) use ($sizeIds) {
+                $q->whereIn('sizes.id', $sizeIds);
             });
         }
 
         // Apply sorting
-        if (!empty($filters['sort'])) {
+        if (isset($filters['sort']) && !empty($filters['sort'])) {
             switch ($filters['sort']) {
                 case 'Best-selling':
-                    // $query->orderBy('views', 'desc');
-                    $query->orderBy('id', 'desc');
+                    $query->orderBy('sales_count', 'desc');
                     break;
                 case 'Alphabetically-A-Z':
                     $query->orderBy('title', 'asc');
@@ -103,16 +134,12 @@ class ProductRepository extends AbstractRepository
                     break;
                 default:
                     $query->orderBy('created_at', 'desc');
+                    break;
             }
         } else {
-            // Default sorting
             $query->orderBy('created_at', 'desc');
         }
 
-        // Ensure pagination maintains all filters
-        $paginator = $query->paginate($perPage);
-        $paginator->appends(request()->except('page'));
-
-        return $paginator;
+        return $query->paginate($perPage);
     }
 }
