@@ -8,6 +8,12 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\User\ProductController;
 use App\Http\Controllers\User\CategoryController;
+use App\Http\Controllers\Admin\BrandController as AdminBrandController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\SliderController as AdminSliderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
 
 // Home Page
@@ -61,19 +67,21 @@ Route::middleware(['auth'])->group(function () {
 // Admin Panel
 Route::group((['prefix' => 'admin', 'as' => 'admin.']), function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::resource('brands', App\Http\Controllers\Admin\BrandController::class);
-    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
-    Route::resource('orders', App\Http\Controllers\Admin\OrderController::class);
-    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
-    Route::resource('sliders', App\Http\Controllers\Admin\SliderController::class);
-});
+    Route::resource('brands', AdminBrandController::class);
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('orders', AdminOrderController::class);
+    Route::resource('products', AdminProductController::class);
+    Route::resource('sliders', AdminSliderController::class);
+    Route::get('/settings/edit', [AdminSettingController::class, 'edit'])->name('settings.edit');
+    Route::put('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
+    Route::resource('settings', AdminSettingController::class)->except(['update', 'edit']);
 
-// Admin order timeline routes
-Route::post('/admin/orders/{order}/timeline', [App\Http\Controllers\Admin\OrderController::class, 'addTimelineEntry'])
-    ->name('admin.orders.timeline.add');
-Route::post('/admin/orders/{order}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])
-    ->name('admin.orders.status.update');
-Route::get('/admin/invoice/orders/{order}/download', [App\Http\Controllers\Admin\OrderController::class, 'downloadInvoice'])
-    ->name('admin.orders.invoice.download');
-Route::post('/admin/invoice/orders/{order}/resend', [App\Http\Controllers\Admin\OrderController::class, 'resendInvoice'])
-    ->name('admin.orders.invoice.resend');
+
+    Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
+        // Order timeline routes
+        Route::post('/{order}/timeline', [AdminOrderController::class, 'addTimelineEntry'])->name('timeline.add');
+        Route::post('/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('status.update');
+        Route::get('/{order}/invoice/download', [AdminOrderController::class, 'downloadInvoice'])->name('invoice.download');
+        Route::post('/{order}/invoice/resend', [AdminOrderController::class, 'resendInvoice'])->name('invoice.resend');
+    });
+});

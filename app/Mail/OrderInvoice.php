@@ -38,7 +38,7 @@ class OrderInvoice extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.orders.invoice',
+            view: 'user.emails.orders.invoice',
         );
     }
 

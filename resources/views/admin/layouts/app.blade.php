@@ -25,7 +25,7 @@
         <div class="page-content">
             {{-- showing all of the errors here --}}
             @if ($errors->any())
-                <div class="alert alert-danger">
+                <div class="container-xxl alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>

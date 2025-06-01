@@ -1,8 +1,9 @@
 <?php
 
-use App\Core\Services\Admin\CategoryService;
-use App\Core\Services\User\BrandService;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
+use App\Core\Services\User\BrandService;
+use App\Core\Services\Admin\CategoryService;
 
 if (!function_exists('showValidationMessage')) {
     function showValidationMessage($error = null)
@@ -51,5 +52,12 @@ if (!function_exists('getBrands')) {
             $brandService = app(BrandService::class);
             return $brandService->getAll(scopes: ['active'], perPage: $perPage);
         });
+    }
+}
+
+if(!function_exists('getSetting')){
+    function getSetting($key)
+    {
+        return Setting::getCached($key);
     }
 }

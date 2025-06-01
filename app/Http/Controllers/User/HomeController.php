@@ -25,6 +25,6 @@ class HomeController extends Controller
         $categories = $this->categoryService->getCategories();
         $colors = $this->colorService->getColors();
 
-        return view('home', compact('sliders', 'newArrivals', 'categories', 'colors'));
+        return view('user.home.index', compact('sliders', 'newArrivals', 'categories', 'colors'));
     }
 }

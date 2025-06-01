@@ -1,15 +1,13 @@
 <div class="main-nav">
     <!-- Sidebar Logo -->
     <div class="logo-box">
-        <a href="{{ route('admin.dashboard') }}" class="logo-dark">
-            <img src="{{ asset('admin/assets/images/logo-sm.png') }}" class="logo-sm" alt="logo sm">
-            <img src="{{ asset('admin/assets/images/logo-dark.png') }}" class="logo-lg" alt="logo dark">
-        </a>
 
         <a href="{{ route('admin.dashboard') }}" class="logo-light">
-            <img src="{{ asset('admin/assets/images/logo-sm.png') }}" class="logo-sm" alt="logo sm">
-            <img src="{{ asset('admin/assets/images/logo-light.png') }}" class="logo-lg" alt="logo light">
-        </a>
+            <svg width="200" height="72" viewBox="0 0 353 72" xmlns="http://www.w3.org/2000/svg">
+                <text x="0" y="55" font-family="Arial, sans-serif" font-size="40" font-weight="900" fill="#FFFFFF">
+                    {{ strtoupper(getSetting('name')) }}
+                </text>
+            </svg> </a>
     </div>
 
     <div class="scrollbar" data-simplebar>
@@ -202,12 +200,27 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.dashboard') }}">
+                <a class="nav-link menu-arrow {{ request()->is('admin/settings*') ? 'active' : '' }}"
+                    href="#sidebarSettings" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                    aria-controls="sidebarSettings">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:settings-bold-duotone"></iconify-icon>
                     </span>
                     <span class="nav-text"> Settings </span>
                 </a>
+                <div class="collapse {{ request()->is('admin/settings*') ? 'show' : '' }}" id="sidebarSettings">
+                    <ul class="nav sub-navbar-nav">
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link {{ request()->is('admin/settings') ? 'active' : '' }}"
+                                href="{{ route('admin.settings.index') }}">All Settings</a>
+                        </li>
+                        <li class="sub-nav-item">
+                            <a class="sub-nav-link {{ request()->is('admin/settings/edit') ? 'active' : '' }}"
+                                href="{{ route('admin.settings.edit') }}">Edit Settings</a>
+                        </li>
+
+                    </ul>
+                </div>
             </li>
 
             <li class="menu-title mt-2">Users</li>
