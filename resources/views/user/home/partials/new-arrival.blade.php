@@ -68,10 +68,10 @@
                             <div class="d-flex gap-3 align-items-center">
                                 <span class="">
                                     4.3
-                                    @include('user.partials.home.star-svg')
+                                    @include('user.home.partials.star-svg')
                                 </span>
                                 <button type="button" class="btn btn-light bg-transparent border-0 p-0 animate-pulse">
-                                    @include('user.partials.home.heart-svg')
+                                    @include('user.home.partials.heart-svg')
                                 </button>
                             </div>
                         </div>

@@ -23,7 +23,8 @@
                                 <div class="col-lg-12 mb-3">
                                     <label for="product-title" class="form-label">Product Title</label>
                                     <input type="text" id="product-title" name="title" required
-                                        class="@error('title') is-invalid @enderror form-control" placeholder="Heater">
+                                        class="@error('title') is-invalid @enderror form-control"
+                                        placeholder="Heater" value="{{ old('title') }}">
                                     {{ showValidationMessage($errors->first('title')) }}
                                 </div>
 
@@ -31,9 +32,11 @@
                                     <label for="category" class="form-label">Category</label>
                                     <select class="@error('category_id') is-invalid @enderror form-control" id="category"
                                         name="category_id" required>
-                                        <option value="" disabled selected>Select Category</option>
+                                        <option value="" disabled {{ old('category_id') ? '' : 'selected' }}>Select Category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->title }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     {{ showValidationMessage($errors->first('category_id')) }}
@@ -43,24 +46,28 @@
                                     <label class="form-label">Product Status</label>
                                     <div class="d-flex gap-3">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="status" name="status" value="1" checked>
+                                            <input type="checkbox" class="form-check-input" id="status" name="status"
+                                                value="1" checked>
                                             <label class="form-check-label" for="status">Active</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" value="1">
+                                            <input type="checkbox" class="form-check-input" id="is_featured"
+                                                name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="is_featured">Featured Product</label>
                                         </div>
                                     </div>
-                                    <small class="form-text text-muted">Featured products will appear in the featured products section.</small>
+                                    {{-- <small class="form-text text-muted">Featured products will appear in the featured products section.</small> --}}
                                 </div>
 
                                 <div class="col-lg-3 mb-3">
-                                    <label for="brand-title" class="form-label">Brand </label>
-                                    <select class="@error('brand_id') is-invalid @enderror form-control" id="category"
+                                    <label for="brand" class="form-label">Brand</label>
+                                    <select class="@error('brand_id') is-invalid @enderror form-control" id="brand"
                                         name="brand_id" required>
-                                        <option value="" disabled selected>Select Brand</option>
+                                        <option value="" disabled {{ old('brand_id') ? '' : 'selected' }}>Select Brand</option>
                                         @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->title }}</option>
+                                            <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
+                                                {{ $brand->title }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     {{ showValidationMessage($errors->first('brand_id')) }}
@@ -69,7 +76,8 @@
                                 <div class="col-lg-3 mb-3">
                                     <label for="tag-number" class="form-label">Tag Number</label>
                                     <input type="text" id="tag-number" name="tag_number" required
-                                        class="@error('tag_number') is-invalid @enderror form-control" placeholder="HTR112">
+                                        class="@error('tag_number') is-invalid @enderror form-control"
+                                        placeholder="HTR112" value="{{ old('tag_number') }}">
                                     {{ showValidationMessage($errors->first('tag_number')) }}
                                 </div>
 
@@ -77,21 +85,23 @@
                                     <label for="price-id" class="form-label">Price (RS)</label>
                                     <input type="number" id="price-id" name="price" step="0.01" min="0"
                                         required class="@error('price') is-invalid @enderror form-control"
-                                        placeholder="1250">
+                                        placeholder="1250" value="{{ old('price') }}">
                                     {{ showValidationMessage($errors->first('price')) }}
                                 </div>
 
                                 <div class="col-lg-3 mb-3">
                                     <label for="product-weight" class="form-label">Weight (KG)</label>
-                                    <input type="number" id="product-weight" name="weight"
-                                        class="@error('weight') is-invalid @enderror form-control" placeholder="2">
+                                    <input type="number" id="product-weight" name="weight" step="0.01" min="0"
+                                        class="@error('weight') is-invalid @enderror form-control"
+                                        placeholder="2" value="{{ old('weight') }}">
                                     {{ showValidationMessage($errors->first('weight')) }}
                                 </div>
 
                                 <div class="col-lg-3 mb-3">
                                     <label for="stock-id" class="form-label">Stock</label>
-                                    <input type="number" id="stock-id" name="stock" step="0.01" min="0"
-                                        class="@error('stock') is-invalid @enderror form-control" placeholder="100">
+                                    <input type="number" id="stock-id" name="stock" min="0"
+                                        class="@error('stock') is-invalid @enderror form-control"
+                                        placeholder="100" value="{{ old('stock') }}">
                                     {{ showValidationMessage($errors->first('stock')) }}
                                 </div>
 
@@ -102,9 +112,10 @@
                                         <div class="d-flex flex-wrap gap-2" role="group" aria-label="Size selection">
                                             @foreach ($sizes as $size)
                                                 <input type="checkbox" class="btn-check" value="{{ $size->id }}"
-                                                    id="size-{{ strtolower($size->title) }}" name="sizes[]">
+                                                    id="size-{{ strtolower($size->title) }}" name="sizes[]"
+                                                    {{ in_array($size->id, old('sizes', [])) ? 'checked' : '' }}>
                                                 <label for="size-{{ strtolower($size->title) }}"
-                                                    class="btn btn-light avatar-sm rounded d-flex justify-content-center align-items-center">
+                                                    class="btn btn-outline-primary avatar-sm rounded d-flex justify-content-center align-items-center">
                                                     {{ $size->title }}
                                                 </label>
                                             @endforeach
@@ -113,12 +124,13 @@
                                     </div>
 
                                     <!-- Colors Section -->
-                                    <div class="col-9">
+                                    <div class="col-lg-9">
                                         <h5 class="text-dark fw-medium">Colors:</h5>
                                         <div class="d-flex flex-wrap gap-2" role="group" aria-label="Color selection">
                                             @foreach ($colors as $color)
                                                 <input type="checkbox" class="btn-check" value="{{ $color->id }}"
-                                                    id="color-{{ strtolower($color->title) }}" name="colors[]">
+                                                    id="color-{{ strtolower($color->title) }}" name="colors[]"
+                                                    {{ in_array($color->id, old('colors', [])) ? 'checked' : '' }}>
                                                 <label
                                                     class="btn btn-light avatar-m rounded d-flex justify-content-center align-items-center"
                                                     for="color-{{ strtolower($color->title) }}">
@@ -131,14 +143,13 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-12 mb-3">
                                     <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control bg-light-subtle @error('description') is-invalid @enderror" id="description"
-                                        rows="7" placeholder="Type description" name="description"></textarea>
+                                    <textarea class="form-control bg-light-subtle @error('description') is-invalid @enderror"
+                                        id="description" rows="7" placeholder="Type description"
+                                        name="description">{{ old('description') }}</textarea>
                                     {{ showValidationMessage($errors->first('description')) }}
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -147,7 +158,6 @@
                         <div class="card-header">
                             <h4 class="card-title">Media Options</h4>
                         </div>
-
                         <div class="card-body">
                             <div class="image-upload-container">
                                 <div class="upload-area" id="uploadArea">
@@ -158,8 +168,7 @@
                                                 stroke-linejoin="round" class="upload-icon">
                                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                                 <polyline points="17 8 12 3 7 8"></polyline>
-                                                <line x1="12" y1="3" x2="12" y2="15">
-                                                </line>
+                                                <line x1="12" y1="3" x2="12" y2="15"></line>
                                             </svg>
                                         </div>
                                         <p class="drop-text">
@@ -190,7 +199,8 @@
                                         <label for="meta-title" class="form-label">Meta Title</label>
                                         <input type="text" id="meta-title"
                                             class="@error('meta_title') is-invalid @enderror form-control"
-                                            placeholder="Buy Heaters Online | Seco Store" name="meta_title">
+                                            placeholder="Buy Heaters Online | Seco Store"
+                                            name="meta_title" value="{{ old('meta_title') }}">
                                         {{ showValidationMessage($errors->first('meta_title')) }}
                                     </div>
                                 </div>
@@ -199,15 +209,18 @@
                                         <label for="meta-keywords" class="form-label">Meta Keywords</label>
                                         <input type="text" id="meta-keywords" name="meta_keywords"
                                             class="@error('meta_keywords') is-invalid @enderror form-control"
-                                            placeholder="heaters, heating systems, CoolHeat Store, buy seco heaters online">
+                                            placeholder="heaters, heating systems, CoolHeat Store, buy seco heaters online"
+                                            value="{{ old('meta_keywords') }}">
                                         {{ showValidationMessage($errors->first('meta_keywords')) }}
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="mb-0">
                                         <label for="meta-description" class="form-label">Meta Description</label>
-                                        <textarea class="form-control bg-light-subtle" id="@error('meta_description') is-invalid @enderror meta-description"
-                                            rows="4" placeholder="Shop top-quality heaters at Seco Store..." name="meta_description"></textarea>
+                                        <textarea class="form-control bg-light-subtle @error('meta_description') is-invalid @enderror"
+                                            id="meta-description" rows="4"
+                                            placeholder="Shop top-quality heaters at Seco Store..."
+                                            name="meta_description">{{ old('meta_description') }}</textarea>
                                         {{ showValidationMessage($errors->first('meta_description')) }}
                                     </div>
                                 </div>
@@ -220,10 +233,12 @@
                             <div class="p-3 bg-light mb-3 rounded">
                                 <div class="row justify-content-end g-2">
                                     <div class="col-lg-3 offset-6">
-                                        <button class="btn btn-primary w-100">Cancel</button>
+                                        <a href="{{ route('admin.products.index') }}" class="btn btn-primary w-100">Cancel</a>
                                     </div>
                                     <div class="col-lg-3">
-                                        <button type="submit" class="btn btn-secondary w-100">Save</button>
+                                        <button type="submit" class="btn btn-secondary w-100">
+                                            Save Product
+                                        </button>
                                     </div>
                                 </div>
                             </div>

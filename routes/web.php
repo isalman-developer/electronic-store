@@ -28,13 +28,16 @@ Route::get('/categories', [CategoryController::class, 'index'])->name('categorie
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
+
+// Featured products, new arrivals, and top rated products
+Route::get('/{filter}/products', [ProductController::class, 'filterProducts'])->name('product.filter');
+
+
 // Product routes with SEO-friendly URLs
 Route::prefix('products')->name('product.')->group(function () {
     // All products with filters
     Route::get('/', [ProductController::class, 'index'])->name('index');
 
-    // Featured products, new arrivals, and top rated products
-    Route::get('/{filter}', [ProductController::class, 'filterProducts'])->name('filter');
 
     // Category-specific products
     Route::get('/category/{categorySlug}', [ProductController::class, 'categoryProducts'])
@@ -42,7 +45,7 @@ Route::prefix('products')->name('product.')->group(function () {
 
     // Brand-specific products
     Route::get('/brand/{brandSlug}', [ProductController::class, 'brandProducts'])
-        ->name('brand');
+    ->name('brand');
 
     // Combined category and brand filtering
     Route::get('/category/{categorySlug}/brand/{brandSlug}', [ProductController::class, 'categoryBrandProducts'])

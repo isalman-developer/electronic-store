@@ -21,15 +21,19 @@
 
                 <!-- Notification -->
                 <div class="dropdown topbar-item">
-                    <button type="button" class="topbar-button position-relative"
+                    <a href="/" class="topbar-button position-relative">
+                        <iconify-icon icon="solar:home-2-bold-duotone" class="fs-24 align-middle"></iconify-icon>
+                    </button>
+
+                    {{-- <button type="button" class="topbar-button position-relative"
                         id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                         <iconify-icon icon="solar:bell-bing-bold-duotone" class="fs-24 align-middle"></iconify-icon>
                         <span
                             class="position-absolute topbar-badge fs-10 translate-middle badge bg-danger rounded-pill">3<span
                                 class="visually-hidden">unread messages</span></span>
-                    </button>
-                    <div class="dropdown-menu py-0 dropdown-lg dropdown-menu-end"
+                    </button> --}}
+                    {{-- <div class="dropdown-menu py-0 dropdown-lg dropdown-menu-end"
                         aria-labelledby="page-header-notifications-dropdown">
                         <div class="p-3 border-top-0 border-start-0 border-end-0 border-dashed border">
                             <div class="row align-items-center">
@@ -128,15 +132,14 @@
                             <a href="javascript:void(0);" class="btn btn-primary btn-sm">View All Notification <i
                                     class="bx bx-right-arrow-alt ms-1"></i></a>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Activity -->
                 <div class="topbar-item d-none d-md-flex">
                     <button type="button" class="topbar-button" id="theme-settings-btn" data-bs-toggle="offcanvas"
                         data-bs-target="#theme-activity-offcanvas" aria-controls="theme-settings-offcanvas">
-                        <iconify-icon icon="solar:clock-circle-bold-duotone"
-                            class="fs-24 align-middle"></iconify-icon>
+                        <iconify-icon icon="solar:clock-circle-bold-duotone" class="fs-24 align-middle"></iconify-icon>
                     </button>
                 </div>
 
@@ -170,8 +173,8 @@
                                 class="align-middle">Help</span>
                         </a>
                         <a class="dropdown-item" href="auth-lock-screen.html">
-                            <i class="bx bx-lock text-muted fs-18 align-middle me-1"></i><span
-                                class="align-middle">Lock screen</span>
+                            <i class="bx bx-lock text-muted fs-18 align-middle me-1"></i><span class="align-middle">Lock
+                                screen</span>
                         </a>
 
                         <div class="dropdown-divider my-1"></div>

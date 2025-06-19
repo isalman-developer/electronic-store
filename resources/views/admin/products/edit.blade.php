@@ -54,7 +54,7 @@
                                             <label class="form-check-label" for="is_featured">Featured Product</label>
                                         </div>
                                     </div>
-                                    <small class="form-text text-muted">Featured products will appear in the featured products section.</small>
+                                    {{-- <small class="form-text text-muted">Featured products will appear in the featured products section.</small> --}}
                                 </div>
 
                                 <div class="col-lg-3 mb-3">
