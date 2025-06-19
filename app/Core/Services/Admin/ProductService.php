@@ -2,10 +2,11 @@
 
 namespace App\Core\Services\Admin;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\Core\Services\AbstractService;
 use App\Core\Repositories\ProductRepository;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ProductService extends AbstractService
 {
@@ -24,7 +25,7 @@ class ProductService extends AbstractService
             $data['slug'] = Str::slug($data['title']);
 
             // Set is_featured to false if not provided
-            $data['is_featured'] = isset($data['is_featured']) ? true : false;
+            $data['is_featured'] = isset($data['is_featured']) ? (bool)$data['is_featured'] : false;
 
             // Create product
             $product = $this->productRepository->store($data);
@@ -49,6 +50,9 @@ class ProductService extends AbstractService
                 }
             }
 
+            // Clear cache AFTER all relationships are attached
+            $this->clearProductCaches();
+
             return $product;
         });
     }
@@ -68,7 +72,7 @@ class ProductService extends AbstractService
             }
 
             // Set is_featured to false if not provided
-            $data['is_featured'] = isset($data['is_featured']) ? true : false;
+            $data['is_featured'] = isset($data['is_featured']) ? (bool)$data['is_featured'] : false;
 
             // Update product
             $product = $this->productRepository->update($id, $data);
@@ -93,7 +97,34 @@ class ProductService extends AbstractService
                 }
             }
 
+            // Clear cache AFTER all relationships are updated
+            $this->clearProductCaches();
+
             return $product;
         });
+    }
+
+    /**
+     * Get new arrivals with caching
+     */
+    public function getNewArrivals()
+    {
+        return Cache::remember('new_arrivals', 3600, function () {
+            return $this->productRepository->getQuery()
+                ->with(['media', 'category', 'brand', 'colors', 'sizes'])
+                ->latest()
+                ->take(10)
+                ->get();
+        });
+    }
+
+    /**
+     * Clear product-related caches
+     */
+    private function clearProductCaches()
+    {
+        Cache::forget('new_arrivals');
+        Cache::forget('featured_products');
+        Cache::forget('top_rated_products');
     }
 }

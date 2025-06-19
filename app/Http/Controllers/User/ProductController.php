@@ -133,6 +133,21 @@ class ProductController extends Controller
         return view('user.products.index', compact('products', 'category', 'brand', 'categories', 'brands', 'colors', 'filters'));
     }
 
+    public function featuredProducts(Request $request)
+    {
+        return $this->filterProducts('featured-products', $request);
+    }
+
+    public function newArrivals(Request $request)
+    {
+        return $this->filterProducts('new-arrivals', $request);
+    }
+
+    public function topRated(Request $request)
+    {
+        return $this->filterProducts('top-rated', $request);
+    }
+
     public function filterProducts($filter, Request $request)
     {
         $filters[$filter] = 'true';

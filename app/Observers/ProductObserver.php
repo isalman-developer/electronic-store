@@ -5,12 +5,9 @@ namespace App\Observers;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
-use App\Core\Services\User\ProductService;
 
 class ProductObserver
 {
-    public function __construct(protected ProductService $productService) {}
-
     public function creating(Product $product): void
     {
         $product->slug = Str::slug($product->title);
@@ -27,27 +24,22 @@ class ProductObserver
     }
 
     /**
-     * Handle the Product "created and updated" event.
-     */
-    public function saved(Product $product): void
-    {
-        $this->clearAndRebuildCache();
-    }
-
-    /**
      * Handle the Product "deleted" event.
+     * Only handle deletions here since create/update cache clearing
+     * is now handled in ProductService after relationships are attached
      */
     public function deleted(Product $product): void
     {
-        $this->clearAndRebuildCache();
+        $this->clearProductCaches();
     }
 
-    public function clearAndRebuildCache()
+    /**
+     * Clear product-related caches
+     */
+    private function clearProductCaches()
     {
-        cache()->forget('new_arrivals');
-
-        cache()->rememberForever('new_arrivals', function () {
-            return $this->productService->getNewArrivals();
-        });
+        Cache::forget('new_arrivals');
+        Cache::forget('featured_products');
+        Cache::forget('top_rated_products');
     }
 }

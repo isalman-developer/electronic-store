@@ -61,9 +61,9 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">Find Products</a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('product.filter', 'featured') }}">Featured Products</a>
-                                        <a class="dropdown-item" href="{{ route('product.filter', 'new-arrivals') }}">New Arrivals</a>
-                                        <a class="dropdown-item" href="{{ route('product.filter', 'top-rated') }}">Top Rated Products</a>
+                                        <a class="dropdown-item" href="{{ route('product.featured') }}">Featured Products</a>
+                                        <a class="dropdown-item" href="{{ route('product.new-arrivals') }}">New Arrivals</a>
+                                        <a class="dropdown-item" href="{{ route('product.top-rated') }}">Top Rated Products</a>
                                         <a class="dropdown-item" href="{{ route('product.index', ['price' => '0-10000']) }}">Under 10,000 PKR</a>
                                         <a class="dropdown-item" href="{{ route('product.index') }}">All Products</a>
                                     </li>
@@ -76,8 +76,8 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">Offers</a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('product.filter', 'featured') }}">Flash Sale</a>
-                                        <a class="dropdown-item" href="{{ route('product.filter', 'new-arrivals') }}">Season Sale</a>
+                                        <a class="dropdown-item" href="{{ route('product.featured', 'featured') }}">Flash Sale</a>
+                                        <a class="dropdown-item" href="{{ route('product.new-arrivals', 'new-arrivals') }}">Season Sale</a>
                                     </li>
                                 </ul>
                             </li>

@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Setting;
-use Illuminate\Support\Facades\Cache;
 use App\Core\Services\User\BrandService;
 use App\Core\Services\Admin\CategoryService;
 
