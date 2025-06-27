@@ -315,6 +315,9 @@
 
                         // Reload cart
                         loadCartPage();
+
+                        // Trigger cart sync event for other views
+                        triggerCartSync();
                     }
                 }, 300); // Shorter delay for updates
             }
@@ -345,9 +348,44 @@
 
                         // Reload cart
                         loadCartPage();
+
+                        // Trigger cart sync event for other views
+                        triggerCartSync();
                     }
                 }, 300); // Shorter delay for removals
             }
+
+            // Function to update navbar cart count consistently
+            function updateNavbarCartCount(count) {
+                const quickBuyCountElem = document.getElementById("quickBuyCount");
+                if (quickBuyCountElem) {
+                    quickBuyCountElem.textContent = count;
+                    quickBuyCountElem.style.display = count > 0 ? 'inline-block' : 'none';
+                }
+            }
+
+            // Function to trigger cart synchronization across all views
+            function triggerCartSync() {
+                const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+                const cartCount = parseInt(localStorage.getItem('quickBuyCount') || '0');
+
+                // Update navbar count
+                updateNavbarCartCount(cartCount);
+
+                // Dispatch a custom event that other cart views can listen to
+                window.dispatchEvent(new CustomEvent('cartUpdated', {
+                    detail: {
+                        cartItems: cartItems,
+                        cartCount: cartCount
+                    }
+                }));
+            }
+
+            // Listen for cart updates from other views (like sidebar)
+            window.addEventListener('cartUpdated', function(event) {
+                console.log('Cart updated from another view, reloading main cart page...');
+                loadCartPage();
+            });
 
             // Update cart button
             document.getElementById('updateCartBtn').addEventListener('click', function(e) {

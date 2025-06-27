@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <div class="d-flex align-items-center">
                                         <button class="btn btn-sm btn-link text-dark p-0 quantity-minus">−</button>
-                                        <input type="number" class="form-control form-control-sm text-center mx-2 quantity-input" 
+                                        <input type="number" class="form-control form-control-sm text-center mx-2 quantity-input"
                                             value="${item.quantity}" min="1" style="width: 40px;">
                                         <button class="btn btn-sm btn-link text-dark p-0 quantity-plus">+</button>
                                     </div>
@@ -157,6 +157,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Reload cart
             loadCart();
+
+            // Trigger cart sync event for other views
+            triggerCartSync();
         }
     }
 
@@ -177,7 +180,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Reload cart
             loadCart();
+
+            // Trigger cart sync event for other views
+            triggerCartSync();
         }
+    }
+
+    // Function to update navbar cart count consistently
+    function updateNavbarCartCount(count) {
+        const quickBuyCountElem = document.getElementById("quickBuyCount");
+        if (quickBuyCountElem) {
+            quickBuyCountElem.textContent = count;
+            quickBuyCountElem.style.display = count > 0 ? 'inline-block' : 'none';
+        }
+    }
+
+    // Function to trigger cart synchronization across all views
+    function triggerCartSync() {
+        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const cartCount = parseInt(localStorage.getItem('quickBuyCount') || '0');
+
+        // Update navbar count
+        updateNavbarCartCount(cartCount);
+
+        // Dispatch a custom event that other cart views can listen to
+        window.dispatchEvent(new CustomEvent('cartUpdated', {
+            detail: {
+                cartItems: cartItems,
+                cartCount: cartCount
+            }
+        }));
     }
 
     // Add item to cart
@@ -215,6 +247,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Reload cart
         loadCart();
 
+        // Trigger cart sync event for other views
+        triggerCartSync();
+
         // Show toast notification
         const toast = new bootstrap.Toast(document.getElementById('itemAddedToast'));
         toast.show();
@@ -234,6 +269,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             addToCart(ProductId, name, price, image, 1);
         });
+    });
+
+    // Listen for cart updates from other views (like main cart page)
+    window.addEventListener('cartUpdated', function(event) {
+        console.log('Cart updated from another view, reloading cart sidebar...');
+        // Update navbar count from event data
+        updateNavbarCartCount(event.detail.cartCount);
+        loadCart();
     });
 
     // Initial load
