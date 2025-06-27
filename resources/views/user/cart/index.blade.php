@@ -135,6 +135,19 @@
             console.log('Cart page loaded');
             // Get DOM elements
             const cartLoading = document.getElementById('cartLoading');
+
+            // Add debounce function to prevent multiple rapid updates
+            function debounce(func, wait) {
+                let timeout;
+                return function(...args) {
+                    const context = this;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), wait);
+                };
+            }
+
+            // Debounced version of updateCartItemQuantity
+            const debouncedUpdateQuantity = debounce(updateCartItemQuantity, 800);
             const cartContent = document.getElementById('cartContent');
             const cartTableBody = document.querySelector('table tbody');
             const subtotalElement = document.getElementById('subtotalAmount');
@@ -246,7 +259,10 @@
                     input.addEventListener('change', function() {
                         const row = this.closest('tr');
                         const index = row.getAttribute('data-index');
-                        updateCartItemQuantity(index, parseInt(this.value) || 1);
+                        // Update display immediately
+                        updateRowTotal(row, this.value);
+                        // Debounce the actual cart update
+                        debouncedUpdateQuantity(index, parseInt(this.value) || 1);
                     });
                 });
 
@@ -260,7 +276,10 @@
 
                         if (currentQty > 1) {
                             input.value = currentQty - 1;
-                            updateCartItemQuantity(index, currentQty - 1);
+                            // Update display immediately
+                            updateRowTotal(row, currentQty - 1);
+                            // Debounce the actual cart update
+                            debouncedUpdateQuantity(index, currentQty - 1);
                         }
                     });
                 });
@@ -274,7 +293,10 @@
                         const currentQty = parseInt(input.value);
 
                         input.value = currentQty + 1;
-                        updateCartItemQuantity(index, currentQty + 1);
+                        // Update display immediately
+                        updateRowTotal(row, currentQty + 1);
+                        // Debounce the actual cart update
+                        debouncedUpdateQuantity(index, currentQty + 1);
                     });
                 });
 
@@ -392,6 +414,38 @@
                 e.preventDefault();
                 loadCartPage();
             });
+
+            // Function to update row total without reloading
+            function updateRowTotal(row, quantity) {
+                const priceText = row.querySelector('p.mb-1').textContent;
+                const price = parseFloat(priceText.replace('$', ''));
+                const totalCell = row.querySelector('td:last-child');
+                const itemTotal = price * quantity;
+                totalCell.textContent = `$${itemTotal.toFixed(2)}`;
+
+                // Update subtotal and total
+                updateCartTotals();
+            }
+
+            // Function to recalculate cart totals without reloading
+            function updateCartTotals() {
+                const rows = document.querySelectorAll('table tbody tr');
+                let total = 0;
+
+                rows.forEach(row => {
+                    const totalCell = row.querySelector('td:last-child');
+                    if (totalCell) {
+                        const rowTotal = parseFloat(totalCell.textContent.replace('$', ''));
+                        total += rowTotal;
+                    }
+                });
+
+                subtotalElement.textContent = `$${total.toFixed(2)}`;
+                totalElement.textContent = `$${total.toFixed(2)}`;
+
+                // Update free shipping alert
+                freeShippingAlert.style.display = total >= freeShippingThreshold ? 'block' : 'none';
+            }
 
             // Initialize cart page
             loadCartPage();
