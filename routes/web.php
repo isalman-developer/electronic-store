@@ -88,5 +88,6 @@ Route::group((['prefix' => 'admin', 'as' => 'admin.']), function () {
         Route::post('/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('status.update');
         Route::get('/{order}/invoice/download', [AdminOrderController::class, 'downloadInvoice'])->name('invoice.download');
         Route::post('/{order}/invoice/resend', [AdminOrderController::class, 'resendInvoice'])->name('invoice.resend');
+        Route::post('/{order}/tracking', [AdminOrderController::class, 'updateTracking'])->name('orders.tracking.update');
     });
 });

@@ -80,7 +80,7 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'status' => 'required|string|in:processing,packaging,ready_to_ship,shipped,delivering,completed,canceled',
+            'status' => 'required|string|in:pending,paid,processing,packaging,ready_to_ship,shipped,delivering,completed,canceled',
             'description' => 'nullable|string|max:255',
         ]);
 
@@ -137,5 +137,36 @@ class OrderController extends Controller
 
         return redirect()->route('admin.orders.show', $order)
             ->with('success', 'Invoice has been resent to the customer.');
+    }
+
+    /**
+     * Update order tracking information
+     */
+    public function updateTracking(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'courier' => 'nullable|string|max:255',
+            'tracking_number' => 'nullable|string|max:255',
+        ]);
+
+        $order->update([
+            'courier' => $validated['courier'],
+            'tracking_number' => $validated['tracking_number'],
+        ]);
+
+        // Add a timeline entry for tracking information
+        if ($validated['tracking_number']) {
+            $this->timelineService->addTimelineEntry(
+                $order,
+                'Tracking information updated',
+                'Tracking number: ' . $validated['tracking_number'] . ' via ' . $validated['courier'],
+                'tracking_updated',
+                'bx bx-map',
+                'text-primary'
+            );
+        }
+
+        return redirect()->route('admin.orders.show', $order)
+            ->with('success', 'Tracking information updated successfully.');
     }
 }

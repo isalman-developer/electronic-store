@@ -27,6 +27,11 @@ class Order extends Model
         'total_amount',
         'status',
         'invoice_path',
+        'is_returned',
+        'is_refunded',
+        'courier',
+        'tracking_number',
+        'shipping_method',
     ];
 
     public function items()

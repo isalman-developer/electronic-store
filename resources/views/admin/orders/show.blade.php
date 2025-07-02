@@ -2,10 +2,28 @@
 
 @section('title', 'Order Details')
 @section('content')
+    <style>
+        /* Minimal custom CSS to supplement Bootstrap */
+        .order-tracking-container {
+            padding: 20px 0;
+        }
+
+        /* Make the progress steps responsive */
+        @media (max-width: 768px) {
+            .order-tracking-container .d-flex {
+                flex-wrap: wrap;
+            }
+
+            .order-tracking-container .text-center {
+                width: 50% !important;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
     <div class="container-xxl">
 
         <div class="row">
-            <div class="col-xl-9 col-lg-8">
+            <div class="col-xl-12 col-lg-8">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -14,6 +32,7 @@
                                     <div>
                                         <h4 class="fw-medium text-dark d-flex align-items-center gap-2">
                                             #{{ $order->order_number }}
+
                                             @if ($order->payment_status == 'paid')
                                                 <span class="badge bg-success text-light px-2 py-1 fs-13">Paid</span>
                                             @elseif($order->payment_status == 'refund')
@@ -21,12 +40,14 @@
                                             @else
                                                 <span class="badge bg-light text-dark px-2 py-1 fs-13">Unpaid</span>
                                             @endif
+
                                             <span class="border border-warning text-warning fs-13 px-2 py-1 rounded">
-                                                In Progress
+                                                {{ ucfirst($order->status) }}
                                             </span>
+
                                         </h4>
                                         <p class="mb-0">Order / Order Details / #{{ $order->order_number }} -
-                                            {{ $order->created_at->format('M d, Y') }} at 6:23 pm
+                                            {{ $order->created_at->format('M d, Y') }} at {{ $order->created_at->format('h:i a') }}
                                         </p>
                                     </div>
                                     <div>
@@ -38,71 +59,275 @@
                                 </div>
 
                                 <div class="mt-4">
-                                    <h4 class="fw-medium text-dark">Progress</h4>
+                                    <h4 class="fw-medium text-dark">Detail</h4>
+                                    <p class="text-muted mb-4">
+                                        @if (in_array($order->status, ['shipped', 'delivering']))
+                                            Your items is on the way. Tracking information will be available within 24
+                                            hours.
+                                        @elseif($order->status === 'completed')
+                                            Your order has been delivered.
+                                        @elseif($order->status === 'canceled')
+                                            Your order has been canceled.
+                                        @else
+                                            Your order is being processed. We'll update you when it ships.
+                                        @endif
+                                    </p>
                                 </div>
-                                <div class="row row-cols-xxl-5 row-cols-md-2 row-cols-1">
-                                    <div class="col">
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar progress-bar  progress-bar-striped progress-bar-animated bg-success"
-                                                role="progressbar" style="width: 100%" aria-valuenow="70" aria-valuemin="0"
-                                                aria-valuemax="70">
-                                            </div>
+
+                                <div class="order-tracking-container my-4">
+                                    @php
+                                        $statuses = [
+                                            [
+                                                'key' => 'pending',
+                                                'label' => 'Receiving orders',
+                                                'icon' => 'bx bx-check',
+                                            ],
+                                            [
+                                                'key' => 'processing',
+                                                'label' => 'Order processing',
+                                                'icon' => 'bx bx-check',
+                                            ],
+                                            [
+                                                'key' => 'delivering',
+                                                'label' => 'Being delivered',
+                                                'icon' => 'bx bx-check',
+                                            ],
+                                            [
+                                                'key' => 'completed',
+                                                'label' => 'Delivered',
+                                                'icon' => 'bx bx-check',
+                                            ],
+                                        ];
+
+                                        // Find the current status index
+                                        $currentIndex = 0;
+                                        foreach ($statuses as $index => $status) {
+                                            if ($order->status === 'pending' && $index === 0) {
+                                                $currentIndex = 0;
+                                                break;
+                                            } elseif (
+                                                ($order->status === 'paid' ||
+                                                    $order->status === 'packaging' ||
+                                                    $order->status === 'ready_to_ship') &&
+                                                $index === 1
+                                            ) {
+                                                $currentIndex = 1;
+                                                break;
+                                            } elseif (
+                                                ($order->status === 'shipped' || $order->status === 'delivering') &&
+                                                $index === 2
+                                            ) {
+                                                $currentIndex = 2;
+                                                break;
+                                            } elseif ($order->status === 'completed' && $index === 3) {
+                                                $currentIndex = 3;
+                                                break;
+                                            }
+                                        }
+                                    @endphp
+
+                                    <div class="position-relative mt-5 mb-4">
+                                        <!-- Progress bar -->
+                                        <div class="progress" style="height: 3px;">
+                                            <div class="progress-bar bg-primary" role="progressbar"
+                                                style="width: {{ min(100, ($currentIndex / (count($statuses) - 1)) * 100) }}%;"
+                                                aria-valuenow="{{ min(100, ($currentIndex / (count($statuses) - 1)) * 100) }}"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mb-0 mt-2">Order Confirming</p>
-                                    </div>
-                                    <div class="col">
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar progress-bar  progress-bar-striped progress-bar-animated bg-success"
-                                                role="progressbar" style="width: 100%" aria-valuenow="70" aria-valuemin="0"
-                                                aria-valuemax="70">
-                                            </div>
+
+                                        <!-- Status points -->
+                                        <div class="row position-relative" style="margin-top: -20px;">
+                                            @foreach ($statuses as $index => $status)
+                                                @php
+                                                    $isActive =
+                                                        $index <= $currentIndex && $order->status !== 'canceled';
+                                                    $isCurrent = $index === $currentIndex;
+
+                                                    // Get timestamp for this status from order timeline
+                                                    $timestamp = null;
+                                                    foreach ($order->timelines as $timeline) {
+                                                        if (
+                                                            ($status['key'] === 'pending' &&
+                                                                $timeline->status === 'pending') ||
+                                                            ($status['key'] === 'processing' &&
+                                                                in_array($timeline->status, [
+                                                                    'processing',
+                                                                    'packaging',
+                                                                    'ready_to_ship',
+                                                                ])) ||
+                                                            ($status['key'] === 'delivering' &&
+                                                                in_array($timeline->status, [
+                                                                    'shipped',
+                                                                    'delivering',
+                                                                ])) ||
+                                                            ($status['key'] === 'completed' &&
+                                                                $timeline->status === 'completed')
+                                                        ) {
+                                                            $timestamp = $timeline->created_at;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    // Default timestamp if not found in timeline
+                                                    if (!$timestamp && $isActive) {
+                                                        $timestamp =
+                                                            $index === 0 ? $order->created_at : $order->updated_at;
+                                                    }
+
+                                                    $statusLabel = $status['label'];
+                                                    $statusTime = $timestamp ? $timestamp->format('h:i A') : 'Pending';
+                                                @endphp
+
+                                                <div class="col-3 text-center">
+                                                    <div class="rounded-circle {{ $isActive ? 'bg-primary' : 'bg-light' }} d-flex align-items-center justify-content-center mx-auto"
+                                                        style="width: 40px; height: 40px;">
+                                                        @if ($isActive)
+                                                            <i class="{{ $status['icon'] }} text-white"></i>
+                                                        @endif
+                                                    </div>
+                                                    <div class="mt-2 fw-medium small">{{ $statusLabel }}</div>
+                                                    <div class="small text-muted">{{ $statusTime }}</div>
+                                                    <div class="small text-muted">
+                                                        {{ $isCurrent ? 'Processing' : ($isActive ? '' : 'Pending') }}
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                        <p class="mb-0 mt-2">Payment Pending</p>
-                                    </div>
-                                    <div class="col">
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar progress-bar  progress-bar-striped progress-bar-animated bg-warning"
-                                                role="progressbar" style="width: 60%" aria-valuenow="70" aria-valuemin="0"
-                                                aria-valuemax="70">
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 mt-2">
-                                            <p class="mb-0">Processing</p>
-                                            <div class="spinner-border spinner-border-sm text-warning" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar progress-bar  progress-bar-striped progress-bar-animated bg-primary"
-                                                role="progressbar" style="width: 0%" aria-valuenow="70" aria-valuemin="0"
-                                                aria-valuemax="70">
-                                            </div>
-                                        </div>
-                                        <p class="mb-0 mt-2">Shipping</p>
-                                    </div>
-                                    <div class="col">
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar progress-bar  progress-bar-striped progress-bar-animated bg-primary"
-                                                role="progressbar" style="width: 0%" aria-valuenow="70" aria-valuemin="0"
-                                                aria-valuemax="70">
-                                            </div>
-                                        </div>
-                                        <p class="mb-0 mt-2">Delivered</p>
                                     </div>
                                 </div>
                             </div>
                             <div
                                 class="card-footer d-flex flex-wrap align-items-center justify-content-between bg-light-subtle gap-2">
-                                <p class="border rounded mb-0 px-2 py-1 bg-body"><i
-                                        class="bx bx-arrow-from-left align-middle fs-16"></i> Estimated shipping date :
-                                    <span
-                                        class="text-dark fw-medium">{{ $order->created_at->addDays(7)->format('M d, Y') }}</span>
+                                <p class="border rounded mb-0 px-2 py-1 bg-body">
+                                    <i class="bx bx-arrow-from-left align-middle fs-16"></i>
+                                    Estimated shipping date :
+                                    <span class="text-dark fw-medium">
+                                        {{ $order->created_at->addDays(7)->format('M d, Y') }}
+                                    </span>
                                 </p>
                                 <div>
-                                    <a href="#!" class="btn btn-primary">Make As Ready To Ship</a>
+                                    <form action="{{ route('admin.orders.status.update', $order->id) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @php
+                                            $nextStatus = null;
+                                            $buttonText = null;
+                                            $description = null;
+                                            switch ($order->status) {
+                                                case 'pending':
+                                                    $nextStatus = 'paid';
+                                                    $buttonText = 'Mark As Paid';
+                                                    $description = 'Order marked as paid.';
+                                                    break;
+                                                case 'paid':
+                                                    $nextStatus = 'processing';
+                                                    $buttonText = 'Mark As Processing';
+                                                    $description = 'Order is now processing.';
+                                                    break;
+                                                case 'processing':
+                                                    $nextStatus = 'packaging';
+                                                    $buttonText = 'Mark As Ready To Pack';
+                                                    $description = 'Order is ready to be packed.';
+                                                    break;
+                                                case 'packaging':
+                                                    $nextStatus = 'ready_to_ship';
+                                                    $buttonText = 'Mark As Ready To Ship';
+                                                    $description = 'Order is ready to ship.';
+                                                    break;
+                                                case 'ready_to_ship':
+                                                    $nextStatus = 'shipped';
+                                                    $buttonText = 'Mark As Shipped';
+                                                    $description = 'Order has been shipped.';
+                                                    break;
+                                                case 'shipped':
+                                                    $nextStatus = 'delivering';
+                                                    $buttonText = 'Mark As Ready To Deliver';
+                                                    $description = 'Order is out for delivery.';
+                                                    break;
+                                                case 'delivering':
+                                                    $nextStatus = 'completed';
+                                                    $buttonText = 'Mark As Completed';
+                                                    $description = 'Order has been completed.';
+                                                    break;
+                                                case 'completed':
+                                                    $nextStatus = 'canceled';
+                                                    $buttonText = 'Cancel The Order';
+                                                    $description = 'Order has been canceled.';
+                                                    break;
+                                            }
+                                        @endphp
+                                        @if ($nextStatus && $buttonText)
+                                            <input type="hidden" name="status" value="{{ $nextStatus }}">
+                                            <input type="hidden" name="description" value="{{ $description }}">
+                                            <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
+                                        @endif
+                                    </form>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h4 class="card-title">Shipping Information</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label text-muted">Shipping Method</label>
+                                            <p class="mb-0 fw-medium">{{ $order->shipping_method ?? 'Standard Shipping' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label text-muted">Courier</label>
+                                            <p class="mb-0 fw-medium">{{ $order->courier ?? 'Not assigned yet' }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label text-muted">Tracking Number</label>
+                                            <p class="mb-0 fw-medium">{{ $order->tracking_number ?? 'Not available' }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label text-muted">Estimated Delivery</label>
+                                            <p class="mb-0 fw-medium">
+                                                {{ $order->created_at->addDays(7)->format('M d, Y') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if ($order->status === 'shipped' || $order->status === 'delivering')
+                                    <div class="mt-3">
+                                        <form action="{{ route('admin.orders.tracking.update', $order->id) }}"
+                                            method="POST" class="row g-3">
+                                            @csrf
+                                            <div class="col-md-4">
+                                                <label for="courier" class="form-label">Courier</label>
+                                                <input type="text" class="form-control" id="courier" name="courier"
+                                                    value="{{ $order->courier ?? '' }}" placeholder="Enter courier name">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="tracking_number" class="form-label">Tracking Number</label>
+                                                <input type="text" class="form-control" id="tracking_number"
+                                                    name="tracking_number" value="{{ $order->tracking_number ?? '' }}"
+                                                    placeholder="Enter tracking number">
+                                            </div>
+                                            <div class="col-md-4 d-flex align-items-end">
+                                                <button type="submit" class="btn btn-primary">Update Shipping
+                                                    Info</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="card">
@@ -544,3 +769,6 @@
     </div>
 
 @endsection
+
+@push('page-script-bottom')
+@endpush
