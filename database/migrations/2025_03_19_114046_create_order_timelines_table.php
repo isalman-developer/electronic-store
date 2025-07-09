@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('title');
+            $table->string('status');
             $table->text('description')->nullable();
-            $table->string('status')->nullable();
-            $table->string('icon')->nullable();
-            $table->string('icon_class')->nullable();
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            // Add index for faster timeline queries
+            $table->index(['order_id', 'created_at']);
+            $table->index(['status']);
         });
     }
 

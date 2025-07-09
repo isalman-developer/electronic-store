@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking - Horizontal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        body {
+            background-color: var(--gray-50);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .tracking-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 2rem;
+        }
+
+        .order-info h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .order-meta {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .current-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-paid { background-color: #d1fae5; color: #065f46; }
+        .status-processing { background-color: #dbeafe; color: #1e40af; }
+        .status-packaging { background-color: #e0e7ff; color: #5b21b6; }
+        .status-ready_to_ship { background-color: #f0f9ff; color: #0c4a6e; }
+        .status-shipped { background-color: #ecfdf5; color: #047857; }
+        .status-delivering { background-color: #fef2f2; color: #991b1b; }
+        .status-completed { background-color: #d1fae5; color: #065f46; }
+        .status-canceled { background-color: #fee2e2; color: #991b1b; }
+
+        .progress-section {
+            padding: 2rem;
+        }
+
+        .progress-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 2rem;
+        }
+
+        /* Horizontal Timeline Styles */
+        .horizontal-timeline {
+            position: relative;
+            padding: 2rem 0;
+            overflow-x: auto;
+        }
+
+        .timeline-track {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            min-width: 100%;
+            padding-bottom: 1rem;
+        }
+
+        .timeline-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            min-width: 120px;
+        }
+
+        .timeline-step:last-child .step-connector {
+            display: none;
+        }
+
+        .step-marker {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .marker-completed {
+            background: var(--success-color);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.2);
+        }
+
+        .marker-active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .marker-pending {
+            background: var(--gray-200);
+            color: var(--gray-500);
+            border: 2px solid var(--gray-300);
+        }
+
+        .marker-canceled {
+            background: var(--danger-color);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2); }
+            50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0.1); }
+            100% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2); }
+        }
+
+        .step-connector {
+            position: absolute;
+            top: 1.5rem;
+            left: calc(50% + 1.5rem);
+            right: calc(-50% + 1.5rem);
+            height: 3px;
+            background: var(--gray-200);
+            z-index: 1;
+        }
+
+        .connector-completed {
+            background: var(--success-color);
+        }
+
+        .step-content {
+            text-align: center;
+            max-width: 140px;
+        }
+
+        .step-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
+        }
+
+        .step-description {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .step-time {
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+
+        .step-pending .step-title,
+        .step-pending .step-description {
+            color: var(--gray-400);
+        }
+
+        .details-section {
+            background: var(--gray-50);
+            padding: 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-item h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-500);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .detail-item p {
+            font-size: 0.875rem;
+            color: var(--gray-900);
+            margin: 0;
+        }
+
+        .demo-controls {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .demo-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 1rem;
+        }
+
+        .status-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            background: white;
+            color: var(--gray-700);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+            text-decoration: none;
+            color: var(--gray-800);
+        }
+
+        .status-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .card-header, .progress-section, .details-section {
+                padding: 1.5rem;
+            }
+
+            .order-info h1 {
+                font-size: 1.5rem;
+            }
+
+            .timeline-step {
+                min-width: 100px;
+            }
+
+            .step-marker {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1rem;
+            }
+
+            .step-content {
+                max-width: 120px;
+            }
+
+            .step-title {
+                font-size: 0.75rem;
+            }
+
+            .step-description {
+                font-size: 0.65rem;
+            }
+
+            .step-time {
+                font-size: 0.6rem;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .horizontal-timeline {
+                padding: 1rem 0;
+            }
+
+            .demo-controls {
+                margin-bottom: 1rem;
+            }
+
+            .status-btn {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+                margin: 0.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-step {
+                min-width: 80px;
+            }
+
+            .step-content {
+                max-width: 100px;
+            }
+
+            .step-marker {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Demo Controls -->
+        <div class="demo-controls">
+            <div class="demo-title">Demo: Select Order Status</div>
+            <button class="status-btn" onclick="setStatus('pending')">Pending</button>
+            <button class="status-btn" onclick="setStatus('paid')">Paid</button>
+            <button class="status-btn" onclick="setStatus('processing')">Processing</button>
+            <button class="status-btn" onclick="setStatus('packaging')">Packaging</button>
+            <button class="status-btn" onclick="setStatus('ready_to_ship')">Ready to Ship</button>
+            <button class="status-btn" onclick="setStatus('shipped')">Shipped</button>
+            <button class="status-btn" onclick="setStatus('delivering')">Delivering</button>
+            <button class="status-btn" onclick="setStatus('completed')">Completed</button>
+            <button class="status-btn" onclick="setStatus('canceled')">Canceled</button>
+        </div>
+
+        <!-- Main Tracking Card -->
+        <div class="tracking-card fade-in">
+            <!-- Header -->
+            <div class="card-header">
+                <div class="order-info">
+                    <h1>Order #ORD-2025-001234</h1>
+                    <div class="order-meta">
+                        Placed on January 15, 2025 • 3 items • $247.50
+                    </div>
+                    <div class="current-status" id="currentStatusBadge">
+                        <i class="fas fa-clock me-2"></i>
+                        <span id="currentStatusText">Order Pending</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <div class="progress-title">Order Progress</div>
+
+                <div class="horizontal-timeline">
+                    <div class="timeline-track" id="timelineTrack">
+                        <!-- Timeline steps will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Details -->
+            <div class="details-section">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <h4>Tracking Number</h4>
+                        <p id="trackingNumber">TRK123456789</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Estimated Delivery</h4>
+                        <p id="estimatedDelivery">January 22, 2025</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Shipping Address</h4>
+                        <p>123 Main Street<br>Lahore, Punjab 54000</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Shipping Method</h4>
+                        <p>Standard Delivery (5-7 days)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const statusFlow = [
+            { id: 'pending', title: 'Order Pending', description: 'Order received', icon: 'fas fa-clock' },
+            { id: 'paid', title: 'Payment Confirmed', description: 'Payment processed', icon: 'fas fa-credit-card' },
+            { id: 'processing', title: 'Processing', description: 'Preparing order', icon: 'fas fa-cogs' },
+            { id: 'packaging', title: 'Packaging', description: 'Items being packed', icon: 'fas fa-box' },
+            { id: 'ready_to_ship', title: 'Ready to Ship', description: 'Awaiting pickup', icon: 'fas fa-check-circle' },
+            { id: 'shipped', title: 'Shipped', description: 'Package in transit', icon: 'fas fa-shipping-fast' },
+            { id: 'delivering', title: 'Out for Delivery', description: 'On delivery vehicle', icon: 'fas fa-truck' },
+            { id: 'completed', title: 'Delivered', description: 'Successfully delivered', icon: 'fas fa-check-double' }
+        ];
+
+        const canceledStatus = { id: 'canceled', title: 'Order Canceled', description: 'Order canceled', icon: 'fas fa-times-circle' };
+
+        let currentStatus = 'pending';
+
+        function setStatus(status) {
+            currentStatus = status;
+
+            // Update button states
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            updateStatusBadge();
+            updateHorizontalTimeline();
+            updateDetails();
+        }
+
+        function updateStatusBadge() {
+            const badge = document.getElementById('currentStatusBadge');
+            const text = document.getElementById('currentStatusText');
+
+            // Remove all status classes
+            badge.className = 'current-status';
+            badge.classList.add(`status-${currentStatus}`);
+
+            if (currentStatus === 'canceled') {
+                text.innerHTML = '<i class="fas fa-times-circle me-2"></i>Order Canceled';
+            } else {
+                const statusInfo = statusFlow.find(s => s.id === currentStatus);
+                if (statusInfo) {
+                    text.innerHTML = `<i class="${statusInfo.icon} me-2"></i>${statusInfo.title}`;
+                }
+            }
+        }
+
+        function updateHorizontalTimeline() {
+            const timelineTrack = document.getElementById('timelineTrack');
+            let timelineHTML = '';
+
+            if (currentStatus === 'canceled') {
+                // Show only canceled status in center
+                timelineHTML = `
+                    <div class="timeline-step">
+                        <div class="step-marker marker-canceled">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">${canceledStatus.title}</div>
+                            <div class="step-description">${canceledStatus.description}</div>
+                            <div class="step-time">Canceled ${new Date().toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const currentIndex = statusFlow.findIndex(s => s.id === currentStatus);
+
+                statusFlow.forEach((status, index) => {
+                    let markerClass = 'marker-pending';
+                    let markerIcon = '';
+                    let timeText = '';
+                    let connectorClass = '';
+                    let stepClass = '';
+
+                    if (index <= currentIndex) {
+                        if (index === currentIndex) {
+                            markerClass = 'marker-active';
+                            markerIcon = '<i class="fas fa-circle"></i>';
+                            timeText = `${new Date().toLocaleDateString()}`;
+                        } else {
+                            markerClass = 'marker-completed';
+                            markerIcon = '<i class="fas fa-check"></i>';
+                            const daysAgo = currentIndex - index;
+                            const date = new Date();
+                            date.setDate(date.getDate() - daysAgo);
+                            timeText = `${date.toLocaleDateString()}`;
+                        }
+
+                        if (index < currentIndex) {
+                            connectorClass = 'connector-completed';
+                        }
+                    } else {
+                        markerIcon = '<i class="fas fa-circle"></i>';
+                        stepClass = 'step-pending';
+                    }
+
+                    timelineHTML += `
+                        <div class="timeline-step ${stepClass}">
+                            <div class="step-marker ${markerClass}">
+                                ${markerIcon}
+                            </div>
+                            <div class="step-content">
+                                <div class="step-title">${status.title}</div>
+                                <div class="step-description">${status.description}</div>
+                                ${timeText ? `<div class="step-time">${timeText}</div>` : ''}
+                            </div>
+                            <div class="step-connector ${connectorClass}"></div>
+                        </div>
+                    `;
+                });
+            }
+
+            timelineTrack.innerHTML = timelineHTML;
+        }
+
+        function updateDetails() {
+            const deliveryElement = document.getElementById('estimatedDelivery');
+            const trackingElement = document.getElementById('trackingNumber');
+
+            if (currentStatus === 'canceled') {
+                deliveryElement.textContent = 'N/A - Order Canceled';
+                trackingElement.textContent = 'N/A';
+            } else if (currentStatus === 'completed') {
+                deliveryElement.textContent = `Delivered on ${new Date().toLocaleDateString()}`;
+                trackingElement.textContent = 'TRK123456789';
+            } else {
+                const currentIndex = statusFlow.findIndex(s => s.id === currentStatus);
+                const remainingDays = statusFlow.length - currentIndex;
+                const deliveryDate = new Date();
+                deliveryDate.setDate(deliveryDate.getDate() + remainingDays);
+                deliveryElement.textContent = deliveryDate.toLocaleDateString();
+                trackingElement.textContent = 'TRK123456789';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.status-btn').classList.add('active');
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>

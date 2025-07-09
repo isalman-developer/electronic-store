@@ -77,11 +77,14 @@ class OrderController extends Controller
             ->with('success', 'Order deleted successfully.');
     }
 
+    /**
+     * Update order status
+     */
     public function updateStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'status' => 'required|string|in:pending,paid,processing,packaging,ready_to_ship,shipped,delivering,completed,canceled',
-            'description' => 'nullable|string|max:255',
+            'status' => 'required|string|max:50',
+            'description' => 'nullable|string',
         ]);
 
         $this->timelineService->updateOrderStatus(
@@ -97,16 +100,16 @@ class OrderController extends Controller
     public function addTimelineEntry(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'status' => 'required|string|max:50',
             'description' => 'nullable|string',
-            'status' => 'nullable|string|max:50',
+            'custom_status' => 'nullable|string|max:255',
         ]);
 
         $this->timelineService->addTimelineEntry(
             $order,
-            $validated['title'],
+            $validated['status'],
             $validated['description'] ?? null,
-            $validated['status'] ?? null
+            $validated['custom_status'] ?? null
         );
 
         return redirect()->route('admin.orders.show', $order)

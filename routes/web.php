@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
@@ -14,7 +15,6 @@ use App\Http\Controllers\Admin\SliderController as AdminSliderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-
 
 // Home Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -47,7 +47,7 @@ Route::prefix('products')->name('product.')->group(function () {
 
     // Brand-specific products
     Route::get('/brand/{brandSlug}', [ProductController::class, 'brandProducts'])
-    ->name('brand');
+        ->name('brand');
 
     // Combined category and brand filtering
     Route::get('/category/{categorySlug}/brand/{brandSlug}', [ProductController::class, 'categoryBrandProducts'])

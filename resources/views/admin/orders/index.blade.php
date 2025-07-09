@@ -226,7 +226,7 @@
                                                 @elseif($order->status == 'canceled')
                                                     <span
                                                         class="badge border border-danger text-danger px-2 py-1 fs-13">Canceled</span>
-                                                @elseif($order->status == 'processing' || $order->status == 'packaging')
+                                                @elseif($order->status == 'processed' || $order->status == 'packed')
                                                     <span
                                                         class="badge border border-warning text-warning px-2 py-1 fs-13">{{ ucfirst($order->status) }}</span>
                                                 @elseif($order->status == 'draft')
