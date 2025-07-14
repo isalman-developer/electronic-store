@@ -9,8 +9,8 @@ enum OrderStatus: string
     case Shipped = 'shipped';
     case Completed = 'completed';
     case Canceled = 'canceled';
-    case Refunded = 'refunded';
     case Returned = 'returned';
+    case Refunded = 'refunded';
 
     public function label(): string
     {

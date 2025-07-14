@@ -60,8 +60,8 @@
                                             <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
                                             <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
                                             <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
-                                            <option value="refunded" {{ $order->status == 'refunded' ? 'selected' : '' }}>Refunded</option>
                                             <option value="returned" {{ $order->status == 'returned' ? 'selected' : '' }}>Returned</option>
+                                            <option value="refunded" {{ $order->status == 'refunded' ? 'selected' : '' }}>Refunded</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -69,7 +69,7 @@
                                         <select class="form-control" id="payment_status" name="payment_status" required>
                                             <option value="pending" {{ $order->payment_status == 'pending' ? 'selected' : '' }}>Pending</option>
                                             <option value="paid" {{ $order->payment_status == 'paid' ? 'selected' : '' }}>Paid</option>
-                                            <option value="refund" {{ $order->payment_status == 'refund' ? 'selected' : '' }}>Refunded</option>
+                                            <option value="refunded" {{ $order->payment_status == 'refunded' ? 'selected' : '' }}>Refunded</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">

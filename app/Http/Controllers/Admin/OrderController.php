@@ -105,7 +105,7 @@ class OrderController extends Controller
             'zip' => 'nullable|string|max:20',
             'country' => 'nullable|string|max:255',
             'status' => 'required|string|in:pending,paid,shipped,completed,canceled,refunded,returned',
-            'payment_status' => 'required|string|in:pending,paid,refund',
+            'payment_status' => 'required|string|in:pending,paid,refunded',
             'shipping_method' => 'nullable|string|max:255',
             'courier' => 'nullable|string|max:255',
             'tracking_number' => 'nullable|string|max:255',
@@ -115,25 +115,15 @@ class OrderController extends Controller
         unset($validated['payment_method']);
         unset($validated['total_amount']);
 
-        $oldStatus = $order->status;
-        $newStatus = $validated['status'];
-
-        // Automatically set payment_status based on status
-        if ($newStatus === 'paid') {
+        if($validated['status'] === 'pending'){
+            $validated['payment_status'] = 'pending';
+        }elseif ($validated['status'] === 'paid') {
             $validated['payment_status'] = 'paid';
-        } elseif ($newStatus === 'refunded') {
-            $validated['payment_status'] = 'refund';
+        } elseif ($validated['status'] === 'refunded') {
+            $validated['payment_status'] = 'refunded';
         }
 
         $order->update($validated);
-
-        if ($oldStatus !== $newStatus) {
-            $this->orderTrackingService->updateStatus(
-                $order,
-                OrderStatus::from($newStatus),
-                'Status updated via order edit'
-            );
-        }
 
         return redirect()
             ->route('admin.orders.show', $order)
@@ -170,9 +160,7 @@ class OrderController extends Controller
             if ($newStatus->value === 'paid') {
                 $order->payment_status = 'paid';
             } elseif ($newStatus->value === 'refunded') {
-                $order->payment_status = 'refund';
-            } else {
-                $order->payment_status = 'pending';
+                $order->payment_status = 'refunded';
             }
             $order->save();
 

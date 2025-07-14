@@ -192,8 +192,8 @@
                                             <td>
                                                 @if ($order->payment_status == 'paid')
                                                     <span class="badge bg-success text-light px-2 py-1 fs-13">Paid</span>
-                                                @elseif($order->payment_status == 'refund')
-                                                    <span class="badge bg-light text-dark px-2 py-1 fs-13">Refund</span>
+                                                @elseif($order->payment_status == 'refunded')
+                                                    <span class="badge bg-light text-dark px-2 py-1 fs-13">Refunded</span>
                                                 @else
                                                     <span class="badge bg-light text-dark px-2 py-1 fs-13">Unpaid</span>
                                                 @endif

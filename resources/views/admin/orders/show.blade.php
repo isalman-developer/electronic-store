@@ -8,7 +8,7 @@
         .order-tracking-container {
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             padding: 2rem;
             margin-bottom: 2rem;
         }
@@ -40,7 +40,7 @@
             font-size: 1.5rem;
             color: #fff;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             z-index: 2;
             position: relative;
         }
@@ -53,7 +53,7 @@
         .order-stepper-circle.active {
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
             transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(59,130,246,0.3);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
         }
 
         .order-stepper-circle.pending {
@@ -111,7 +111,7 @@
         .timeline-container {
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             padding: 2rem;
         }
 
@@ -266,8 +266,13 @@
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 @endpush
@@ -289,7 +294,7 @@
                                                 <span class="badge bg-light text-dark px-2 py-1 fs-13">
                                                     Unpaid
                                                 </span>
-                                            @elseif($order->payment_status == 'refund')
+                                            @elseif($order->payment_status == 'refunded')
                                                 <span class="badge bg-light text-dark px-2 py-1 fs-13">
                                                     Refunded
                                                 </span>
@@ -300,31 +305,37 @@
                                             @endif
 
                                             <span class="border border-warning text-warning fs-13 px-2 py-1 rounded">
-                                                {{ ucfirst($order->status == "pending" ? "processing" : $order->status) }}
+                                                {{ !in_array($order->status, ['completed','canceled', 'returned', 'refunded']) ? 'In Progress' : ucfirst($order->status) }}
                                             </span>
 
-                                            <!-- Quick Payment Status Update Form -->
-                                            <!-- (Removed: payment status should not be manually updated here) -->
                                         </h4>
-                                        <p class="mb-0">Order / Order Details / #{{ $order->order_number }} -
+                                        <p class="mb-0">
                                             {{ $order->created_at->format('M d, Y') }} at
                                             {{ $order->created_at->format('h:i a') }}
                                         </p>
                                     </div>
                                     <div>
-                                        @if(in_array('refunded', array_column($progressData['next_statuses'], 'key')))
-                                            <form action="{{ route('admin.orders.refund', $order->id) }}" method="POST" class="d-inline">
+
+                                        {{-- Return Button --}}
+                                        @if ($order->status == 'completed' && $order->payment_status == 'paid')
+                                            <form action="{{ route('admin.orders.return', $order->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-orange"
+                                                    style="background:#f97316;color:#fff;">Return</button>
+                                            </form>
+                                        @endif
+
+                                        {{-- Refund Button --}}
+                                        @if ($order->status === 'returned')
+                                            <form action="{{ route('admin.orders.refund', $order->id) }}" method="POST"
+                                                class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="btn btn-warning">Refund</button>
                                             </form>
                                         @endif
-                                        @if(in_array('returned', array_column($progressData['next_statuses'], 'key')))
-                                            <form action="{{ route('admin.orders.return', $order->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <button type="submit" class="btn btn-orange" style="background:#f97316;color:#fff;">Return</button>
-                                            </form>
-                                        @endif
-                                        <a href="#!" class="btn btn-outline-secondary">
+
+                                        <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-outline-secondary">
                                             Edit Order
                                         </a>
                                     </div>
@@ -336,21 +347,26 @@
 
                                     <div class="order-stepper">
                                         <div class="order-stepper-bar"></div>
-                                        <div class="order-stepper-bar-fill" style="width: {{ $progressData['progress_percentage'] }}%"></div>
+                                        <div class="order-stepper-bar-fill"
+                                            style="width: {{ $progressData['progress_percentage'] }}%"></div>
 
                                         @foreach ($progressData['statuses'] as $statusKey => $statusInfo)
                                             @php
-                                                $stepIndex = array_search($statusKey, array_keys($progressData['statuses']));
+                                                $stepIndex = array_search(
+                                                    $statusKey,
+                                                    array_keys($progressData['statuses']),
+                                                );
                                                 $isCompleted = $stepIndex < $progressData['current_index'];
                                                 $isActive = $stepIndex === $progressData['current_index'];
-                                                $isCanceled = $statusKey === 'canceled';
-                                        @endphp
-
-                                            <div class="order-stepper-step" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $statusInfo['tooltip'] }}">
-                                                <div class="order-stepper-circle @if($isCanceled) canceled @elseif($isActive) active @elseif($isCompleted) completed @else pending @endif">
+                                            $isCanceled = $statusKey === 'canceled'; @endphp
+                                            <div class="order-stepper-step" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="{{ $statusInfo['tooltip'] }}">
+                                                <div
+                                                    class="order-stepper-circle @if ($isCanceled) canceled @elseif($isActive) active @elseif($isCompleted) completed @else pending @endif">
                                                     <i class="{{ $statusInfo['icon'] }}"></i>
                                                 </div>
-                                                <div class="order-stepper-label @if($isCanceled) canceled @elseif($isActive) active @elseif($isCompleted) completed @endif">
+                                                <div
+                                                    class="order-stepper-label @if ($isCanceled) canceled @elseif($isActive) active @elseif($isCompleted) completed @endif">
                                                     {{ $statusInfo['label'] }}
                                                 </div>
                                             </div>
@@ -358,14 +374,17 @@
                                     </div>
 
                                     <!-- Status Transition Buttons -->
-                                    @if(!empty($transitionButtons))
+                                    @if (!empty($transitionButtons))
                                         <div class="status-transitions">
-                                            @foreach($transitionButtons as $button)
-                                                <form action="{{ route('admin.orders.status.update', $order->id) }}" method="POST" class="d-inline">
+                                            @foreach ($transitionButtons as $button)
+                                                <form action="{{ route('admin.orders.status.update', $order->id) }}"
+                                                    method="POST" class="d-inline">
                                                     @csrf
                                                     <input type="hidden" name="status" value="{{ $button['status'] }}">
-                                                    <input type="hidden" name="description" value="{{ $button['label'] }}">
-                                                    <button type="submit" class="status-btn status-btn-{{ $button['color'] }}">
+                                                    <input type="hidden" name="description"
+                                                        value="{{ $button['label'] }}">
+                                                    <button type="submit"
+                                                        class="status-btn status-btn-{{ $button['color'] }}">
                                                         <i class="{{ $button['icon'] }}"></i>
                                                         {{ $button['label'] }}
                                                     </button>
@@ -471,17 +490,22 @@
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-2">
-                                                            <div class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
-                                                                {{-- <img src="{{ getFirstImageUrl($item->product) }}" alt="" class="avatar-md"> --}}
+                                                            <div
+                                                                class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
+                                                                {{-- <img src="{{ getFirstImageUrl($item->product) }}" alt=""
+                                                        class="avatar-md"> --}}
                                                             </div>
                                                             <div>
-                                                                <a href="#!" class="text-dark fw-medium fs-15">{{ $item->product->title ?? '' }}</a>
-                                                                <p class="text-muted mb-0 mt-1 fs-13"><span>Size : </span>{{ $item->size }}</p>
+                                                                <a href="#!"
+                                                                    class="text-dark fw-medium fs-15">{{ $item->product->title ?? '' }}</a>
+                                                                <p class="text-muted mb-0 mt-1 fs-13"><span>Size :
+                                                                    </span>{{ $item->size }}</p>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <span class="badge bg-success-subtle text-success px-2 py-1 fs-13">Ready</span>
+                                                        <span
+                                                            class="badge bg-success-subtle text-success px-2 py-1 fs-13">Ready</span>
                                                     </td>
                                                     <td>{{ $item->quantity }}</td>
                                                     <td>${{ number_format($item->price, 2) }}</td>
@@ -505,8 +529,10 @@
                                                 <p class="text-dark fw-medium fs-16 mb-1">Vendor</p>
                                                 <p class="mb-0">{{ $order->vendor->name ?? 'Direct Sale' }}</p>
                                             </div>
-                                            <div class="avatar bg-light d-flex align-items-center justify-content-center rounded">
-                                                <iconify-icon icon="solar:shop-2-bold-duotone" class="fs-35 text-primary"></iconify-icon>
+                                            <div
+                                                class="avatar bg-light d-flex align-items-center justify-content-center rounded">
+                                                <iconify-icon icon="solar:shop-2-bold-duotone" class="fs-35 text-primary">
+                                                </iconify-icon>
                                             </div>
                                         </div>
                                     </div>
@@ -516,8 +542,10 @@
                                                 <p class="text-dark fw-medium fs-16 mb-1">Date</p>
                                                 <p class="mb-0">{{ $order->created_at->format('F d, Y') }}</p>
                                             </div>
-                                            <div class="avatar bg-light d-flex align-items-center justify-content-center rounded">
-                                                <iconify-icon icon="solar:calendar-date-bold-duotone" class="fs-35 text-primary"></iconify-icon>
+                                            <div
+                                                class="avatar bg-light d-flex align-items-center justify-content-center rounded">
+                                                <iconify-icon icon="solar:calendar-date-bold-duotone"
+                                                    class="fs-35 text-primary"></iconify-icon>
                                             </div>
                                         </div>
                                     </div>
@@ -527,8 +555,11 @@
                                                 <p class="text-dark fw-medium fs-16 mb-1">Paid By</p>
                                                 <p class="mb-0">{{ $order->first_name }} {{ $order->last_name }}</p>
                                             </div>
-                                            <div class="avatar bg-light d-flex align-items-center justify-content-center rounded">
-                                                <iconify-icon icon="solar:user-circle-bold-duotone" class="fs-35 text-primary"></iconify-icon>
+                                            <div
+                                                class="avatar bg-light d-flex align-items-center justify-content-center rounded">
+                                                <iconify-icon icon="solar:user-circle-bold-duotone"
+                                                    class="fs-35 text-primary">
+                                                </iconify-icon>
                                             </div>
                                         </div>
                                     </div>
@@ -536,10 +567,13 @@
                                         <div class="d-flex align-items-center gap-3 justify-content-between px-3">
                                             <div>
                                                 <p class="text-dark fw-medium fs-16 mb-1">Reference #</p>
-                                                <p class="mb-0">{{ $order->reference_number ?? $order->order_number }}</p>
+                                                <p class="mb-0">{{ $order->reference_number ?? $order->order_number }}
+                                                </p>
                                             </div>
-                                            <div class="avatar bg-light d-flex align-items-center justify-content-center rounded">
-                                                <iconify-icon icon="solar:clipboard-text-bold-duotone" class="fs-35 text-primary"></iconify-icon>
+                                            <div
+                                                class="avatar bg-light d-flex align-items-center justify-content-center rounded">
+                                                <iconify-icon icon="solar:clipboard-text-bold-duotone"
+                                                    class="fs-35 text-primary"></iconify-icon>
                                             </div>
                                         </div>
                                     </div>
@@ -563,19 +597,24 @@
                                     <tr>
                                         <td class="px-0">
                                             <p class="d-flex mb-0 align-items-center gap-1">
-                                                <iconify-icon icon="solar:clipboard-text-broken"></iconify-icon> Sub Total :
+                                                <iconify-icon icon="solar:clipboard-text-broken"></iconify-icon> Sub Total
+                                                :
                                             </p>
                                         </td>
                                         <td class="text-end text-dark fw-medium px-0">
-                                            ${{ number_format($order->items->sum(function ($item) {
+                                            ${{ number_format(
+                                                $order->items->sum(function ($item) {
                                                     return $item->price * $item->quantity;
-                                            }), 2) }}
+                                                }),
+                                                2,
+                                            ) }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="px-0">
                                             <p class="d-flex mb-0 align-items-center gap-1">
-                                                <iconify-icon icon="solar:ticket-broken" class="align-middle"></iconify-icon>
+                                                <iconify-icon icon="solar:ticket-broken"
+                                                    class="align-middle"></iconify-icon>
                                                 Discount :
                                             </p>
                                         </td>
@@ -585,7 +624,8 @@
                                     <tr>
                                         <td class="px-0">
                                             <p class="d-flex mb-0 align-items-center gap-1">
-                                                <iconify-icon icon="solar:kick-scooter-broken" class="align-middle"></iconify-icon>
+                                                <iconify-icon icon="solar:kick-scooter-broken" class="align-middle">
+                                                </iconify-icon>
                                                 Delivery Charge :
                                             </p>
                                         </td>
@@ -595,7 +635,9 @@
                                     <tr>
                                         <td class="px-0">
                                             <p class="d-flex mb-0 align-items-center gap-1">
-                                                <iconify-icon icon="solar:calculator-minimalistic-broken" class="align-middle"></iconify-icon> Tax :
+                                                <iconify-icon icon="solar:calculator-minimalistic-broken"
+                                                    class="align-middle">
+                                                </iconify-icon> Tax :
                                             </p>
                                         </td>
                                         <td class="text-end text-dark fw-medium px-0">
@@ -611,9 +653,15 @@
                         </div>
                         <div>
                             <p class="fw-bold text-dark mb-0 fs-16">
-                                ${{ number_format($order->total_amount ?? $order->items->sum(function ($item) {
-                                    return ($item->price * $item->quantity) + $item->tax;
-                                }) + ($order->shipping_fee ?? 0) - ($order->discount ?? 0), 2) }}
+                                ${{ number_format(
+                                    $order->total_amount ??
+                                        $order->items->sum(function ($item) {
+                                            return $item->price * $item->quantity + $item->tax;
+                                        }) +
+                                            ($order->shipping_fee ?? 0) -
+                                            ($order->discount ?? 0),
+                                    2,
+                                ) }}
                             </p>
                         </div>
                     </div>
@@ -626,11 +674,11 @@
     <!-- REMOVED: Timeline and Note modals, timeline UI, and related code -->
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize tooltips
             if (window.bootstrap) {
                 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                tooltipTriggerList.forEach(function(tooltipTriggerEl) {
                     new bootstrap.Tooltip(tooltipTriggerEl);
                 });
             }

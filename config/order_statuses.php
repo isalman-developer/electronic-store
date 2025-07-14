@@ -37,7 +37,7 @@ return [
         'color' => '#6b7280',
         'bg_color' => '#f3f4f6',
         'border_color' => '#d1d5db',
-        'next' => [],
+        'next' => ['canceled', 'returned'],
         'tooltip' => 'Order delivered successfully.',
         'description' => 'Order delivered successfully',
     ],
@@ -47,19 +47,9 @@ return [
         'color' => '#ef4444',
         'bg_color' => '#fef2f2',
         'border_color' => '#ef4444',
-        'next' => [],
+        'next' => ['returned'],
         'tooltip' => 'Order was canceled.',
         'description' => 'Order has been canceled',
-    ],
-    'refunded' => [
-        'label' => 'Refunded',
-        'icon' => 'bx bx-undo',
-        'color' => '#8b5cf6',
-        'bg_color' => '#f3e8ff',
-        'border_color' => '#8b5cf6',
-        'next' => [],
-        'tooltip' => 'Order has been refunded.',
-        'description' => 'Order refunded',
     ],
     'returned' => [
         'label' => 'Returned',
@@ -71,4 +61,15 @@ return [
         'tooltip' => 'Order has been returned.',
         'description' => 'Order returned',
     ],
+    'refunded' => [
+        'label' => 'Refunded',
+        'icon' => 'bx bx-undo',
+        'color' => '#8b5cf6',
+        'bg_color' => '#f3e8ff',
+        'border_color' => '#8b5cf6',
+        'next' => [],
+        'tooltip' => 'Order has been refunded.',
+        'description' => 'Order refunded',
+    ]
+
 ];

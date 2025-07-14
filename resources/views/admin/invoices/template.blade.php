@@ -79,7 +79,7 @@
                 <p>Phone: (123) 456-7890</p>
             </div>
         </div>
-        
+
         <div style="clear: both; margin-bottom: 20px;">
             <div style="width: 50%; float: left;">
                 <h3>Bill To:</h3>
@@ -98,7 +98,7 @@
                 <p>{{ $order->country }}</p>
             </div>
         </div>
-        
+
         <div style="clear: both;">
             <table>
                 <thead>
@@ -123,7 +123,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <div class="totals">
             <table>
                 <tr>
@@ -150,12 +150,12 @@
                 </tr>
             </table>
         </div>
-        
+
         <div style="clear: both;"></div>
-        
+
         <div class="payment-info">
             <h3>Payment Information</h3>
-            <p><strong>Payment Method:</strong> 
+            <p><strong>Payment Method:</strong>
                 @if($order->payment_method == 'credit_card')
                     Credit Card
                 @elseif($order->payment_method == 'paypal')
@@ -164,10 +164,10 @@
                     Cash on Delivery
                 @endif
             </p>
-            <p><strong>Payment Status:</strong> 
+            <p><strong>Payment Status:</strong>
                 @if($order->payment_status == 'paid')
                     Paid
-                @elseif($order->payment_status == 'refund')
+                @elseif($order->payment_status == 'refunded')
                     Refunded
                 @else
                     Pending
@@ -177,7 +177,7 @@
             <p><strong>Transaction ID:</strong> {{ $order->transaction_id }}</p>
             @endif
         </div>
-        
+
         <div class="footer">
             <p>Thank you for your business!</p>
             <p>If you have any questions about this invoice, please contact our customer service.</p>
