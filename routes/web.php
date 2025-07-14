@@ -84,10 +84,11 @@ Route::group((['prefix' => 'admin', 'as' => 'admin.']), function () {
 
     Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
         // Order timeline routes
-        Route::post('/{order}/timeline', [AdminOrderController::class, 'addTimelineEntry'])->name('timeline.add');
         Route::post('/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('status.update');
         Route::get('/{order}/invoice/download', [AdminOrderController::class, 'downloadInvoice'])->name('invoice.download');
         Route::post('/{order}/invoice/resend', [AdminOrderController::class, 'resendInvoice'])->name('invoice.resend');
-        Route::post('/{order}/tracking', [AdminOrderController::class, 'updateTracking'])->name('orders.tracking.update');
+        Route::post('/{order}/tracking', [AdminOrderController::class, 'updateTracking'])->name('tracking.update');
+        Route::post('/{order}/refund', [AdminOrderController::class, 'refund'])->name('refund');
+        Route::post('/{order}/return', [AdminOrderController::class, 'return'])->name('return');
     });
 });

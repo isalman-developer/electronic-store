@@ -33,9 +33,10 @@ return new class extends Migration
                 'pending',
                 'paid',
                 'shipped',
-                'delivered',
                 'completed',
                 'canceled',
+                'refunded',
+                'returned',
             ])->default('pending');
             $table->boolean('is_returned')->default(false);
             $table->boolean('is_refunded')->default(false);

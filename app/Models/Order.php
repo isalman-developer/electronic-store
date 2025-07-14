@@ -43,9 +43,4 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function timelines()
-    {
-        return $this->hasMany(OrderTimeline::class)->orderBy('created_at', 'desc');
-    }
 }

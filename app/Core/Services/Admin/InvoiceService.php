@@ -62,17 +62,6 @@ class InvoiceService
         // Send email with invoice
         Mail::to($order->email)->send(new OrderInvoice($order));
 
-        // Add timeline entry for invoice sent
-        $timelineService = app(OrderTimelineService::class);
-        $timelineService->addTimelineEntry(
-            $order,
-            'Invoice sent to customer',
-            'Invoice email was sent to ' . $order->email,
-            'invoice_sent',
-            'bx bx-envelope',
-            'text-primary'
-        );
-
         return true;
     }
 

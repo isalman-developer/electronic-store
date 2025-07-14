@@ -13,7 +13,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
                                 <h4 class="card-title mb-2">Payment Refund</h4>
-                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['refund_count'] }}</p>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['refunded_orders'] }}</p>
                             </div>
                             <div>
                                 <div class="avatar-md bg-primary bg-opacity-10 rounded">
@@ -31,7 +31,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
                                 <h4 class="card-title mb-2">Order Cancel</h4>
-                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['canceled_count'] }}</p>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['canceled_orders'] }}</p>
                             </div>
                             <div>
                                 <div class="avatar-md bg-primary bg-opacity-10 rounded">
@@ -50,7 +50,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
                                 <h4 class="card-title mb-2">Order Shipped</h4>
-                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['shipped_count'] }}</p>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['shipped_orders'] }}</p>
                             </div>
                             <div>
                                 <div class="avatar-md bg-primary bg-opacity-10 rounded">
@@ -68,45 +68,8 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <h4 class="card-title mb-2">Order Delivering</h4>
-                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['delivering_count'] }}</p>
-                            </div>
-                            <div>
-                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                                    <iconify-icon icon="solar:tram-broken"
-                                        class="fs-32 text-primary avatar-title"></iconify-icon>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-xl-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h4 class="card-title mb-2">Pending Review</h4>
-                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['pending_review_count'] }}</p>
-                            </div>
-                            <div>
-                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                                    <iconify-icon icon="solar:clipboard-remove-broken"
-                                        class="fs-32 text-primary avatar-title"></iconify-icon>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h4 class="card-title mb-2">Pending Payment</h4>
-                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['pending_payment_count'] }}</p>
+                                <h4 class="card-title mb-2">Pending Orders</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['pending_orders'] }}</p>
                             </div>
                             <div>
                                 <div class="avatar-md bg-primary bg-opacity-10 rounded">
@@ -123,8 +86,26 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <h4 class="card-title mb-2">Delivered</h4>
-                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['delivered_count'] }}</p>
+                                <h4 class="card-title mb-2">Paid Orders</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['paid_orders'] }}</p>
+                            </div>
+                            <div>
+                                <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                    <iconify-icon icon="solar:credit-card-broken"
+                                        class="fs-32 text-primary avatar-title"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title mb-2">Completed</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['completed_orders'] }}</p>
                             </div>
                             <div>
                                 <div class="avatar-md bg-primary bg-opacity-10 rounded">
@@ -141,12 +122,12 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <h4 class="card-title mb-2">In Progress</h4>
-                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['in_progress_count'] }}</p>
+                                <h4 class="card-title mb-2">Returned</h4>
+                                <p class="text-muted fw-medium fs-22 mb-0">{{ $orderStats['returned_orders'] }}</p>
                             </div>
                             <div>
                                 <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                                    <iconify-icon icon="solar:inbox-line-broken"
+                                    <iconify-icon icon="solar:rotate-left-broken"
                                         class="fs-32 text-primary avatar-title"></iconify-icon>
                                 </div>
                             </div>
@@ -220,21 +201,22 @@
                                             <td> {{ $order->items->count() }}</td>
                                             <td> {{ $order->delivery_number ?? '-' }}</td>
                                             <td>
-                                                @if ($order->status == 'completed')
-                                                    <span
-                                                        class="badge border border-success text-success px-2 py-1 fs-13">Completed</span>
+                                                @if ($order->status == 'pending')
+                                                    <span class="badge border border-warning text-warning px-2 py-1 fs-13">Pending</span>
+                                                @elseif($order->status == 'paid')
+                                                    <span class="badge border border-info text-info px-2 py-1 fs-13">Paid</span>
+                                                @elseif($order->status == 'shipped')
+                                                    <span class="badge border border-primary text-primary px-2 py-1 fs-13">Shipped</span>
+                                                @elseif($order->status == 'completed')
+                                                    <span class="badge border border-success text-success px-2 py-1 fs-13">Completed</span>
                                                 @elseif($order->status == 'canceled')
-                                                    <span
-                                                        class="badge border border-danger text-danger px-2 py-1 fs-13">Canceled</span>
-                                                @elseif($order->status == 'processed' || $order->status == 'packed')
-                                                    <span
-                                                        class="badge border border-warning text-warning px-2 py-1 fs-13">{{ ucfirst($order->status) }}</span>
-                                                @elseif($order->status == 'draft')
-                                                    <span
-                                                        class="badge border border-secondary text-secondary px-2 py-1 fs-13">Draft</span>
+                                                    <span class="badge border border-danger text-danger px-2 py-1 fs-13">Canceled</span>
+                                                @elseif($order->status == 'refunded')
+                                                    <span class="badge border border-purple text-purple px-2 py-1 fs-13">Refunded</span>
+                                                @elseif($order->status == 'returned')
+                                                    <span class="badge border border-orange text-orange px-2 py-1 fs-13">Returned</span>
                                                 @else
-                                                    <span
-                                                        class="badge border border-primary text-primary px-2 py-1 fs-13">{{ ucfirst($order->status) }}</span>
+                                                    <span class="badge border border-secondary text-secondary px-2 py-1 fs-13">{{ ucfirst($order->status) }}</span>
                                                 @endif
                                             </td>
                                             <td>
