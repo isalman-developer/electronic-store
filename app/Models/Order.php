@@ -43,4 +43,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function events()
+    {
+        return $this->hasMany(OrderEvent::class);
+    }
 }

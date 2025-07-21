@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Core\Services\Admin\InvoiceService;
 
 class OrderController extends Controller
 {
@@ -83,16 +84,10 @@ class OrderController extends Controller
             // }
         }
 
-        // Process payment based on method
-        if ($request->payment_method === 'cash_on_delivery') {
-            // For cash on delivery, we just mark the order as pending
-            // No additional payment processing needed
-        } else if ($request->payment_method === 'credit_card') {
-            // Process credit card payment (not implemented in this version)
-            // $order->update(['payment_status' => 'paid']);
-        } else if ($request->payment_method === 'paypal') {
-            // Redirect to PayPal (not implemented in this version)
-            // return redirect()->route('paypal.process', ['order_id' => $order->id]);
+        // Automatically generate and send invoice if paid
+        if ($order->payment_status === 'paid') {
+            $invoiceService = app(InvoiceService::class);
+            $invoiceService->generateInvoice($order);
         }
 
         // Send order confirmation email

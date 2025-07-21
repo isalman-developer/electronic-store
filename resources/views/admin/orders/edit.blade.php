@@ -82,7 +82,7 @@
                             </div>
 
                             <!-- Shipping Information -->
-                            <div class="row mt-4">
+                            <div class="row">
                                 <div class="col-12">
                                     <h5 class="mb-3">Shipping Information</h5>
                                     <div class="row">

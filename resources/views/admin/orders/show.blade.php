@@ -107,73 +107,6 @@
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Timeline Styles */
-        .timeline-container {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-        }
-
-        .timeline-entry {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .timeline-entry:last-child {
-            margin-bottom: 0;
-        }
-
-        .timeline-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            color: #fff;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-
-        .timeline-content {
-            flex: 1;
-            padding-top: 0.25rem;
-        }
-
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-title {
-            font-weight: 600;
-            color: #111827;
-            margin: 0;
-        }
-
-        .timeline-time {
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-
-        .timeline-description {
-            color: #4b5563;
-            margin: 0;
-            line-height: 1.5;
-        }
-
-        .timeline-user {
-            font-size: 0.75rem;
-            color: #9ca3af;
-            margin-top: 0.25rem;
-        }
-
         /* Status Transition Buttons */
         .status-transitions {
             display: flex;
@@ -259,21 +192,6 @@
                 justify-content: center;
             }
         }
-
-        /* Loading Animation */
-        .loading-spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
     </style>
 @endpush
 
@@ -305,7 +223,7 @@
                                             @endif
 
                                             <span class="border border-warning text-warning fs-13 px-2 py-1 rounded">
-                                                {{ !in_array($order->status, ['completed','canceled', 'returned', 'refunded']) ? 'In Progress' : ucfirst($order->status) }}
+                                                {{ !in_array($order->status, ['completed', 'canceled', 'returned', 'refunded']) ? 'In Progress' : ucfirst($order->status) }}
                                             </span>
 
                                         </h4>
@@ -317,27 +235,45 @@
                                     <div>
 
                                         {{-- Return Button --}}
-                                        @if ($order->status == 'completed' && $order->payment_status == 'paid')
+                                        {{-- @if ($order->status == 'completed' && $order->payment_status == 'paid')
                                             <form action="{{ route('admin.orders.return', $order->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="btn btn-orange"
                                                     style="background:#f97316;color:#fff;">Return</button>
                                             </form>
-                                        @endif
+                                        @endif --}}
 
                                         {{-- Refund Button --}}
-                                        @if ($order->status === 'returned')
+                                        {{-- @if ($order->status === 'returned')
                                             <form action="{{ route('admin.orders.refund', $order->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="btn btn-warning">Refund</button>
                                             </form>
-                                        @endif
+                                        @endif --}}
 
-                                        <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('admin.orders.edit', $order->id) }}"
+                                            class="btn btn-outline-secondary">
                                             Edit Order
                                         </a>
+
+                                        {{-- Download Invoice Button --}}
+                                        {{-- <a href="{{ route('admin.orders.invoice.download', $order->id) }}"
+                                            class="btn btn-primary ms-1">
+                                            <iconify-icon icon="solar:download-bold-duotone"
+                                                class="align-middle"></iconify-icon> Download Invoice
+                                        </a> --}}
+
+                                        {{-- Resend Invoice Email Button --}}
+                                        {{-- <form action="{{ route('admin.orders.invoice.resend', $order->id) }}" method="POST"
+                                            class="d-inline ms-1">
+                                            @csrf
+                                            <button type="submit" class="btn btn-info">
+                                                <iconify-icon icon="solar:mail-send-bold-duotone"
+                                                    class="align-middle"></iconify-icon> Resend Invoice Email
+                                            </button>
+                                        </form> --}}
                                     </div>
                                 </div>
 
@@ -383,11 +319,13 @@
                                                     <input type="hidden" name="status" value="{{ $button['status'] }}">
                                                     <input type="hidden" name="description"
                                                         value="{{ $button['label'] }}">
+
                                                     <button type="submit"
                                                         class="status-btn status-btn-{{ $button['color'] }}">
                                                         <i class="{{ $button['icon'] }}"></i>
                                                         {{ $button['label'] }}
                                                     </button>
+
                                                 </form>
                                             @endforeach
                                         </div>
@@ -402,9 +340,69 @@
 
             <!-- Rest of the existing layout -->
             <div class="col-xl-9 col-lg-8">
-                <!-- Shipping Information Card -->
                 <div class="row">
                     <div class="col-lg-12">
+                        <!-- Timeline Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Order Timeline</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="position-relative ms-2">
+                                    <span class="position-absolute start-0  top-0 border border-dashed h-100"></span>
+                                    @foreach($orderEvents as $event)
+                                        <div class="position-relative ps-4">
+                                            <div class="mb-4">
+                                                <span
+                                                    class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle  {{ ($event->type === 'status_updated' && ($event->data['new_status'] ?? '') === 'pending') ? '' : 'text-success fs-20' }}">
+                                                    @if($event->type === 'status_updated' && ($event->data['new_status'] ?? '') === 'pending')
+                                                        <div class="spinner-border spinner-border-sm text-warning" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                    @else
+                                                        <i class="bx bx-check-circle"></i>
+                                                    @endif
+                                                </span>
+                                                <div class="ms-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                                    <div>
+                                                        <h5 class="mb-1 text-dark fw-medium fs-15">
+                                                            {{ __(ucfirst(str_replace('_', ' ', $event->type))) }}
+                                                        </h5>
+                                                        <p class="mb-0">
+                                                            {{ $event->description }}
+                                                            @if(isset($event->data['email']))
+                                                                <br>Email: <a href="mailto:{{ $event->data['email'] }}">{{ $event->data['email'] }}</a>
+                                                            @endif
+                                                            @if(isset($event->data['invoice_path']) && $event->type !== 'invoice_sent')
+                                                                <br>
+                                                                <a href="{{ asset('storage/' . $event->data['invoice_path']) }}" class="btn btn-primary btn-sm" target="_blank">Download Invoice</a>
+                                                            @endif
+                                                            @if(isset($event->data['refund_amount']))
+                                                                <br>Refunded Amount: ${{ number_format($event->data['refund_amount'], 2) }}
+                                                            @endif
+                                                            @if(isset($event->data['new_status']) && isset($event->data['previous_status']))
+                                                                <br>Status changed from <strong>{{ ucfirst($event->data['previous_status']) }}</strong> to <strong>{{ ucfirst($event->data['new_status']) }}</strong>
+                                                            @endif
+                                                        </p>
+                                                        @if($event->type === 'invoice_sent' || $event->type === 'invoice_resent')
+                                                            <a href="{{ route('admin.orders.invoice.resend', $order->id) }}" class="btn btn-light btn-sm mt-1">Resend Invoice</a>
+                                                        @endif
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <p class="mb-0">{{ $event->created_at->format('M d, Y, h:i a') }}</p>
+                                                        @if($event->creator)
+                                                            <small class="text-muted">By {{ $event->creator->name }}</small>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Timeline Card -->
+
                         <div class="card mt-4">
                             <div class="card-header">
                                 <h4 class="card-title">Shipping Information</h4>
@@ -586,6 +584,7 @@
 
             <!-- Order Summary Sidebar -->
             <div class="col-xl-3 col-lg-4">
+                <!-- Order Summary Card remains here -->
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Order Summary</h4>

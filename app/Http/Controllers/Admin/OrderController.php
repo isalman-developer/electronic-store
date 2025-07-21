@@ -4,15 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Order;
 use App\Enums\OrderStatus;
-use App\Services\OrderTrackingService;
-use App\Http\Controllers\Controller;
+use App\Models\OrderEvent;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use App\Services\OrderTrackingService;
+use App\Core\Services\Admin\InvoiceService;
 
 class OrderController extends Controller
 {
     public function __construct(
-        protected OrderTrackingService $orderTrackingService
+        protected OrderTrackingService $orderTrackingService,
+        protected InvoiceService $invoiceService
     ) {}
 
     /**
@@ -60,7 +64,7 @@ class OrderController extends Controller
             // Add other validation rules as needed
         ]);
 
-        $order = Order::create($validated);
+        Order::create($validated);
 
         return redirect()
             ->route('admin.orders.index')
@@ -72,12 +76,15 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order->load(['items.product']);
-
         $progressData = $this->orderTrackingService->getOrderProgress($order);
         $transitionButtons = $this->orderTrackingService->getStatusTransitionButtons($order);
 
-        return view('admin.orders.show', compact('order', 'progressData', 'transitionButtons'));
+        $order->load(['items.product', 'events' => function ($query) {
+            $query->with('creator')->orderBy('created_at', 'desc');
+        }]);
+        $orderEvents = $order->events;
+
+        return view('admin.orders.show', compact('order', 'progressData', 'transitionButtons', 'orderEvents'));
     }
 
     /**
@@ -115,15 +122,20 @@ class OrderController extends Controller
         unset($validated['payment_method']);
         unset($validated['total_amount']);
 
-        if($validated['status'] === 'pending'){
+        if ($validated['status'] === 'pending') {
             $validated['payment_status'] = 'pending';
-        }elseif ($validated['status'] === 'paid') {
+        } elseif ($validated['status'] === 'paid') {
             $validated['payment_status'] = 'paid';
         } elseif ($validated['status'] === 'refunded') {
             $validated['payment_status'] = 'refunded';
         }
 
         $order->update($validated);
+
+        // Generate and send invoice if order is now paid and invoice does not exist
+        if ($order->payment_status === 'paid' && !$order->invoice_path) {
+            $this->invoiceService->generateInvoice($order);
+        }
 
         return redirect()
             ->route('admin.orders.show', $order)
@@ -154,6 +166,7 @@ class OrderController extends Controller
 
         try {
             $newStatus = OrderStatus::from($request->status);
+            $previousStatus = $order->getOriginal('status');
             $description = $request->description;
 
             // Automatically set payment_status based on status
@@ -164,12 +177,29 @@ class OrderController extends Controller
             }
             $order->save();
 
+            // Generate and send invoice if order is now paid and invoice does not exist
+            if ($order->payment_status === 'paid' && !$order->invoice_path) {
+                info("generating invoice");
+                $this->invoiceService->generateInvoice($order);
+            }
+
             $this->orderTrackingService->updateStatus($order, $newStatus, $description);
+
+            OrderEvent::create([
+                'order_id' => $order->id,
+                'type' => 'status_updated',
+                'description' => 'Order status updated to ' . $newStatus->value . '.',
+                'created_by' => Auth::id(),
+                'data' => [
+                    'new_status' => $newStatus->value,
+                    'previous_status' => $previousStatus,
+                    'actor_id' => Auth::id(),
+                ],
+            ]);
 
             return redirect()
                 ->route('admin.orders.show', $order)
                 ->with('success', "Order status updated to {$newStatus->label()} successfully.");
-
         } catch (\Exception $e) {
             return redirect()
                 ->route('admin.orders.show', $order)
@@ -201,7 +231,16 @@ class OrderController extends Controller
     {
         try {
             $this->orderTrackingService->updateStatus($order, \App\Enums\OrderStatus::Refunded, 'Order refunded by admin.');
-            // Optionally: trigger payment gateway refund logic here
+            OrderEvent::create([
+                'order_id' => $order->id,
+                'type' => 'order_refunded',
+                'description' => 'Order was refunded by admin.',
+                'created_by' => Auth::id(),
+                'data' => [
+                    'actor_id' => Auth::id(),
+                    'refund_amount' => $order->total_amount,
+                ],
+            ]);
             return redirect()->route('admin.orders.show', $order)->with('success', 'Order refunded successfully.');
         } catch (\Exception $e) {
             return redirect()->route('admin.orders.show', $order)->with('error', $e->getMessage());
@@ -212,10 +251,58 @@ class OrderController extends Controller
     {
         try {
             $this->orderTrackingService->updateStatus($order, \App\Enums\OrderStatus::Returned, 'Order marked as returned by admin.');
+            OrderEvent::create([
+                'order_id' => $order->id,
+                'type' => 'order_returned',
+                'description' => 'Order was marked as returned by admin.',
+                'created_by' => Auth::id(),
+                'data' => [
+                    'actor_id' => Auth::id(),
+                ],
+            ]);
             // Optionally: trigger inventory restock logic here
             return redirect()->route('admin.orders.show', $order)->with('success', 'Order marked as returned.');
         } catch (\Exception $e) {
             return redirect()->route('admin.orders.show', $order)->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Download the invoice PDF for an order
+     */
+    public function downloadInvoice(Order $order)
+    {
+        OrderEvent::create([
+            'order_id' => $order->id,
+            'type' => 'invoice_downloaded',
+            'description' => 'Invoice was downloaded by admin.',
+            'created_by' => Auth::id(),
+            'data' => [
+                'actor_id' => Auth::id(),
+                'invoice_path' => $order->invoice_path,
+            ],
+        ]);
+        return $this->invoiceService->downloadInvoice($order);
+    }
+
+    /**
+     * Resend the invoice email to the customer
+     */
+    public function resendInvoice(Order $order)
+    {
+        $this->invoiceService->resendInvoice($order);
+        OrderEvent::create([
+            'order_id' => $order->id,
+            'type' => 'invoice_resent',
+            'description' => 'Invoice email resent to customer.',
+            'created_by' => Auth::id(),
+            'data' => [
+                'actor_id' => Auth::id(),
+                'email' => $order->email,
+                'invoice_path' => $order->invoice_path,
+            ],
+        ]);
+        return redirect()->route('admin.orders.show', $order)
+            ->with('success', 'Invoice email resent successfully.');
     }
 }
