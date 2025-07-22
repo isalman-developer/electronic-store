@@ -342,103 +342,14 @@
             <div class="col-xl-9 col-lg-8">
                 <div class="row">
                     <div class="col-lg-12">
-                        <!-- Timeline Card -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Order Timeline</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="position-relative ms-2">
-                                    <span class="position-absolute start-0  top-0 border border-dashed h-100"></span>
-                                    @foreach($orderEvents as $event)
-                                        <div class="position-relative ps-4">
-                                            <div class="mb-4">
-                                                <span
-                                                    class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle  {{ ($event->type === 'status_updated' && ($event->data['new_status'] ?? '') === 'pending') ? '' : 'text-success fs-20' }}">
-                                                    @if($event->type === 'status_updated' && ($event->data['new_status'] ?? '') === 'pending')
-                                                        <div class="spinner-border spinner-border-sm text-warning" role="status">
-                                                            <span class="visually-hidden">Loading...</span>
-                                                        </div>
-                                                    @else
-                                                        <i class="bx bx-check-circle"></i>
-                                                    @endif
-                                                </span>
-                                                <div class="ms-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
-                                                    <div>
-                                                        <h5 class="mb-1 text-dark fw-medium fs-15">
-                                                            {{ __(ucfirst(str_replace('_', ' ', $event->type))) }}
-                                                        </h5>
-                                                        <p class="mb-0">
-                                                            {{ $event->description }}
-                                                            @if(isset($event->data['email']))
-                                                                <br>Email: <a href="mailto:{{ $event->data['email'] }}">{{ $event->data['email'] }}</a>
-                                                            @endif
-                                                            @if(isset($event->data['invoice_path']) && $event->type !== 'invoice_sent')
-                                                                <br>
-                                                                <a href="{{ asset('storage/' . $event->data['invoice_path']) }}" class="btn btn-primary btn-sm" target="_blank">Download Invoice</a>
-                                                            @endif
-                                                            @if(isset($event->data['refund_amount']))
-                                                                <br>Refunded Amount: ${{ number_format($event->data['refund_amount'], 2) }}
-                                                            @endif
-                                                            @if(isset($event->data['new_status']) && isset($event->data['previous_status']))
-                                                                <br>Status changed from <strong>{{ ucfirst($event->data['previous_status']) }}</strong> to <strong>{{ ucfirst($event->data['new_status']) }}</strong>
-                                                            @endif
-                                                        </p>
-                                                        @if($event->type === 'invoice_sent' || $event->type === 'invoice_resent')
-                                                            <a href="{{ route('admin.orders.invoice.resend', $order->id) }}" class="btn btn-light btn-sm mt-1">Resend Invoice</a>
-                                                        @endif
-                                                    </div>
-                                                    <div class="text-end">
-                                                        <p class="mb-0">{{ $event->created_at->format('M d, Y, h:i a') }}</p>
-                                                        @if($event->creator)
-                                                            <small class="text-muted">By {{ $event->creator->name }}</small>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Timeline Card -->
 
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                <h4 class="card-title">Shipping Information</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label class="form-label text-muted">Shipping Method</label>
-                                            <p class="mb-0 fw-medium">
-                                                {{ $order->shipping_method ?? 'Standard Shipping' }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label class="form-label text-muted">Courier</label>
-                                            <p class="mb-0 fw-medium">{{ $order->courier ?? 'Not assigned yet' }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label class="form-label text-muted">Tracking Number</label>
-                                            <p class="mb-0 fw-medium">{{ $order->tracking_number ?? 'Not available' }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label class="form-label text-muted">Estimated Delivery</label>
-                                            <p class="mb-0 fw-medium">
-                                                {{ $order->created_at->addDays(7)->format('M d, Y') }}</p>
-                                        </div>
-                                    </div>
+                        <!-- Shipping Information Card -->
+                        @if ($order->status === 'shipped')
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Shipping Information</h4>
                                 </div>
-
-                                @if ($order->status === 'shipped')
+                                <div class="card-body">
                                     <div class="mt-3">
                                         <form action="{{ route('admin.orders.tracking.update', $order->id) }}"
                                             method="POST" class="row g-3">
@@ -461,9 +372,10 @@
                                             </div>
                                         </form>
                                     </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
+                        <!-- End Shipping Information Card -->
 
                         <!-- Products Card -->
                         <div class="card">
@@ -490,8 +402,8 @@
                                                         <div class="d-flex align-items-center gap-2">
                                                             <div
                                                                 class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
-                                                                {{-- <img src="{{ getFirstImageUrl($item->product) }}" alt=""
-                                                        class="avatar-md"> --}}
+                                                                <img src="{{ getFirstImageUrl($item->product) }}"
+                                                                    alt="" class="avatar-md">
                                                             </div>
                                                             <div>
                                                                 <a href="#!"
@@ -516,6 +428,108 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- End Products Card -->
+
+
+                        <!-- Timeline Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Order Timeline</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="position-relative ms-2">
+                                    <span class="position-absolute start-0  top-0 border border-dashed h-100"></span>
+                                    @foreach ($orderEvents as $event)
+                                        <div class="position-relative ps-4">
+                                            <div class="mb-4">
+                                                <span
+                                                    class="position-absolute start-0 avatar-sm translate-middle-x bg-light d-inline-flex align-items-center justify-content-center rounded-circle  {{ $event->type === 'status_updated' && ($event->data['new_status'] ?? '') === 'pending' ? '' : 'text-success fs-20' }}">
+                                                    @if ($event->type === 'status_updated' && ($event->data['new_status'] ?? '') === 'pending')
+                                                        <div class="spinner-border spinner-border-sm text-warning"
+                                                            role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                    @else
+                                                        <i class="bx bx-check-circle"></i>
+                                                    @endif
+                                                </span>
+                                                <div
+                                                    class="ms-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                                    <div>
+                                                        <h5 class="mb-1 text-dark fw-medium fs-15">
+                                                            {{ __(ucfirst(str_replace('_', ' ', $event->type))) }}
+                                                        </h5>
+                                                        <p class="mb-0">
+                                                            {{ $event->description }}
+                                                            @if (isset($event->data['email']))
+                                                                <br>Email: <a
+                                                                    href="mailto:{{ $event->data['email'] }}">{{ $event->data['email'] }}</a>
+                                                            @endif
+                                                            @if (isset($event->data['invoice_path']) && $event->type !== 'invoice_sent')
+                                                                <br>
+                                                                <a href="{{ asset('storage/' . $event->data['invoice_path']) }}"
+                                                                    class="btn btn-primary btn-sm" target="_blank">Download
+                                                                    Invoice</a>
+                                                            @endif
+                                                            @if (isset($event->data['refund_amount']))
+                                                                <br>Refunded Amount:
+                                                                ${{ number_format($event->data['refund_amount'], 2) }}
+                                                            @endif
+                                                            @if (isset($event->data['new_status']) && isset($event->data['previous_status']))
+                                                                <br>Status changed from
+                                                                <strong>{{ ucfirst($event->data['previous_status']) }}</strong>
+                                                                to
+                                                                <strong>{{ ucfirst($event->data['new_status']) }}</strong>
+                                                            @endif
+                                                        </p>
+                                                        @if ($event->type === 'invoice_sent' || $event->type === 'invoice_resent')
+                                                            <a href="{{ route('admin.orders.invoice.resend', $order->id) }}"
+                                                                class="btn btn-light btn-sm mt-1">Resend Invoice</a>
+                                                        @endif
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <p class="mb-0">{{ $event->created_at->format('M d, Y, h:i a') }}
+                                                        </p>
+                                                        @if ($event->creator)
+                                                            <small class="text-muted">By
+                                                                {{ $event->creator->name }}</small>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Timeline Card -->
+
+                        <!-- Order Notes Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Order Notes</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="px-0">
+                                                    <p class="d-flex mb-0 align-items-center gap-1">
+                                                        <iconify-icon icon="solar:clipboard-text-broken"></iconify-icon>
+                                                        Order Notes
+                                                    </p>
+                                                </td>
+                                                <td class="text-end text-dark fw-medium px-0">
+                                                    {{ $order->notes ?? 'No notes yet' }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <!-- Order Summary Cards -->
                         <div class="card bg-light-subtle">
@@ -665,12 +679,67 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4 class="card-title">Shipping Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="px-0">
+                                            <p class="d-flex mb-0 align-items-center gap-1">
+                                                <iconify-icon icon="solar:clipboard-text-broken"></iconify-icon>
+                                                Shipping Method
+                                            </p>
+                                        </td>
+                                        <td class="text-end text-dark fw-medium px-0">
+                                            {{ $order->shipping_method ?? 'Standard Shipping' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-0">
+                                            <p class="d-flex mb-0 align-items-center gap-1">
+                                                <iconify-icon icon="solar:clipboard-text-broken"></iconify-icon>
+                                                Courier
+                                            </p>
+                                        </td>
+                                        <td class="text-end text-dark fw-medium px-0">
+                                            {{ $order->courier ?? 'Not assigned yet' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-0">
+                                            <p class="d-flex mb-0 align-items-center gap-1">
+                                                <iconify-icon icon="solar:clipboard-text-broken"></iconify-icon>
+                                                Tracking Number
+                                            </p>
+                                        </td>
+                                        <td class="text-end text-dark fw-medium px-0">
+                                            {{ $order->tracking_number ?? 'Not available' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-0">
+                                            <p class="d-flex mb-0 align-items-center gap-1">
+                                                <iconify-icon icon="solar:clipboard-text-broken"></iconify-icon>
+                                                Estimated Delivery
+                                            </p>
+                                        </td>
+                                        <td class="text-end text-dark fw-medium px-0">
+                                            {{ $order->created_at->addDays(7)->format('M d, Y') }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Add Timeline Entry Modal -->
-    <!-- REMOVED: Timeline and Note modals, timeline UI, and related code -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
